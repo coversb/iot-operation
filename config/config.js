@@ -7,6 +7,7 @@ var _ = require('lodash'),
   chalk = require('chalk'),
   glob = require('glob'),
   fs = require('fs'),
+  dotenv = require('dotenv'),
   path = require('path');
 
 /**
@@ -172,6 +173,9 @@ var initGlobalConfigFiles = function (config, assets) {
  * Initialize global configuration
  */
 var initGlobalConfig = function () {
+  // load .env files
+  dotenv.load({ path: '.env' });
+
   // Validate NODE_ENV existence
   validateEnvironmentVariable();
 
