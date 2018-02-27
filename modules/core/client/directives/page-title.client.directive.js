@@ -1,3 +1,4 @@
+
 (function () {
   'use strict';
 
@@ -18,7 +19,7 @@
       $rootScope.$on('$stateChangeSuccess', listener);
 
       function listener(event, toState) {
-        var applicationCoreTitle = 'MEAN.js',
+        var applicationCoreTitle = 'PARKBOX IOT',
           separator = ' - ',
           stateTitle = applicationCoreTitle + separator;
 
