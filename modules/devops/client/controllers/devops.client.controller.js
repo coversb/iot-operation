@@ -8,7 +8,7 @@
   DevopsController.$inject = ['$scope', '$state', '$http', 'Authentication'];
 
   function DevopsController($scope, $state, $http, Authentication) {
-    var cmdUrl = 'http://115.159.219.161:60004/parkbox/gui/sendCommand';
+    var backendURL = 'http://integration-iot.gongyuanhezi.cn';
     // var cmdUrl = 'http://integration-iot.gongyuanhezi.cn/parkbox/gui/sendCommand';
     // var cmdUrl = 'http://118.25.115.55/parkbox/gui/sendCommand';
     var vm = this;
@@ -34,13 +34,13 @@
       vm.devUID = '0000000000600000'; // UID
     }
 
-    function sendCommandToBackend(data) {
+    function sendCommandToBackend(data, apiURL) {
       var config = {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         }
       };
-      $http.post(cmdUrl, data, config)
+      $http.post(backendURL + apiURL, data, config)
         .success(function (data, status, header, config) {
           console.log('success');
         })
@@ -65,6 +65,7 @@
     }
 
     function sendDevAirConCommand() {
+      var apiURL = '/gui/sendAirconConfigCommand';
       var devAirMode = assembleDevAirConMode(vm.devAirConPwrMode, vm.devAirConWorkMode, vm.devAirConWindMode);
       var cmdObj = {};
       cmdObj.uniqueId = vm.devUID;
@@ -78,10 +79,11 @@
       };
       console.log('sendDevAirConCommand ' + JSON.stringify(cmdObj));
 
-      sendCommandToBackend(cmdObj);
+      sendCommandToBackend(cmdObj, apiURL);
     }
 
     function sendDevOpenDoorCommand() {
+      var apiURL = '/gui/sendRTOCommand';
       var cmdObj = {};
       cmdObj.uniqueId = vm.devUID;
       cmdObj.messageType = 0x01;
@@ -92,10 +94,11 @@
       };
       console.log('sendDevOpenDoorCommand ' + JSON.stringify(cmdObj));
 
-      sendCommandToBackend(cmdObj);
+      sendCommandToBackend(cmdObj, apiURL);
     }
 
     function sendDevOpenDeviceBoxCommand() {
+      var apiURL = '/gui/sendRTOCommand';
       var cmdObj = {};
       cmdObj.uniqueId = vm.devUID;
       cmdObj.messageType = 0x01;
@@ -106,10 +109,11 @@
       };
       console.log('sendDevOpenDeviceBoxCommand ' + JSON.stringify(cmdObj));
 
-      sendCommandToBackend(cmdObj);
+      sendCommandToBackend(cmdObj, apiURL);
     }
 
     function sendDevCloseDoorCommand() {
+      var apiURL = '/gui/sendRTOCommand';
       var cmdObj = {};
       cmdObj.uniqueId = vm.devUID;
       cmdObj.messageType = 0x01;
@@ -120,7 +124,7 @@
       };
       console.log('sendDevCloseDoorCommand ' + JSON.stringify(cmdObj));
 
-      sendCommandToBackend(cmdObj);
+      sendCommandToBackend(cmdObj, apiURL);
     }
 
   }
