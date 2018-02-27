@@ -60,7 +60,7 @@
       .state('authentication', {
         abstract: true,
         url: '/authentication',
-        //templateUrl: '/modules/users/client/views/authentication/authentication.client.view.html',
+        // templateUrl: '/modules/users/client/views/authentication/authentication.client.view.html',
         templateUrl: '',
         controller: 'AuthenticationController',
         controllerAs: 'vm'

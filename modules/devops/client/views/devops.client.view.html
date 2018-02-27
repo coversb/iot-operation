@@ -1,0 +1,140 @@
+<!-- The chat view -->
+<section class="container">
+  <div class="page-header">
+    <h1>运维工具</h1>
+  </div>
+
+  <div class="bootstrap-iso">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <form method="post">
+            <div class="form-group ">
+              <label class="control-label requiredField" for="devAirConPwrMode">
+                空调开关
+                <span class="asteriskField">*</span>
+              </label>
+              <select class="select form-control" id="devAirConPwrMode" name="devAirConPwrMode"
+                      ng-model="vm.devAirConPwrMode">
+                <option value="0">空调常关</option>
+                <option value="1">空调常开</option>
+              </select>
+            </div>
+            <div class="form-group ">
+              <label class="control-label requiredField" for="devAirConWorkMode">
+                模式
+                <span class="asteriskField">*</span>
+              </label>
+              <select class="select form-control" id="devAirConWorkMode" name="devAirConWorkMode"
+                      ng-model="vm.devAirConWorkMode">
+                <option value="0">制冷</option>
+                <option value="1">制热</option>
+                <option value="2">自动</option>
+                <option value="3">抽湿</option>
+              </select>
+            </div>
+            <div class="form-group ">
+              <label class="control-label requiredField" for="devAirConWindMode">
+                风力
+                <span class="asteriskField">*</span>
+              </label>
+              <select class="select form-control" id="devAirConWindMode" name="devAirConWindMode"
+                      ng-model="vm.devAirConWindMode">
+                <option value="0">高</option>
+                <option value="1">中</option>
+                <option value="2">低</option>
+                <option value="3">自动</option>
+              </select>
+            </div>
+            <!--div class="form-group ">
+             <label class="control-label requiredField" for="devAirConInterval">
+              Interval [Minutes]
+              <span class="asteriskField">*</span>
+             </label>
+             <div class="input-group">
+              <div class="input-group-addon">
+               <i class="fa fa-hourglass-start"></i>
+              </div>
+              <input class="form-control" id="devAirConInterval" name="devAirConInterval" type="text" value="60"/>
+             </div>
+            </div-->
+            <!--div class="form-group ">
+             <label class="control-label requiredField" for="devAirConDuration">
+              Duration [Minutes]
+              <span class="asteriskField">*</span>
+             </label>
+             <div class="input-group">
+              <div class="input-group-addon">
+               <i class="fa fa-clock-o"></i>
+              </div>
+              <input class="form-control" id="devAirConDuration" name="devAirConDuration" type="text" value="60"/>
+             </div>
+            </div-->
+            <div class="form-group ">
+              <label class="control-label requiredField" for="devAirConTemperature">
+                温度
+                <span class="asteriskField">*</span>
+              </label>
+              <select class="select form-control" id="devAirConTemperature" name="devAirConTemperature"
+                      ng-model="vm.devAirConTemperature">
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+                <option value="24">24</option>
+                <option value="25">25</option>
+                <option value="26">26</option>
+                <option value="27">27</option>
+                <option value="28">28</option>
+                <option value="29">29</option>
+                <option value="30">30</option>
+              </select>
+            </div>
+            <div class="form-group ">
+              <label class="control-label requiredField" for="uniqueID">
+                Unique ID
+                <span class="asteriskField">*</span>
+              </label>
+              <div class="input-group">
+                <div class="input-group-addon">
+                  <i class="fa fa-magnet"></i>
+                </div>
+                <input class="form-control" id="uniqueID" name="uniqueID" type="text" ng-model="vm.devUID"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="form-group">
+                <button class="btn btn-success btn-lg" name="submit" type="button"
+                        ng-click="vm.sendDevAirConCommand()">
+                  配置空调
+                </button>
+              </div>
+              <div class="form-group">
+                <button class="btn btn-success btn-lg" name="submit" type="button"
+                        ng-click="vm.sendDevOpenDoorCommand()">
+                  开盒门
+                </button>
+              </div>
+              <div class="form-group">
+                <button class="btn btn-success btn-lg" name="submit" type="button"
+                        ng-click="vm.sendDevOpenDeviceBoxCommand()">
+                  开设备箱
+                </button>
+                <button class="btn btn-success btn-lg" name="submit" type="button"
+                        ng-click="vm.sendDevCloseDoorCommand()">
+                  关设备箱
+                </button>
+              </div>
+            </div>
+            <div class="col-lg-12 col-sm-12 col-xs-12 alert alert-success" ng-show="successMessagebool ">
+              <strong>{{successMessage }}</strong>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
