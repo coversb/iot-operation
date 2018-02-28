@@ -5,11 +5,10 @@
     .module('devops')
     .controller('DevopsController', DevopsController);
 
-  DevopsController.$inject = ['$scope', '$state', '$http', 'Authentication'];
+  DevopsController.$inject = ['$scope', '$state', '$http', 'Authentication', 'DevopsSettings'];
 
-  function DevopsController($scope, $state, $http, Authentication) {
+  function DevopsController($scope, $state, $http, Authentication, DevopsSettings) {
 
-    var backendURL = 'http://integration-iot.gongyuanhezi.cn';
     var vm = this;
 
     vm.sendDevAirConCommand = sendDevAirConCommand;
@@ -39,7 +38,7 @@
           'Content-Type': 'application/json'
         }
       };
-      $http.post(backendURL + apiURL, data, config)
+      $http.post(DevopsSettings.backboneURL + apiURL, data, config)
         .success(function (data, status, header, config) {
           console.log('success');
         })
@@ -64,7 +63,6 @@
     }
 
     function sendDevAirConCommand() {
-      var apiURL = '/gui/sendAirconConfigCommand';
       var devAirMode = assembleDevAirConMode(vm.devAirConPwrMode, vm.devAirConWorkMode, vm.devAirConWindMode);
       var cmdObj = {};
       cmdObj.uniqueId = vm.devUID;
@@ -78,11 +76,10 @@
       };
       console.log('sendDevAirConCommand ' + JSON.stringify(cmdObj));
 
-      sendCommandToBackend(cmdObj, apiURL);
+      sendCommandToBackend(cmdObj, DevopsSettings.airConditionerConAPI);
     }
 
     function sendDevOpenDoorCommand() {
-      var apiURL = '/gui/sendRTOCommand';
       var cmdObj = {};
       cmdObj.uniqueId = vm.devUID;
       cmdObj.messageType = 0x01;
@@ -93,11 +90,10 @@
       };
       console.log('sendDevOpenDoorCommand ' + JSON.stringify(cmdObj));
 
-      sendCommandToBackend(cmdObj, apiURL);
+      sendCommandToBackend(cmdObj, DevopsSettings.rtoConAPI);
     }
 
     function sendDevOpenDeviceBoxCommand() {
-      var apiURL = '/gui/sendRTOCommand';
       var cmdObj = {};
       cmdObj.uniqueId = vm.devUID;
       cmdObj.messageType = 0x01;
@@ -108,11 +104,10 @@
       };
       console.log('sendDevOpenDeviceBoxCommand ' + JSON.stringify(cmdObj));
 
-      sendCommandToBackend(cmdObj, apiURL);
+      sendCommandToBackend(cmdObj, DevopsSettings.rtoConAPI);
     }
 
     function sendDevCloseDoorCommand() {
-      var apiURL = '/gui/sendRTOCommand';
       var cmdObj = {};
       cmdObj.uniqueId = vm.devUID;
       cmdObj.messageType = 0x01;
@@ -123,7 +118,7 @@
       };
       console.log('sendDevCloseDoorCommand ' + JSON.stringify(cmdObj));
 
-      sendCommandToBackend(cmdObj, apiURL);
+      sendCommandToBackend(cmdObj, DevopsSettings.rtoConAPI);
     }
 
   }
