@@ -8,9 +8,8 @@
   DevopsController.$inject = ['$scope', '$state', '$http', 'Authentication'];
 
   function DevopsController($scope, $state, $http, Authentication) {
+
     var backendURL = 'http://integration-iot.gongyuanhezi.cn';
-    // var cmdUrl = 'http://integration-iot.gongyuanhezi.cn/parkbox/gui/sendCommand';
-    // var cmdUrl = 'http://118.25.115.55/parkbox/gui/sendCommand';
     var vm = this;
 
     vm.sendDevAirConCommand = sendDevAirConCommand;
@@ -37,7 +36,7 @@
     function sendCommandToBackend(data, apiURL) {
       var config = {
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
+          'Content-Type': 'application/json'
         }
       };
       $http.post(backendURL + apiURL, data, config)
