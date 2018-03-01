@@ -10,7 +10,8 @@ module.exports = {
         'public/lib/bootstrap/dist/css/bootstrap.css',
         'public/lib/bootstrap/dist/css/bootstrap-theme.css',
         'public/lib/angular-ui-notification/dist/angular-ui-notification.css',
-        'public/lib/bootstrap/dist/css/bootstrap-table.css',
+        // bootstrap-table
+        'public/lib/bootstrap/dist/bootstrap-table.min.css',
         // endbower
       ],
       js: [
@@ -29,8 +30,9 @@ module.exports = {
         'public/lib/jquery/dist/jquery.js',
         // bootstrap
         'public/lib/bootstrap/dist/js/bootstrap.js',
-        'public/lib/bootstrap/dist/js/bootstrap-table.js',
-        'public/lib/bootstrap/dist/js/bootstrap-table-zh-CN.js',
+        // bootstrap-table
+        'public/lib/bootstrap-table/dist/js/bootstrap-table.min.js',
+        'public/lib/bootstrap-table/dist/js/bootstrap-table-locale-all.min.js',
         // endbower
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
