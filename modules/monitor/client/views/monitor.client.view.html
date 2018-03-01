@@ -1,0 +1,192 @@
+<!-- The chat view -->
+<section class="container">
+  <div class="page-header">
+    <h2>场馆监控</h2>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="form-group form">
+        <input class="form-control" type="text" name="searchData" id="searchData" placeholder="请输入盒子名称"
+               ng-model="vm.searchData"/>
+      </div>
+      <div id="butn" class=" form-group form" role="group">
+        <input class="btn btn-default" ng-click="vm.searchByName()" type="submit" value="搜索"/>
+        <input class="btn btn-default" ng-click="vm.resetList()" type="submit" value="重置"/>
+      </div>
+      <div class="col-xs-12 tableMargin">
+        <table class="table table-hover table-striped" id="boxTable"></table>
+        <ul class="pagination"></ul>
+      </div>
+    </div>
+
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="boxDetailDialog" tabindex="-1" role="dialog" aria-labelledby="boxDetailDialogLabe"
+         aria-hidden="true">
+      <div class="modal-dialog" style="max-width: 1200px;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="boxDetailDialogLabe">{{vm.selectedBox.base.name}}</h4>
+            <div class=" form-group form">
+              <button class="refreshModal" type="button" ng-click="vm.updateBoxDetail()">刷新</button>
+            </div>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <ul class="col-lg-12 col-xs-12">
+                <li>UID: <span ng-bind="vm.selectedBox.base.uniqueId"></span></li>
+                <li>场馆: <span ng-bind="vm.selectedBox.base.name"></span></li>
+              </ul>
+
+              <ul class="col-lg-6 col-xs-12">
+                <li>网络状态: <span id="net" ng-bind="vm.selectedBox.detail.networkStatus"></span></li>
+                <li>最近一次重新联网时间: <span ng-bind="vm.selectedBox.detail.reconnectUpdateDate"></span></li>
+                <li>最近一次断网时间: <span ng-bind="vm.selectedBox.detail.disconnectUpdateDate"></span></li>
+                <li>网络信号强度: <span ng-bind="vm.selectedBox.detail.networkSignalStrength"></span></li>
+                <li>网络信号质量: <span ng-bind="vm.selectedBox.detail.networkSignalQuality"></span></li>
+                <li>网络信号值更新时间: <span ng-bind="vm.selectedBox.detail.networkSignalUpdateDate"></span></li>
+              </ul>
+              <ul class="col-lg-6 col-xs-12">
+                <li>通电状态: <span id="power" ng-bind="vm.selectedBox.detail.powerStatus"></span></li>
+                <li>最近一次市电报警开始时间:<span ng-bind="vm.selectedBox.detail.powerAlarmStartDate"></span></li>
+                <li>最近一次市电报警结束时间:<span ng-bind="vm.selectedBox.detail.powerAlarmEndDate"></span></li>
+                <li>最近一次嵌入式系统启动时间: <span ng-bind="vm.selectedBox.detail.bootDate"></span></li>
+                <li>最近一次嵌入式系统启动原因: <span ng-bind="vm.selectedBox.detail.bootReason"></span></li>
+              </ul>
+              <ul class="col-lg-6 col-xs-12">
+                <li>烟雾状态: <span id="smoke" ng-bind="vm.selectedBox.detail.smokeStatus"></span></li>
+                <li>最近一次烟雾报警开始时间: <span ng-bind="vm.selectedBox.detail.smokeAlarmStartDate"></span></li>
+                <li>最近一次烟雾报警结束时间: <span ng-bind="vm.selectedBox.detail.smokeAlarmTimeEndDate"></span></li>
+                <li>门禁状态: <span id="door" ng-bind="vm.selectedBox.detail.doorStatus"></span></li>
+                <li>最近门禁报警开始时间: <span ng-bind="vm.selectedBox.detail.doorAlarmStartDate"></span></li>
+                <li>最近门禁报警结束时间: <span ng-bind="vm.selectedBox.detail.doorAlarmTimeEndDate"></span></li>
+              </ul>
+              <ul class="col-lg-6 col-xs-12">
+                <li>最近一次空调开关状态: <span id="air" ng-bind="vm.selectedBox.detail.airConditionStatus"></span></li>
+                <li>最近一次空调开关时间: <span ng-bind="vm.selectedBox.detail.airConditionEventUpdateDate"></span></li>
+                <li>空调模式: <span ng-bind="vm.selectedBox.detail.airConditionMode"></span></li>
+                <li>空调温度: <span ng-bind="vm.selectedBox.detail.airConditionTemperature"></span></li>
+                <li>风量模式: <span ng-bind="vm.selectedBox.detail.airConditionWind"></span></li>
+                <li>空调设置更新时间: <span ng-bind="vm.selectedBox.detail.airConditionControlUpdateDate"></span></li>
+              </ul>
+              <ul class="col-lg-6 col-xs-12">
+                <li>硬件型号: <span ng-bind="vm.selectedBox.base.deviceType"></span></li>
+                <li>bootloader版本: <span ng-bind="vm.selectedBox.base.bootloaderVerison"></span></li>
+                <li>硬件版本: <span ng-bind="vm.selectedBox.base.hardwareVersion"></span></li>
+                <li>固件版本: <span ng-bind="vm.selectedBox.base.softwareVersion"></span></li>
+                <li>最近OTA开始升级时间: <span ng-bind="vm.selectedBox.base.softwareUpdateStart"></span></li>
+                <li>最近OTA结束升级时间: <span ng-bind="vm.selectedBox.base.softwareUpdateEnd"></span></li>
+              </ul>
+
+              <ul class="col-lg-6 col-xs-12">
+                <li>经度: <span ng-bind="vm.selectedBox.base.latitude"></span></li>
+                <li>纬度: <span ng-bind="vm.selectedBox.base.longitude"></span></li>
+                <li>经纬度更新时间: <span ng-bind="vm.selectedBox.base.locationUpdateDate"></span></li>
+                <li>M26 IMEI编号: <span ng-bind="vm.selectedBox.base.imei"></span></li>
+                <li>SIM－CARD CCID编号: <span ng-bind="vm.selectedBox.base.iccid"></span></li>
+                <li>运营商: <span ng-bind="vm.selectedBox.base.operator"></span></li>
+
+              </ul>
+              <ul class="col-lg-6 col-xs-12">
+                <li>室内温度: <span ng-bind="vm.selectedBox.detail.temperature"></span></li>
+                <li>室内温度更新时间: <span ng-bind="vm.selectedBox.detail.temperatureUpdateDate"></span></li>
+                <li>室内湿度: <span ng-bind="vm.selectedBox.detail.humidity"></span></li>
+                <li>室内湿度更新时间: <span ng-bind="vm.selectedBox.detail.humidityUpdateDate"></span></li>
+                <li>PM2.5值: <span ng-bind="vm.selectedBox.detail.pm25"></span></li>
+                <li>室内PM2.5更新时间: <span ng-bind="vm.selectedBox.detail.pm25UpdateDate"></span></li>
+              </ul>
+
+
+              <ul class="col-lg-6 col-xs-12">
+                <li>设备箱状态: <span id="deviceDoor" ng-bind="vm.selectedBox.detail.deviceDoorStatus"></span></li>
+                <li>设备箱状态更新时间: <span ng-bind="vm.selectedBox.detail.deviceDoorStatusUpdateDate"></span></li>
+                <li>最近一次开门事件触发: <span ng-bind="vm.selectedBox.detail.doorOpenMode"></span></li>
+                <li>最后一次用户输入的密码: <span ng-bind="vm.selectedBox.detail.doorPassword"></span></li>
+                <li>最后一次用户输入密码的时间: <span ng-bind="vm.selectedBox.detail.doorPasswordUpdateDate"></span></li>
+              </ul>
+              <ul class="col-lg-6 col-xs-12">
+                <li>总人数: <span ng-bind="vm.selectedBox.detail.personTotal"></span></li>
+                <li>进出人数: <span ng-bind="vm.selectedBox.detail.personNumber"></span></li>
+                <li>检测类型: <span ng-bind="vm.selectedBox.detail.personType"></span></li>
+                <li>检测方法: <span ng-bind="vm.selectedBox.detail.personMethod"></span></li>
+                <li>检测位置: <span ng-bind="vm.selectedBox.detail.personPosition"></span></li>
+                <li>最后一次时间: <span ng-bind="vm.selectedBox.detail.personUpdateDate"></span></li>
+              </ul>
+              <ul class="col-lg-6 col-xs-12">
+                <li>OutputState: <span ng-bind="vm.selectedBox.detail.outputState"></span></li>
+              </ul>
+              <ul class="col-lg-6 col-xs-12">
+                <li>InputState: <span ng-bind="vm.selectedBox.detail.inputState"></span></li>
+              </ul>
+
+            </div>
+            <div class="table-responsive" class="col-xs-12 col-md-12">
+              <H4>继电器输出</H4>
+              <li>继电器输出更新时间: <span ng-bind="vm.selectedBox.detail.input1StatusUpdateDate"></span></li>
+              <table class="table table-hover table-bordered">
+                <thead>
+                <tr>
+                  <th>输出</th>
+                  <th>0</th>
+                  <th>1</th>
+                  <th>2</th>
+                  <th>3</th>
+                  <th>4</th>
+                  <th>5</th>
+                  <th>空调1</th>
+                  <th>空调2</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>状态</td>
+                  <td><span ng-bind="vm.selectedBox.detail.input1Status">0</span></td>
+                  <td><span ng-bind="vm.selectedBox.detail.input2Status">0</span></td>
+                  <td><span ng-bind="vm.selectedBox.detail.input3Status">0</span></td>
+                  <td><span ng-bind="vm.selectedBox.detail.input4Status">0</span></td>
+                  <td><span ng-bind="vm.selectedBox.detail.input5Status">0</span></td>
+                  <td><span ng-bind="vm.selectedBox.detail.input6Status"></span></td>
+                  <td><span ng-bind="vm.selectedBox.detail.input7Status"></span></td>
+                  <td><span ng-bind="vm.selectedBox.detail.input8Status"></span></td>
+                </tr>
+                </tbody>
+                <thead>
+                <tr>
+                  <th>输出</th>
+                  <th>地插1</th>
+                  <th>地插2</th>
+                  <th>照明</th>
+                  <th>电视</th>
+                  <th>排风/新风切换</th>
+                  <th>售货机</th>
+                  <th>应急照明</th>
+                  <th>15</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>状态</td>
+                  <td><span ng-bind="vm.selectedBox.detail.input9Status"></span></td>
+                  <td><span ng-bind="vm.selectedBox.detail.input10Status"></span></td>
+                  <td><span ng-bind="vm.selectedBox.detail.input11Status"></span></td>
+                  <td><span ng-bind="vm.selectedBox.detail.input12Status"></span></td>
+                  <td><span ng-bind="vm.selectedBox.detail.input13Status"></span></td>
+                  <td><span ng-bind="vm.selectedBox.detail.input14Status"></span></td>
+                  <td><span ng-bind="vm.selectedBox.detail.input15Status"></span></td>
+                  <td><span ng-bind="vm.selectedBox.detail.input16Status"></span></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal -->
+  </div>
+
+</section>
