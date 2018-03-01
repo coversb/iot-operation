@@ -11,7 +11,7 @@ module.exports = {
         'public/lib/bootstrap/dist/css/bootstrap-theme.css',
         'public/lib/angular-ui-notification/dist/angular-ui-notification.css',
         // bootstrap-table
-        'public/lib/bootstrap/dist/bootstrap-table.min.css',
+        'public/lib/bootstrap/dist/bootstrap-table.min.css'
         // endbower
       ],
       js: [
@@ -31,8 +31,8 @@ module.exports = {
         // bootstrap
         'public/lib/bootstrap/dist/js/bootstrap.js',
         // bootstrap-table
-        'public/lib/bootstrap-table/dist/js/bootstrap-table.min.js',
-        'public/lib/bootstrap-table/dist/js/bootstrap-table-locale-all.min.js',
+        'public/lib/bootstrap-table/dist/bootstrap-table.min.js',
+        'public/lib/bootstrap-table/dist/bootstrap-table-locale-all.min.js'
         // endbower
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
