@@ -22,7 +22,8 @@
       if (!Authentication.user) {
         $state.go('home');
       }
-
+      // switch bootstrap-table'locales to zh-CN
+      $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['zh-CN']);
       loadBoxList();
     }
 
