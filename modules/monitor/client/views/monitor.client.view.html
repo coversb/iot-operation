@@ -6,15 +6,15 @@
 
   <div class="container-fluid">
     <div class="row">
-      <div class="form-group form">
+      <div class="input-group">
         <input class="form-control" type="text" name="searchData" id="searchData" placeholder="请输入盒子名称"
                ng-model="vm.searchData"/>
-      </div>
-      <div id="butn" class=" form-group form" role="group">
-        <input class="btn btn-default" ng-click="vm.searchByName()" type="submit" value="搜索"/>
-        <input class="btn btn-default" ng-click="vm.resetList()" type="submit" value="重置"/>
-      </div>
-      <div class="col-xs-12 tableMargin">
+        <span class="input-group-btn">
+          <button class="btn btn-default" ng-click="vm.searchByName()">搜索</button>
+        </span>
+      </div><!-- /input-group -->
+
+      <div class="tableMargin">
         <table class="table table-hover table-striped" id="boxTable"></table>
         <ul class="pagination"></ul>
       </div>
@@ -23,13 +23,18 @@
     <!-- 模态框（Modal） -->
     <div class="modal fade" id="boxDetailDialog" tabindex="-1" role="dialog" aria-labelledby="boxDetailDialogLabe"
          aria-hidden="true">
-      <div class="modal-dialog" style="max-width: 1200px;">
+      <div class="modal-dialog" style="max-width: 2300px;">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title" id="boxDetailDialogLabe">{{vm.selectedBox.base.name}}</h4>
-            <div class=" form-group form">
-              <button class="refreshModal" type="button" ng-click="vm.updateBoxDetail()">刷新</button>
+            <div class="btn-group btn-group-sm" style="float:right">
+              <button type="button" class="btn btn-success" aria-hidden="true" ng-click="vm.updateBoxDetail()">
+                刷新
+              </button>
+              <button type="button" class="btn btn-danger" aria-hidden="true" data-dismiss="modal">
+                关闭
+              </button>
             </div>
+            <h4 class="modal-title" id="boxDetailDialogLabe">{{vm.selectedBox.base.name}}</h4>
           </div>
           <div class="modal-body">
             <div class="row">
@@ -77,15 +82,13 @@
                 <li>最近OTA开始升级时间: <span ng-bind="vm.selectedBox.base.softwareUpdateStart"></span></li>
                 <li>最近OTA结束升级时间: <span ng-bind="vm.selectedBox.base.softwareUpdateEnd"></span></li>
               </ul>
-
               <ul class="col-lg-6 col-xs-12">
                 <li>经度: <span ng-bind="vm.selectedBox.base.latitude"></span></li>
                 <li>纬度: <span ng-bind="vm.selectedBox.base.longitude"></span></li>
                 <li>经纬度更新时间: <span ng-bind="vm.selectedBox.base.locationUpdateDate"></span></li>
-                <li>M26 IMEI编号: <span ng-bind="vm.selectedBox.base.imei"></span></li>
-                <li>SIM－CARD CCID编号: <span ng-bind="vm.selectedBox.base.iccid"></span></li>
+                <li>IMEI: <span ng-bind="vm.selectedBox.base.imei"></span></li>
+                <li>SIM卡号: <span ng-bind="vm.selectedBox.base.iccid"></span></li>
                 <li>运营商: <span ng-bind="vm.selectedBox.base.operator"></span></li>
-
               </ul>
               <ul class="col-lg-6 col-xs-12">
                 <li>室内温度: <span ng-bind="vm.selectedBox.detail.temperature"></span></li>
@@ -95,8 +98,6 @@
                 <li>PM2.5值: <span ng-bind="vm.selectedBox.detail.pm25"></span></li>
                 <li>室内PM2.5更新时间: <span ng-bind="vm.selectedBox.detail.pm25UpdateDate"></span></li>
               </ul>
-
-
               <ul class="col-lg-6 col-xs-12">
                 <li>设备箱状态: <span id="deviceDoor" ng-bind="vm.selectedBox.detail.deviceDoorStatus"></span></li>
                 <li>设备箱状态更新时间: <span ng-bind="vm.selectedBox.detail.deviceDoorStatusUpdateDate"></span></li>
@@ -118,7 +119,6 @@
               <ul class="col-lg-6 col-xs-12">
                 <li>InputState: <span ng-bind="vm.selectedBox.detail.inputState"></span></li>
               </ul>
-
             </div>
             <div class="table-responsive" class="col-xs-12 col-md-12">
               <H4>继电器输出</H4>
@@ -180,13 +180,9 @@
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-        </div>
       </div>
       <!-- /.modal-content -->
     </div>
     <!-- /.modal -->
   </div>
-
 </section>

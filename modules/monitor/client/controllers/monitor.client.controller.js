@@ -12,7 +12,6 @@
     var searchData = '';
     var vm = this;
 
-    vm.resetList = resetList;
     vm.searchByName = searchByName;
     vm.updateBoxDetail = updateBoxDetail;
 
@@ -31,13 +30,7 @@
     function searchByName() {
       searchData = vm.searchData;
       $('#boxTable').bootstrapTable('refresh', {});
-    }
-
-    // reset button
-    function resetList() {
       vm.searchData = searchData = '';
-      $('#boxTable').bootstrapTable('destroy');
-      loadBoxList();
     }
 
     function updateBoxDetail() {
@@ -52,11 +45,15 @@
         url: DevopsSettings.backboneURL + DevopsSettings.boxListAPI,
         striped: true,
         pagination: true, // 是否显示分页
-        pageList: [10], // 可供选择的每页的行数（*）
+        pageList: [10, 20], // 可供选择的每页的行数（*）
         singleSelect: false,
         pageSize: 10, // 每页的记录行数
         pageNumber: 1,  // 初始化加载第一页，默认第一页,并记录
         sidePagination: 'server', // 服务端请求
+        cache: false,
+        showToggle: true,
+        showRefresh: true,
+        clickToSelect: true,
         queryParams: function (params) {  // 配置参数
           var pageNumber = 1;
           if (params.offset !== 0 && params.limit !== 0) {
@@ -75,13 +72,15 @@
           // console.log(res)
           if (res.code === 1) {
             alert('请求设备信息失败！');
-            resetList();
           } else if (res.code === 0) {
             return {
               'total': res.count,
               'rows': res.data
             };
           }
+        },
+        onClickRow: function (row, $element) {
+          boxDetail(row.base.uniqueId);
         },
         // table headers
         columns: [
@@ -99,12 +98,12 @@
           },
           {
             field: 'detail.powerStatus',
-            title: '通电状态',
+            title: '通电',
             valign: 'middle',
             align: 'center',
             formatter: function (value, row) {
               var pwrStatDis = '<span style="color:green">' + '有市电' + '</span>';
-              if (row.detail.powerStatus === 0) {
+              if (value === 0) {
                 pwrStatDis = '<span style="color:red">' + '无市电' + '</span>';
               }
               return pwrStatDis;
@@ -112,66 +111,124 @@
           },
           {
             field: 'detail.networkStatus',
-            title: '网络状态',
+            title: '网络',
             valign: 'middle',
             align: 'center',
             formatter: function (value, row) {
-              var netStatDis = '<span style="color:green">' + row.detail.networkStatus + '</span>';
-              if (row.detail.networkStatus === '断网') {
-                netStatDis = '<span style="color:red">' + row.detail.networkStatus + '</span>';
+              var netStatDis = '<span style="color:green">' + value + '</span>';
+              if (value === '断网') {
+                netStatDis = '<span style="color:red">' + value + '</span>';
               }
               return netStatDis;
             }
           },
           {
-            field: 'detail.airConditionMode' + 'detail.airConditionTemperature' + 'detail.airConditionWind',
-            title: '空调设置',
-            valign: 'middle',
-            align: 'center'
-          },
-          {
             field: 'detail.smokeStatus',
-            title: '烟雾状态',
+            title: '烟雾',
             valign: 'middle',
             align: 'center',
             formatter: function (value, row) {
               var smokeStatDis = '<span style="color:green">' + '正常' + '</span>';
-              if (row.detail.smokeStatus === '有烟雾') {
-                smokeStatDis = '<span style="color:red">' + row.detail.smokeStatus + '</span>';
+              if (value === '有烟雾') {
+                smokeStatDis = '<span style="color:red">' + value + '</span>';
               }
               return smokeStatDis;
             }
           },
           {
-            field: 'detail.temperature',
-            title: '温度',
+            field: 'detail.doorStatus',
+            title: '门禁',
             valign: 'middle',
-            align: 'center'
+            align: 'center',
+            formatter: function (value, row) {
+              var doorStatDis = '<span style="color:green">门关着</span>';
+              if (value === '门开着') {
+                doorStatDis = '<span style="color:red">' + value + '</span>';
+              }
+              return doorStatDis;
+            }
           },
           {
-            field: 'detail.humidity',
-            title: '湿度',
+            field: 'detail.deviceDoorStatus',
+            title: '设备箱',
             valign: 'middle',
-            align: 'center'
+            align: 'center',
+            formatter: function (value, row) {
+              var devBoxDoorStatDis = '<span style="color:green">关着</span>';
+              if (value === 'Open') {
+                devBoxDoorStatDis = '<span style="color:red">开着</span>';
+              }
+              return devBoxDoorStatDis;
+            }
           },
           {
-            field: 'detail.pm25',
-            title: 'PM2.5',
+            field: 'detail.airConditionStatus',
+            title: '空调模式·风量·温度',
             valign: 'middle',
-            align: 'center'
+            align: 'center',
+            formatter: function (value, row) {
+              var pwrStat = '-';
+              var workStat = '-';
+              var windStat = '-';
+              var tempStat = '-';
+              if (row.detail.airConditionStatus === 'Close') {
+                pwrStat = '关';
+              } else if (row.detail.airConditionStatus === 'Open') {
+                pwrStat = '开';
+              } else if (row.detail.airConditionStatus === 'Interval') {
+                pwrStat = '间隔开';
+              }
+
+              if (row.detail.airConditionMode === 'Cold') {
+                workStat = '制冷';
+              } else if (row.detail.airConditionMode === 'Warm') {
+                workStat = '制热';
+              } else if (row.detail.airConditionMode === 'Auto') {
+                workStat = '自动';
+              } else if (row.detail.airConditionMode === 'Dehumidify') {
+                workStat = '抽湿';
+              }
+
+              if (row.detail.airConditionWind === 'High') {
+                windStat = '高风';
+              } else if (row.detail.airConditionWind === 'Medium') {
+                windStat = '中风';
+              } else if (row.detail.airConditionWind === 'Low') {
+                windStat = '低风';
+              } else if (row.detail.airConditionWind === 'Auto') {
+                windStat = '自动风';
+              }
+              tempStat = row.detail.airConditionTemperature;
+              return '<span>' + workStat + ' | ' + windStat + ' | ' + '</span>';
+            }
+          },
+          {
+            field: 'detail.reconnectUpdateDate',
+            title: '最近通讯时间',
+            valign: 'middle',
+            align: 'center',
+            formatter: function (value, row) {
+              var latestCommDis = '<span style="color:green">' + convertTimestampToDatetime(value) + '</span>';
+              var curTimestamp = (Date.parse(new Date()) / 1000);
+              // don't communicate with server more than 300 seconds
+              if (curTimestamp - value > 300) {
+                latestCommDis = '<span style="color:red">' + convertTimestampToDatetime(value) + '</span>';
+              }
+              return latestCommDis;
+            }
           },
           {
             title: '更多',
+            valign: 'middle',
+            align: 'center',
             formatter: function (value, row) {
-              return ['<button type="button"  id="boxDetail">详情</button>'];
+              return ['<button class="btn btn-default" id="boxDetail">详情</button>'];
             },
             events: window.operateEvents = {
               'click #boxDetail': function (e, value, row) {
                 boxDetail(row.base.uniqueId);
               }
-            },
-            valign: 'middle',
-            align: 'center'
+            }
           }
         ]
       });
