@@ -1,15 +1,57 @@
-.chat-message {
-  margin-top: 10px;
-  padding-top: 10px;
+body {
+	/*padding-top: 5rem;*/
+	padding-top: 75px;
 }
-.chat-message:not(:first-child) {
-  border-top: 1px solid #e7e7e7;
+
+li {
+	list-style: none;
+	color: #636c72;
+	/*display: inline;*/
 }
-.chat-message-details {
-  margin-left: 10px;
+
+li span {
+	color: black;
+	margin-left: 10px
 }
-.chat-profile-image {
-  border-radius: 50%;
-  height: 28px;
-  width: 28px;
+
+a {
+	text-decoration: none;
+}
+
+.modal-header .btn-group {
+	float: right;
+}
+
+.tableMargin {
+	flex: 0 0 100%;
+	max-width: 100%;
+}
+
+@media (min-width: 576px) {
+	.modal:before {
+		display: inline-block;
+		vertical-align: middle;
+		content: " ";
+		height: 10%;
+	}
+
+	#boxDetailDialog .modal-dialog {
+		max-width: 1000px;
+		width: 800px;
+	}
+
+	.table th, .table td {
+		font-size: 15px;
+	}
+}
+
+@media (min-height: 40em) {
+	.modal {
+		position: fixed;
+	}
+
+	.modal-body {
+		max-height: 35em; /* This should be less than the min-height in the media query. */
+		overflow-y: auto;
+	}
 }
