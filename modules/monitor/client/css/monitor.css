@@ -3,17 +3,6 @@ body {
 	padding-top: 75px;
 }
 
-li {
-	list-style: none;
-	color: #636c72;
-	/*display: inline;*/
-}
-
-li span {
-	color: black;
-	margin-left: 10px
-}
-
 a {
 	text-decoration: none;
 }
@@ -27,15 +16,25 @@ a {
 	max-width: 100%;
 }
 
+.modal li {
+	color: #636c72;
+	list-style: none;
+}
+
+.modal li span {
+	color: black;
+	margin-left: 10px
+}
+
 @media (min-width: 576px) {
 	.modal:before {
-		display: inline-block;
-		vertical-align: middle;
 		content: " ";
+		display: inline-block;
 		height: 10%;
+		vertical-align: middle;
 	}
 
-	#boxDetailDialog .modal-dialog {
+	.modal-dialog {
 		max-width: 1000px;
 		width: 800px;
 	}

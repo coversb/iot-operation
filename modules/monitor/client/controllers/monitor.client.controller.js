@@ -54,7 +54,7 @@
         cache: false,
         showToggle: true,
         showRefresh: true,
-        clickToSelect: true,
+        showColumns: true,
         queryParams: function (params) {  // 配置参数
           var pageNumber = 1;
           if (params.offset !== 0 && params.limit !== 0) {
@@ -237,6 +237,7 @@
 
     function boxDetail(uid) {
       getBoxDetail(uid);
+
       $('#boxDetailDialog').modal('show');
     }
 
@@ -259,6 +260,7 @@
 
           datetimeFormat();
           stateColorFormat();// 详情页颜色
+          detailTableFormat();
         })
         .error(function (e, status) {
           console.log('Error:' + e + ',' + status);
@@ -429,6 +431,180 @@
         setElementColor('#air', 'green');
       } else {
         setElementColor('#air', 'red');
+      }
+    }
+
+    function detailTableFormat() {
+      vm.selectedBoxDis = [];
+
+      detailInputStateFormat();
+      detailOutputStateFormat();
+    }
+
+    function detailInputStateFormat() {
+      if (undefined === vm.selectedBox.detail.inputState) {
+        return;
+      }
+
+      // input status display
+      var inputMask = parseInt(vm.selectedBox.detail.inputState, 16);
+      // power supply
+      if (checkMaskBit(inputMask, 1)) {
+        vm.selectedBoxDis.pwrSupply = '正常';
+        setElementColor('#detailTablePwrSupply', 'green');
+      } else {
+        vm.selectedBoxDis.pwrSupply = '断电';
+        setElementColor('#detailTablePwrSupply', 'red');
+      }
+
+      // device box loc
+      if (checkMaskBit(inputMask, 11)) {
+        vm.selectedBoxDis.devBoxLock = '关闭';
+        setElementColor('#detailTableDevBoxLock', 'green');
+      } else {
+        vm.selectedBoxDis.devBoxLock = '打开';
+        setElementColor('#detailTableDevBoxLock', 'red');
+      }
+
+      // smoke sensor 1
+      if (checkMaskBit(inputMask, 2)) {
+        vm.selectedBoxDis.smokeSensor1 = '正常';
+        setElementColor('#detailTableSmokeSensor1', 'green');
+      } else {
+        vm.selectedBoxDis.smokeSensor1 = '有烟雾';
+        setElementColor('#detailTableSmokeSensor1', 'red');
+      }
+
+      // smoke sensor 2
+      if (checkMaskBit(inputMask, 3)) {
+        vm.selectedBoxDis.smokeSensor2 = '正常';
+        setElementColor('#detailTableSmokeSensor2', 'green');
+      } else {
+        vm.selectedBoxDis.smokeSensor2 = '有烟雾';
+        setElementColor('#detailTableSmokeSensor2', 'red');
+      }
+
+      // people detection sensor 1
+      if (checkMaskBit(inputMask, 6)) {
+        vm.selectedBoxDis.irSensor1 = '无人';
+        setElementColor('#detailTableIrSensor1', 'green');
+      } else {
+        vm.selectedBoxDis.irSensor1 = '有人';
+        setElementColor('#detailTableIrSensor1', 'red');
+      }
+
+      // people detection sensor 2
+      if (checkMaskBit(inputMask, 7)) {
+        vm.selectedBoxDis.irSensor2 = '无人';
+        setElementColor('#detailTableIrSensor2', 'green');
+      } else {
+        vm.selectedBoxDis.irSensor2 = '有人';
+        setElementColor('#detailTableIrSensor2', 'red');
+      }
+    }
+
+    function detailOutputStateFormat() {
+      if (undefined === vm.selectedBox.detail.outputState) {
+        return;
+      }
+
+      // output status display
+      var outputMask = parseInt(vm.selectedBox.detail.outputState, 16);
+      // exhaust switch
+      if (checkMaskBit(outputMask, 4)) {
+        vm.selectedBoxDis.exhaust = '开';
+      } else {
+        vm.selectedBoxDis.exhaust = '关';
+      }
+      setOutputStateDisplay(vm.selectedBoxDis.exhaust, '#detailTableExhaust');
+
+      // fresh air switch
+      if (checkMaskBit(outputMask, 11)) {
+        vm.selectedBoxDis.freshAir = '开';
+      } else {
+        vm.selectedBoxDis.freshAir = '关';
+      }
+      setOutputStateDisplay(vm.selectedBoxDis.freshAir, '#detailTableFreshAir');
+
+      // air conditioner 1 switch
+      if (checkMaskBit(outputMask, 5)) {
+        vm.selectedBoxDis.airCon1 = '开';
+      } else {
+        vm.selectedBoxDis.airCon1 = '关';
+      }
+      setOutputStateDisplay(vm.selectedBoxDis.airCon1, '#detailTableAirCon1');
+
+      // air conditioner 2 switch
+      if (checkMaskBit(outputMask, 6)) {
+        vm.selectedBoxDis.airCon2 = '开';
+      } else {
+        vm.selectedBoxDis.airCon2 = '关';
+      }
+      setOutputStateDisplay(vm.selectedBoxDis.airCon2, '#detailTableAirCon2');
+
+      // ground plug 1 switch
+      if (checkMaskBit(outputMask, 7)) {
+        vm.selectedBoxDis.groundPlug1 = '开';
+      } else {
+        vm.selectedBoxDis.groundPlug1 = '关';
+      }
+      setOutputStateDisplay(vm.selectedBoxDis.groundPlug1, '#detailTableGroundPlug1');
+
+      // ground plug 2 switch
+      if (checkMaskBit(outputMask, 8)) {
+        vm.selectedBoxDis.groundPlug2 = '开';
+      } else {
+        vm.selectedBoxDis.groundPlug2 = '关';
+      }
+      setOutputStateDisplay(vm.selectedBoxDis.groundPlug2, '#detailTableGroundPlug2');
+
+      // vending machine
+      if (checkMaskBit(outputMask, 12)) {
+        vm.selectedBoxDis.vendingMachine = '开';
+      } else {
+        vm.selectedBoxDis.vendingMachine = '关';
+      }
+      setOutputStateDisplay(vm.selectedBoxDis.vendingMachine, '#detailTableVendingMachine');
+
+      // indoor TV
+      if (checkMaskBit(outputMask, 10)) {
+        vm.selectedBoxDis.indoorTv = '开';
+      } else {
+        vm.selectedBoxDis.indoorTv = '关';
+      }
+      setOutputStateDisplay(vm.selectedBoxDis.indoorTv, '#detailTableIndoorTv');
+
+      // indoor light
+      if (checkMaskBit(outputMask, 9)) {
+        vm.selectedBoxDis.indoorLight = '开';
+      } else {
+        vm.selectedBoxDis.indoorLight = '关';
+      }
+      setOutputStateDisplay(vm.selectedBoxDis.indoorLight, '#detailTableIndoorLight');
+
+      // emergency light
+      if (checkMaskBit(outputMask, 13)) {
+        vm.selectedBoxDis.emergencyLight = '开';
+      } else {
+        vm.selectedBoxDis.emergencyLight = '关';
+      }
+      setOutputStateDisplay(vm.selectedBoxDis.emergencyLight, '#detailTableEmergencyLight');
+    }
+
+    function setOutputStateDisplay(value, element) {
+      if (value === '开') {
+        setElementColor(element, 'green');
+      } else if (value === '关') {
+        setElementColor(element, 'red');
+      }
+    }
+
+    function checkMaskBit(mask, bit) {
+      var res = (mask & (1 << bit));
+      if (res === 0) {
+        return false;
+      } else {
+        return true;
       }
     }
 
