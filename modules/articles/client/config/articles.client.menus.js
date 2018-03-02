@@ -9,15 +9,16 @@
 
   function menuConfig(menuService) {
     menuService.addMenuItem('topbar', {
-      title: 'Articles',
+      title: '文档',
       state: 'articles',
       type: 'dropdown',
-      roles: ['*']
+      roles: ['*'],
+      position: 99
     });
 
     // Add the dropdown list item
     menuService.addSubMenuItem('topbar', 'articles', {
-      title: 'List Articles',
+      title: '帮助',
       state: 'articles.list',
       roles: ['*']
     });

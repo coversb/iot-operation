@@ -9,10 +9,11 @@
 
   function menuConfig(menuService) {
     menuService.addMenuItem('topbar', {
-      title: 'Admin',
+      title: '系统管理',
       state: 'admin',
       type: 'dropdown',
-      roles: ['admin']
+      roles: ['admin'],
+      position: 100
     });
   }
 }());

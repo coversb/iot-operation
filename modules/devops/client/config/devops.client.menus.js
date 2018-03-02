@@ -11,7 +11,8 @@
     // Set top bar menu items
     menuService.addMenuItem('topbar', {
       title: '运维工具',
-      state: 'devops'
+      state: 'devops',
+      position: 1
     });
   }
 }());
