@@ -3,11 +3,11 @@
 
   angular
     .module('devops.tools')
-    .controller('DevopsToolsController', DevopsController);
+    .controller('DevopsToolsController', DevopsToolsController);
 
-  DevopsController.$inject = ['$scope', '$state', '$http', 'Authentication', 'DevopsSettings'];
+  DevopsToolsController.$inject = ['$scope', '$state', '$http', 'Authentication', 'DevopsSettings'];
 
-  function DevopsController($scope, $state, $http, Authentication, DevopsSettings) {
+  function DevopsToolsController($scope, $state, $http, Authentication, DevopsSettings) {
 
     var vm = this;
 
