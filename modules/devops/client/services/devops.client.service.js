@@ -13,6 +13,7 @@
       // command API
       airConditionerConAPI: '/gui/sendAirconConfigCommand',
       rtoConAPI: '/gui/sendRTOCommand',
+      fotaAPI: '/gui/sendOTACommand',
       // device info API
       boxListAPI: '/venueStatus'
     };

@@ -24,5 +24,11 @@
       position: 0
     });
 
+    menuService.addSubMenuItem('topbar', 'devops', {
+      title: '协议命令',
+      state: 'devops.protcmd',
+      roles: ['admin'],
+      position: 99
+    });
   }
 }());

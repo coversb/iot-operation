@@ -22,6 +22,15 @@
         data: {
           roles: ['user', 'admin']
         }
+      })
+      .state('devops.protcmd', {
+        url: '/protcmd',
+        templateUrl: '/modules/devops/client/views/devops.protcmd.client.view.html',
+        controller: 'DevopsProtCmdController',
+        controllerAs: 'vm',
+        data: {
+          roles: ['admin']
+        }
       });
   }
 }());

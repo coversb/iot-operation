@@ -1,0 +1,283 @@
+<!-- The chat view -->
+<section class="container">
+  <div class="page-header">
+    <h1>协议命令</h1>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row col-md-6 col-sm-6 col-xs-12">
+      <div>
+        <h4>服务器连接配置</h4>
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#apcModal">入网配置</button>
+        <button type="button" class="btn btn-success btn-lg" ng-click="vm.showSERModal()">服务器连接配置</button>
+        <hr>
+      </div>
+      <div>
+        <h4>设备配置</h4>
+        <button type="button" class="btn btn-success btn-lg" ng-click="vm.showCFGModal()">全局配置</button>
+        <button type="button" class="btn btn-success btn-lg" ng-click="vm.showTMAModal()">时间调整</button>
+        <button type="button" class="btn btn-success btn-lg" ng-click="vm.showDogModal()">协议看门狗</button>
+        <button type="button" class="btn btn-success btn-lg" ng-click="vm.showACOModal()">空调控制</button>
+        <button type="button" class="btn btn-success btn-lg" ng-click="vm.showSEModal()">安全配置</button>
+        <button type="button" class="btn btn-success btn-lg" ng-click="vm.showOMCModal()">输出模式配置</button>
+        <hr>
+      </div>
+      <div>
+        <h4>告警设置</h4>
+        <button type="button" class="btn btn-success btn-lg" ng-click="vm.showDOAModal()">门禁告警</button>
+        <button type="button" class="btn btn-success btn-lg" ng-click="vm.showSMAModal()">烟雾告警</button>
+        <hr>
+      </div>
+      <div>
+        <h4>其他命令</h4>
+        <button type="button" class="btn btn-success btn-lg" ng-click="vm.showOUOModal()">订单下发</button>
+        <button type="button" class="btn btn-success btn-lg" ng-click="vm.showOUTModal()">终端OUTPUT控制</button>
+        <button type="button" class="btn btn-success btn-lg" ng-click="vm.showMUOModal()">多媒体操作命令</button>
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#rtoModal">实时操作命令</button>
+        <hr>
+      </div>
+      <div>
+        <h4>在线升级</h4>
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#fotaModal">空中下载升级命令
+        </button>
+        <hr>
+      </div>
+    </div>
+
+    <!-- APC Modal -->
+    <div class="modal fade" id="apcModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h4 class="modal-title">
+              入网配置(Access Point Configuration) [0x01 0x01]
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label for="apcModalAPN">APN</label>
+                <input class="form-control" id="apcModalAPN" name="apcModalAPN" type="text" ng-model="vm.apcModal.apn"/>
+              </div>
+              <div>
+                <label for="apcModalAPNUserName">APN User Name</label>
+                <input class="form-control" id="apcModalAPNUserName" name="apcModalAPNUserName" type="text"
+                       ng-model="vm.apcModal.apnUserName"/>
+              </div>
+              <div>
+                <label for="apcModalAPNPasswd">APN Password</label>
+                <input class="form-control" id="apcModalAPNPasswd" name="apcModalAPNPasswd" type="text"
+                       ng-model="vm.apcModal.apnPasswd"/>
+              </div>
+              <div>
+                <label for="apcModalMainDNS">Main DNS Server</label>
+                <input class="form-control" id="apcModalMainDNS" name="apcModalMainDNS" type="text"
+                       ng-model="vm.apcModal.mainDNS"/>
+              </div>
+              <div>
+                <label for="apcModalBackupDNS">Backup DNS Server</label>
+                <input class="form-control" id="apcModalBackupDNS" name="apcModalBackupDNS" type="text"
+                       ng-model="vm.apcModal.backupDNS"/>
+              </div>
+              <div>
+                <label for="apcModalGenData">Generated data</label>
+                <textarea class="form-control" rows="3" id="apcModalGenData" name="apcModalGenData"
+                          ng-model="vm.apcModal.genData"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-info" ng-click="vm.apcGenData()">
+              生成
+            </button>
+            <button type="button" class="btn btn-primary" ng-click="vm.apcCmdSend()">
+              发送
+            </button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+
+    <!-- RTO Modal -->
+    <div class="modal fade" id="rtoModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.rtoCmdSend()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h4 class="modal-title">
+              实时操作命令(Real Time Operation) [0x01 0x84]
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label for="rtoModalCommand">Command</label>
+                <input class="form-control" id="rtoModalCommand" name="rtoModalCommand" type="text" required="required"
+                       ng-model="vm.rtoModal.cmd"/>
+              </div>
+              <div>
+                <label for="rtoModalSubCommand">Sub Command</label>
+                <input class="form-control" id="rtoModalSubCommand" name="rtoModalSubCommand" type="text"
+                       required="required"
+                       ng-model="vm.rtoModal.subCmd"/>
+              </div>
+              <div>
+                <label for="rtoModalUID">UID</label>
+                <input class="form-control" id="rtoModalUID" name="rtoModalUID" type="text" required="required"
+                       ng-model="vm.rtoModal.uid"/>
+              </div>
+              <div>
+                <label for="rtoModalGenData">Generated data</label>
+                <textarea class="form-control" rows="3" id="rtoModalGenData" name="rtoModalGenData"
+                          ng-model="vm.rtoModal.genData"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-info" ng-click="vm.rtoGenData()">
+              生成
+            </button>
+            <button type="button submit" class="btn btn-primary">
+              发送
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+
+    <!-- FOTA Modal -->
+    <div class="modal fade" id="fotaModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.fotaCmdSend()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h4 class="modal-title">
+              空中下载升级命令(Firmware Over The Air) [0x01 0xF1]
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label for="fotaModalRetryTimes">Retry Times</label>
+                <input class="form-control" id="fotaModalRetryTimes" name="fotaModalRetryTimes" type="text"
+                       required="required"
+                       ng-model="vm.fotaModal.retry"/>
+              </div>
+              <div>
+                <label for="fotaModalTimeout">Download Timeout</label>
+                <input class="form-control" id="fotaModalTimeout" name="fotaModalTimeout" type="text"
+                       required="required"
+                       ng-model="vm.fotaModal.timeout"/>
+              </div>
+              <div>
+                <label for="fotaModalProtocol">Download Protocol</label>
+                <input class="form-control" id="fotaModalProtocol" name="fotaModalProtocol" type="text"
+                       required="required"
+                       ng-model="vm.fotaModal.protocol"/>
+              </div>
+              <div>
+                <label for="fotaModalURLLen">Server URL Length</label>
+                <input class="form-control" id="fotaModalURLLen" name="fotaModalURLLen" type="text"
+                       required="required" readonly
+                       ng-model="vm.fotaModal.urlLen"/>
+              </div>
+              <div>
+                <label for="fotaModalURL">Server URL</label>
+                <input class="form-control" id="fotaModalURL" name="fotaModalURL" type="text"
+                       required="required"
+                       ng-model="vm.fotaModal.url"
+                       ng-change="vm.fotaModalURLChange()"/>
+              </div>
+              <div>
+                <label for="fotaModalPort">Server Port</label>
+                <input class="form-control" id="fotaModalPort" name="fotaModalPort" type="text"
+                       required="required"
+                       ng-model="vm.fotaModal.port"/>
+              </div>
+              <div>
+                <label for="fotaModalUserNameLen">Server User Name Length</label>
+                <input class="form-control" id="fotaModalUserNameLen" name="fotaModalUserNameLen" type="text"
+                       required="required" readonly
+                       ng-model="vm.fotaModal.userNameLen"/>
+              </div>
+              <div>
+                <label for="fotaModalUserName">Server User Name</label>
+                <input class="form-control" id="fotaModalUserName" name="fotaModalUserName" type="text"
+                       required="required"
+                       ng-model="vm.fotaModal.userName"
+                       ng-change="vm.fotaModalUserNameChange()"/>
+              </div>
+              <div>
+                <label for="fotaModalUserPasswdLen">Server User Password Length</label>
+                <input class="form-control" id="fotaModalUserPasswdLen" name="fotaModalUserPasswdLen" type="text"
+                       required="required" readonly
+                       ng-model="vm.fotaModal.userPasswdLen"/>
+              </div>
+              <div>
+                <label for="fotaModalUserPasswd">Server User Password</label>
+                <input class="form-control" id="fotaModalUserPasswd" name="fotaModalUserPasswd" type="text"
+                       required="required"
+                       ng-model="vm.fotaModal.userPasswd"
+                       ng-change="vm.fotaModalUserPasswdChange()"/>
+              </div>
+              <div>
+                <label for="fotaModalMD5">MD5</label>
+                <input class="form-control" id="fotaModalMD5" name="fotaModalMD5" type="text"
+                       required="required"
+                       ng-model="vm.fotaModal.md5"/>
+              </div>
+              <div>
+                <label for="fotaModalKey">Key</label>
+                <input class="form-control" id="fotaModalKey" name="fotaModalKey" type="text"
+                       required="required"
+                       ng-model="vm.fotaModal.key"/>
+              </div>
+              <div>
+                <label for="fotaModalDwnAddr">Download Address</label>
+                <input class="form-control" id="fotaModalDwnAddr" name="fotaModalDwnAddr" type="text"
+                       required="required"
+                       ng-model="vm.fotaModal.dwnAddr"/>
+              </div>
+              <div>
+                <label for="fotaModalAppAddr">App Bootup Address</label>
+                <input class="form-control" id="fotaModalAppAddr" name="fotaModalAppAddr" type="text"
+                       required="required"
+                       ng-model="vm.fotaModal.appAddr"/>
+              </div>
+              <div>
+                <label for="fotaModalUID">UID</label>
+                <input class="form-control" id="fotaModalUID" name="fotaModalUID" type="text" required="required"
+                       ng-model="vm.fotaModal.uid"/>
+              </div>
+              <div>
+                <label for="fotaModalGenData">Generated data</label>
+                <textarea class="form-control" rows="3" id="fotaModalGenData" name="fotaModalGenData"
+                          ng-model="vm.fotaModal.genData"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-info" ng-click="vm.fotaGenData()">
+              生成
+            </button>
+            <button type="button submit" class="btn btn-primary">
+              发送
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+
+  </div>
+
+</section>
