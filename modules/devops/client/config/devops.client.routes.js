@@ -10,9 +10,14 @@
   function routeConfig($stateProvider) {
     $stateProvider
       .state('devops', {
+        abstract: true,
         url: '/devops',
-        templateUrl: '/modules/devops/client/views/devops.client.view.html',
-        controller: 'DevopsController',
+        template: '<ui-view/>'
+      })
+      .state('devops.tools', {
+        url: '/tools',
+        templateUrl: '/modules/devops/client/views/devops.tools.client.view.html',
+        controller: 'DevopsToolsController',
         controllerAs: 'vm',
         data: {
           roles: ['user', 'admin']

@@ -2,8 +2,8 @@
   'use strict';
 
   angular
-    .module('devops')
-    .controller('DevopsController', DevopsController);
+    .module('devops.tools')
+    .controller('DevopsToolsController', DevopsController);
 
   DevopsController.$inject = ['$scope', '$state', '$http', 'Authentication', 'DevopsSettings'];
 

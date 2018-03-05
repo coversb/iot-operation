@@ -10,10 +10,19 @@
   function menuConfig(menuService) {
     // Set top bar menu items
     menuService.addMenuItem('topbar', {
-      title: '运维工具',
+      title: '场馆控制',
       state: 'devops',
+      type: 'dropdown',
       roles: ['user', 'admin'],
       position: 1
     });
+
+    menuService.addSubMenuItem('topbar', 'devops', {
+      title: '运维工具',
+      state: 'devops.tools',
+      roles: ['user', 'admin'],
+      position: 0
+    });
+
   }
 }());
