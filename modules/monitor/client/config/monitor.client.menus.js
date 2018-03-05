@@ -12,6 +12,7 @@
     menuService.addMenuItem('topbar', {
       title: '场馆监控',
       state: 'monitor',
+      roles: ['user', 'admin'],
       position: 0
     });
   }

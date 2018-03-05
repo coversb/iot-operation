@@ -12,7 +12,7 @@
       title: '文档',
       state: 'articles',
       type: 'dropdown',
-      roles: ['*'],
+      roles: ['user', 'admin'],
       position: 99
     });
 

@@ -12,6 +12,7 @@
     menuService.addMenuItem('topbar', {
       title: '运维工具',
       state: 'devops',
+      roles: ['user', 'admin'],
       position: 1
     });
   }
