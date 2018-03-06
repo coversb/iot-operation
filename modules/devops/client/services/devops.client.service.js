@@ -11,6 +11,8 @@
     var settings = {
       backboneURL: 'http://integration-iot.gongyuanhezi.cn',
       // command API
+      apcConAPI: '/gui/sendAccessPointCommand',
+      serConAPI: '/gui/sendServerConfigCommand',
       airConditionerConAPI: '/gui/sendAirconConfigCommand',
       rtoConAPI: '/gui/sendRTOCommand',
       fotaAPI: '/gui/sendOTACommand',

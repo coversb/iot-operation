@@ -9,30 +9,30 @@
       <div>
         <h4>服务器连接配置</h4>
         <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#apcModal">入网配置</button>
-        <button type="button" class="btn btn-success btn-lg" ng-click="vm.showSERModal()">服务器连接配置</button>
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#serModal">服务器连接配置</button>
         <hr>
       </div>
       <div>
         <h4>设备配置</h4>
-        <button type="button" class="btn btn-success btn-lg" ng-click="vm.showCFGModal()">全局配置</button>
-        <button type="button" class="btn btn-success btn-lg" ng-click="vm.showTMAModal()">时间调整</button>
-        <button type="button" class="btn btn-success btn-lg" ng-click="vm.showDogModal()">协议看门狗</button>
-        <button type="button" class="btn btn-success btn-lg" ng-click="vm.showACOModal()">空调控制</button>
-        <button type="button" class="btn btn-success btn-lg" ng-click="vm.showSEModal()">安全配置</button>
-        <button type="button" class="btn btn-success btn-lg" ng-click="vm.showOMCModal()">输出模式配置</button>
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#cfgModal">全局配置</button>
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#tmaModal">时间调整</button>
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#dogModal">协议看门狗</button>
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#acoModal">空调控制</button>
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#secModal">安全配置</button>
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#omcModal">输出模式配置</button>
         <hr>
       </div>
       <div>
         <h4>告警设置</h4>
-        <button type="button" class="btn btn-success btn-lg" ng-click="vm.showDOAModal()">门禁告警</button>
-        <button type="button" class="btn btn-success btn-lg" ng-click="vm.showSMAModal()">烟雾告警</button>
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#doaModal">门禁告警</button>
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#smaModal">烟雾告警</button>
         <hr>
       </div>
       <div>
         <h4>其他命令</h4>
-        <button type="button" class="btn btn-success btn-lg" ng-click="vm.showOUOModal()">订单下发</button>
-        <button type="button" class="btn btn-success btn-lg" ng-click="vm.showOUTModal()">终端OUTPUT控制</button>
-        <button type="button" class="btn btn-success btn-lg" ng-click="vm.showMUOModal()">多媒体操作命令</button>
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#ouoModal">订单下发</button>
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#outModal">终端OUTPUT控制</button>
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#muoModal">多媒体操作命令</button>
         <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#rtoModal">实时操作命令</button>
         <hr>
       </div>
@@ -47,7 +47,7 @@
     <!-- APC Modal -->
     <div class="modal fade" id="apcModal" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog">
-        <div class="modal-content">
+        <form class="modal-content" ng-submit="vm.apcSendCmd()">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
               &times;
@@ -60,27 +60,39 @@
             <div>
               <div>
                 <label for="apcModalAPN">APN</label>
-                <input class="form-control" id="apcModalAPN" name="apcModalAPN" type="text" ng-model="vm.apcModal.apn"/>
+                <input class="form-control" id="apcModalAPN" name="apcModalAPN" type="text"
+                       required="required"
+                       ng-model="vm.apcModal.apn"/>
               </div>
               <div>
                 <label for="apcModalAPNUserName">APN User Name</label>
                 <input class="form-control" id="apcModalAPNUserName" name="apcModalAPNUserName" type="text"
+                       required="required"
                        ng-model="vm.apcModal.apnUserName"/>
               </div>
               <div>
-                <label for="apcModalAPNPasswd">APN Password</label>
-                <input class="form-control" id="apcModalAPNPasswd" name="apcModalAPNPasswd" type="text"
-                       ng-model="vm.apcModal.apnPasswd"/>
+                <label for="apcModalAPNPassword">APN Password</label>
+                <input class="form-control" id="apcModalAPNPassword" name="apcModalAPNPassword" type="text"
+                       required="required"
+                       ng-model="vm.apcModal.apnPassword"/>
               </div>
               <div>
                 <label for="apcModalMainDNS">Main DNS Server</label>
                 <input class="form-control" id="apcModalMainDNS" name="apcModalMainDNS" type="text"
+                       required="required"
                        ng-model="vm.apcModal.mainDNS"/>
               </div>
               <div>
                 <label for="apcModalBackupDNS">Backup DNS Server</label>
                 <input class="form-control" id="apcModalBackupDNS" name="apcModalBackupDNS" type="text"
+                       required="required"
                        ng-model="vm.apcModal.backupDNS"/>
+              </div>
+              <div>
+                <label for="apcModalUID">UID</label>
+                <input class="form-control" id="apcModalUID" name="apcModalUID" type="text"
+                       required="required"
+                       ng-model="vm.apcModal.uid"/>
               </div>
               <div>
                 <label for="apcModalGenData">Generated data</label>
@@ -94,18 +106,106 @@
             <button type="button" class="btn btn-info" ng-click="vm.apcGenData()">
               生成
             </button>
-            <button type="button" class="btn btn-primary" ng-click="vm.apcCmdSend()">
+            <button type="button submit" class="btn btn-primary">
               发送
             </button>
           </div>
-        </div><!-- /.modal-content -->
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+
+    <!-- SER Modal -->
+    <div class="modal fade" id="serModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.serSendCmd()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h4 class="modal-title">
+              服务器连接配置(Server Configuration) [0x01 0x02]
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label for="serModalMode">Report Mode</label>
+                <input class="form-control" id="serModalMode" name="serModalMode" type="text"
+                       required="required"
+                       ng-model="vm.serModal.mode"/>
+              </div>
+              <div>
+                <label for="serModalMainServer">Main Server Domain Name</label>
+                <input class="form-control" id="serModalMainServer" name="serModalMainServer" type="text"
+                       required="required"
+                       ng-model="vm.serModal.mainServer""/>
+              </div>
+              <div>
+                <label for="serModalMainPort">Main Server Port</label>
+                <input class="form-control" id="serModalMainPort" name="serModalMainPort" type="text"
+                       required="required"
+                       ng-model="vm.serModal.mainPort"/>
+              </div>
+              <div>
+                <label for="serModalBackupServer">Backup Server Domain Name</label>
+                <input class="form-control" id="serModalBackupServer" name="serModalBackupServer" type="text"
+                       required="required"
+                       ng-model="vm.serModal.backupServer"/>
+              </div>
+              <div>
+                <label for="serModalBackupPort">Backup Server Port</label>
+                <input class="form-control" id="serModalBackupPort" name="serModalBackupPort" type="text"
+                       required="required"
+                       ng-model="vm.serModal.backupPort"/>
+              </div>
+              <div>
+                <label for="serModalSMSGateway">SMS Gateway</label>
+                <input class="form-control" id="serModalSMSGateway" name="serModalSMSGateway" type="text"
+                       required="required"
+                       ng-model="vm.serModal.sms"/>
+              </div>
+              <div>
+                <label for="serModalHbpInterval">Heartbeat Interval</label>
+                <input class="form-control" id="serModalHbpInterval" name="serModalHbpInterval" type="text"
+                       required="required"
+                       ng-model="vm.serModal.hbpInterval"/>
+              </div>
+              <div>
+                <label for="serModalMaxRandomTime">Max Random Time</label>
+                <input class="form-control" id="serModalMaxRandomTime" name="serModalMaxRandomTime" type="text"
+                       required="required"
+                       ng-model="vm.serModal.maxRandomTime"/>
+              </div>
+              <div>
+                <label for="serModalUID">UID</label>
+                <input class="form-control" id="serModalUID" name="serModalUID" type="text"
+                       required="required"
+                       ng-model="vm.serModal.uid"/>
+              </div>
+              <div>
+                <label for="serModalGenData">Generated data</label>
+                <textarea class="form-control" rows="3" id="serModalGenData" name="serModalGenData"
+                          ng-model="vm.serModal.genData"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-info" ng-click="vm.serGenData()">
+              生成
+            </button>
+            <button type="button submit" class="btn btn-primary">
+              发送
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
       </div><!-- /.modal -->
     </div>
 
     <!-- RTO Modal -->
     <div class="modal fade" id="rtoModal" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog">
-        <form class="modal-content" ng-submit="vm.rtoCmdSend()">
+        <form class="modal-content" ng-submit="vm.rtoSendCmd()">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
               &times;
@@ -118,7 +218,8 @@
             <div>
               <div>
                 <label for="rtoModalCommand">Command</label>
-                <input class="form-control" id="rtoModalCommand" name="rtoModalCommand" type="text" required="required"
+                <input class="form-control" id="rtoModalCommand" name="rtoModalCommand" type="text"
+                       required="required"
                        ng-model="vm.rtoModal.cmd"/>
               </div>
               <div>
@@ -129,7 +230,8 @@
               </div>
               <div>
                 <label for="rtoModalUID">UID</label>
-                <input class="form-control" id="rtoModalUID" name="rtoModalUID" type="text" required="required"
+                <input class="form-control" id="rtoModalUID" name="rtoModalUID" type="text"
+                       required="required"
                        ng-model="vm.rtoModal.uid"/>
               </div>
               <div>
@@ -155,7 +257,7 @@
     <!-- FOTA Modal -->
     <div class="modal fade" id="fotaModal" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog">
-        <form class="modal-content" ng-submit="vm.fotaCmdSend()">
+        <form class="modal-content" ng-submit="vm.fotaSendCmd()">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
               &times;

@@ -11,14 +11,46 @@
 
     var vm = this;
 
+    /* apc modal init */
+    vm.apcModal = {
+      apn: '',
+      apnUserName: '',
+      apnPassword: '',
+      mainDNS: '',
+      backupDNS: '',
+      uid: '0000000000600000',
+      genData: ''
+    };
+    vm.apcGenData = apcGenData;
+    vm.apcSendCmd = apcSendCmd;
+
+    /* ser modal init */
+    vm.serModal = {
+      mode: '',
+      mainServer: '',
+      mainPort: '',
+      backupServer: '',
+      backupPort: '',
+      sms: '',
+      hbpInterval: '',
+      maxRandomTime: '',
+      uid: '0000000000600000',
+      genData: ''
+    };
+    vm.serGenData = serGenData;
+    vm.serSendCmd = serSendCmd;
+
+    /* rto modal init */
     vm.rtoModal = {
       cmd: '0',
       subCmd: '0',
-      uid: '0000000000600000'
+      uid: '0000000000600000',
+      genData: ''
     };
     vm.rtoGenData = rtoGenData;
-    vm.rtoCmdSend = rtoCmdSend;
+    vm.rtoSendCmd = rtoSendCmd;
 
+    /* fota modal init */
     vm.fotaModal = {
       retry: '1',
       timeout: '3',
@@ -34,13 +66,14 @@
       key: '0',
       dwnAddr: '0',
       appAddr: '0',
-      uid: '0000000000600000'
+      uid: '0000000000600000',
+      genData: ''
     };
     vm.fotaModalURLChange = fotaModalURLChange;
     vm.fotaModalUserNameChange = fotaModalUserNameChange;
     vm.fotaModalUserPasswdChange = fotaModalUserPasswdChange;
     vm.fotaGenData = fotaGenData;
-    vm.fotaCmdSend = fotaCmdSend;
+    vm.fotaSendCmd = fotaSendCmd;
 
     init();
 
@@ -66,7 +99,55 @@
         });
     }
 
-    // real time operation
+    // fill '0' before string
+    function assemblePadZero(str, n) {
+      var temp = '0000000000000000' + str;
+      return temp.substr(temp.length - n);
+    }
+
+    /* access point configuration */
+    function apcGenData() {
+    }
+
+    function apcSendCmd() {
+      var cmdObj = {};
+      cmdObj.uniqueId = vm.apcModal.uid;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0x01;
+      cmdObj.guiAccessPointConfigCommandRequest = {
+        'accessPointName': vm.apcModal.apn.trim(),
+        'aceessPointUserName': vm.apcModal.apnUserName.trim(),
+        'accessPointPassword': vm.apcModal.apnPassword.trim(),
+        'mainDNSServer': vm.apcModal.mainDNS.trim(),
+        'backupDNSServer': vm.apcModal.backupDNS.trim()
+      };
+      sendCommandToBackend(cmdObj, DevopsSettings.apcConAPI);
+    }
+
+    /* server configuration */
+    function serGenData() {
+
+    }
+
+    function serSendCmd() {
+      var cmdObj = {};
+      cmdObj.uniqueId = vm.serModal.uid;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0x02;
+      cmdObj.serverConfigCommandRequest = {
+        'reportMode': parseInt(vm.serModal.mode.trim(), 10),
+        'mainServerDomainName': vm.serModal.mainServer.trim(),
+        'mainServerPort': parseInt(vm.serModal.mainPort.trim(), 10),
+        'backupServerDomainName': vm.serModal.backupServer.trim(),
+        'backupServerPort': parseInt(vm.serModal.backupPort.trim(), 10),
+        'smsGateway': vm.serModal.sms.trim(),
+        'heartBeatInterval': parseInt(vm.serModal.hbpInterval.trim(), 10),
+        'maxRandomTime': parseInt(vm.serModal.maxRandomTime.trim(), 10)
+      };
+      sendCommandToBackend(cmdObj, DevopsSettings.serConAPI);
+    }
+
+    /* real time operation */
     function rtoGenData() {
       /*
       var param = {
@@ -78,7 +159,7 @@
       */
     }
 
-    function rtoCmdSend() {
+    function rtoSendCmd() {
       var cmdObj = {};
       cmdObj.uniqueId = vm.rtoModal.uid;
       cmdObj.messageType = 0x01;
@@ -87,28 +168,38 @@
         'rtoCommand': parseInt(vm.rtoModal.cmd, 10),
         'rtoSubCommand': parseInt(vm.rtoModal.subCmd, 10)
       };
-      console.log('rtoCmdSend ' + JSON.stringify(cmdObj));
-
       sendCommandToBackend(cmdObj, DevopsSettings.rtoConAPI);
     }
 
-    // firmware over the air
+    /* firmware over the air */
     function fotaModalURLChange() {
-      vm.fotaModal.urlLen = vm.fotaModal.url.trim().length;
+      var urlLen = 0;
+      if (vm.fotaModal.url !== undefined) {
+        urlLen = vm.fotaModal.url.trim().length;
+      }
+      vm.fotaModal.urlLen = urlLen;
     }
 
     function fotaModalUserNameChange() {
-      vm.fotaModal.userNameLen = vm.fotaModal.userName.trim().length;
+      var userNameLen = 0;
+      if (vm.fotaModal.userName !== undefined) {
+        userNameLen = vm.fotaModal.userName.trim().length;
+      }
+      vm.fotaModal.userNameLen = userNameLen;
     }
 
     function fotaModalUserPasswdChange() {
-      vm.fotaModal.userPasswdLen = vm.fotaModal.userPasswd.trim().length;
+      var userPasswdLen = 0;
+      if (vm.fotaModal.userPasswd !== undefined) {
+        userPasswdLen = vm.fotaModal.userPasswd.trim().length;
+      }
+      vm.fotaModal.userPasswdLen = userPasswdLen;
     }
 
     function fotaGenData() {
     }
 
-    function fotaCmdSend() {
+    function fotaSendCmd() {
       var cmdObj = {};
       cmdObj.uniqueId = vm.fotaModal.uid;
       cmdObj.messageType = 0x01;
@@ -129,8 +220,6 @@
         'otaDownloadAddress': parseInt(vm.fotaModal.dwnAddr.trim(), 16),
         'otaAppBootupAddress': parseInt(vm.fotaModal.appAddr.trim(), 16)
       };
-      console.log('fotaCmdSend ' + JSON.stringify(cmdObj));
-
       sendCommandToBackend(cmdObj, DevopsSettings.fotaAPI);
     }
 
