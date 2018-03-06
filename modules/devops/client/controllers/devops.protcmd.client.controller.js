@@ -50,6 +50,17 @@
     vm.cfgGenData = cfgGenData;
     vm.cfgSendCmd = cfgSendCmd;
 
+    /* time adjust modal init */
+    vm.tmaModal = {
+      autoAdjust: '1',
+      utc: '',
+      uid: '0000000000600000',
+      genData: ''
+    };
+    vm.tmaModalFillDatetime = tmaModalFillDatetime;
+    vm.tmaGenData = tmaGenData;
+    vm.tmaSendCmd = tmaSendCmd;
+
     /* rto modal init */
     vm.rtoModal = {
       cmd: '0',
@@ -172,6 +183,34 @@
         'infoReportInterval': parseInt(vm.cfgModal.infInterval.trim(), 10)
       };
       sendCommandToBackend(cmdObj, DevopsSettings.cfgConAPI);
+    }
+
+    /* time adjust */
+    function tmaGenData() {
+
+    }
+
+    function tmaSendCmd() {
+      var cmdObj = {};
+      cmdObj.uniqueId = vm.tmaModal.uid;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0x04;
+      cmdObj.timeAdjustCommandRequest = {
+        'timeAdjust': tmaAssembleTimeAdjust(),
+        'utcTime': parseInt(vm.tmaModal.utc.trim(), 10)
+      };
+      sendCommandToBackend(cmdObj, DevopsSettings.tmaConAPI);
+    }
+
+    function tmaAssembleTimeAdjust() {
+      var tmaMode = assemblePadZero(Number(vm.tmaModal.autoAdjust).toString(2), 3)
+        + '0000000000000';
+
+      return parseInt(tmaMode, 2);
+    }
+
+    function tmaModalFillDatetime() {
+      vm.tmaModal.utc = (Date.parse(new Date()) / 1000).toString(10);
     }
 
     /* real time operation */

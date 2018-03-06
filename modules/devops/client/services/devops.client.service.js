@@ -14,6 +14,7 @@
       apcConAPI: '/gui/sendAccessPointCommand',
       serConAPI: '/gui/sendServerConfigCommand',
       cfgConAPI: '/gui/sendGlobalServerConfigCommand',
+      tmaConAPI: '/gui/sendTimeAdjustConfigCommand',
       airConditionerConAPI: '/gui/sendAirconConfigCommand',
       rtoConAPI: '/gui/sendRTOCommand',
       fotaAPI: '/gui/sendOTACommand',

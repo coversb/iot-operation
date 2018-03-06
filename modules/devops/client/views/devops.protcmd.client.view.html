@@ -255,6 +255,64 @@
       </div><!-- /.modal -->
     </div>
 
+    <!-- TMA Modal -->
+    <div class="modal fade" id="tmaModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.tmaSendCmd()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h4 class="modal-title">
+              时间调整(Time Adjust) [0x01 0x04]
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label for="tmaModalAutoAdjust">Time Adjust</label>
+                <br>
+                <label for="tmaModalAutoAdjust">自动调整本地时间</label>
+                <select class="select form-control" id="tmaModalAutoAdjust" name="tmaModalAutoAdjust"
+                        ng-model="vm.tmaModal.autoAdjust">
+                  <option value="0">关闭</option>
+                  <option value="1">开启</option>
+                </select>
+              </div>
+              <div>
+                <label for="tmaModalUTC">UTC Time</label>
+                <input class="form-control" id="tmaModalUTC" name="tmaModalUTC" type="text"
+                       placeholder="Unix Timestamp"
+                       required="required"
+                       ng-model="vm.tmaModal.utc"/>
+                <button type="button" class="btn btn-info" ng-click="vm.tmaModalFillDatetime()">当前服务器时间</button>
+              </div>
+              <div>
+                <label for="tmaModalUID">UID</label>
+                <input class="form-control" id="tmaModalUID" name="tmaModalUID" type="text"
+                       required="required"
+                       ng-model="vm.tmaModal.uid"/>
+              </div>
+              <div>
+                <label for="tmaModalGenData">Generated data</label>
+                <textarea class="form-control" rows="3" id="tmaModalGenData" name="tmaModalGenData"
+                          ng-model="vm.tmaModal.genData"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-info" ng-click="vm.tmaGenData()">
+              生成
+            </button>
+            <button type="button submit" class="btn btn-primary">
+              发送
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+
     <!-- RTO Modal -->
     <div class="modal fade" id="rtoModal" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog">
