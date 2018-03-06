@@ -395,6 +395,94 @@
       </div><!-- /.modal -->
     </div>
 
+    <!-- ACO Modal -->
+    <div class="modal fade" id="acoModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.acoSendCmd()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h4 class="modal-title">
+              空调控制(Air Conditioner Operation) [0x01 0x06]
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label for="acoModalPwrMode">Mode</label>
+                <br>
+                <label for="acoModalPwrMode">空调开关</label>
+                <select class="select form-control" id="acoModalPwrMode" name="acoModalPwrMode"
+                        ng-model="vm.acoModal.pwrMode">
+                  <option value="0">空调常关</option>
+                  <option value="1">空调常开</option>
+                  <option value="2">空调间隔开</option>
+                </select>
+                <label for="acoModalWorkMode">模式</label>
+                <select class="select form-control" id="acoModalWorkMode" name="acoModalWorkMode"
+                        ng-model="vm.acoModal.workMode">
+                  <option value="0">制冷</option>
+                  <option value="1">制热</option>
+                  <option value="2">自动</option>
+                  <option value="3">抽湿</option>
+                </select>
+                <label for="acoModalWind">风力</label>
+                <select class="select form-control" id="acoModalWind" name="acoModalWind"
+                        ng-model="vm.acoModal.wind">
+                  <option value="0">高</option>
+                  <option value="1">中</option>
+                  <option value="2">低</option>
+                  <option value="3">自动</option>
+                </select>
+              </div>
+              <div>
+                <label for="acoModalInterval">Interval</label>
+                <input class="form-control" id="acoModalInterval" name="acoModalInterval" type="text"
+                       placeholder="间隔开启模式下，空调开启间隔，单位为分钟(0 - 255)"
+                       required="required"
+                       ng-model="vm.acoModal.interval"/>
+              </div>
+              <div>
+                <label for="acoModalDuration">Duration</label>
+                <input class="form-control" id="acoModalDuration" name="acoModalDuration" type="text"
+                       placeholder="间隔开启模式下，空调开启时长，单位为分钟(0 - 255)"
+                       required="required"
+                       ng-model="vm.acoModal.duration"/>
+              </div>
+              <div>
+                <label for="acoModalTemp">Temperature</label>
+                <input class="form-control" id="acoModalTemp" name="acoModalTemp" type="text"
+                       placeholder="摄氏度(0 - 255)"
+                       required="required"
+                       ng-model="vm.acoModal.temperature"/>
+              </div>
+              <div>
+                <label for="acoModalUID">UID</label>
+                <input class="form-control" id="acoModalUID" name="acoModalUID" type="text"
+                       required="required"
+                       ng-model="vm.acoModal.uid"/>
+              </div>
+              <div>
+                <label for="acoModalGenData">Generated data</label>
+                <textarea class="form-control" rows="3" id="acoModalGenData" name="acoModalGenData"
+                          ng-model="vm.acoModal.genData"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-info" ng-click="vm.acoGenData()">
+              生成
+            </button>
+            <button type="button submit" class="btn btn-primary">
+              发送
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+
     <!-- RTO Modal -->
     <div class="modal fade" id="rtoModal" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog">

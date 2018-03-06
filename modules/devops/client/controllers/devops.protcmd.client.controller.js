@@ -75,6 +75,20 @@
     vm.dogGenData = dogGenData;
     vm.dogSendCmd = dogSendCmd;
 
+    /* air conditioner operation */
+    vm.acoModal = {
+      pwrMode: '1',
+      workMode: '2',
+      wind: '3',
+      interval: '',
+      duration: '',
+      temperature: '',
+      uid: '0000000000600000',
+      genData: ''
+    };
+    vm.acoGenData = acoGenData;
+    vm.acoSendCmd = acoSendCmd;
+
     /* rto modal init */
     vm.rtoModal = {
       cmd: '0',
@@ -255,6 +269,32 @@
         + assemblePadZero(Number(vm.dogModal.rebootHour).toString(2), 5)
         + assemblePadZero(Number(vm.dogModal.rebootMinute).toString(2), 6);
       return parseInt(dogRebootTime, 2);
+    }
+
+    /* air conditioner operation */
+    function acoGenData() {
+    }
+
+    function acoSendCmd() {
+      var cmdObj = {};
+      cmdObj.uniqueId = vm.acoModal.uid;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0x06;
+      cmdObj.airconCommandRequest = {
+        'airConMode': acoAssembleMode(),
+        'airConInterval': parseInt(vm.acoModal.interval.trim(), 10),
+        'airConDuration': parseInt(vm.acoModal.duration.trim(), 10),
+        'airConTemperature': parseInt(vm.acoModal.temperature.trim(), 10)
+      };
+      sendCommandToBackend(cmdObj, DevopsSettings.airConditionerConAPI);
+    }
+
+    function acoAssembleMode() {
+      var devAirConMode = '00'
+        + assemblePadZero(Number(vm.acoModal.wind).toString(2), 2)
+        + assemblePadZero(Number(vm.acoModal.workMode).toString(2), 2)
+        + assemblePadZero(Number(vm.acoModal.pwrMode).toString(2), 2);
+      return parseInt(devAirConMode, 2);
     }
 
     /* real time operation */
