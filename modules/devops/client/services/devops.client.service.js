@@ -15,6 +15,7 @@
       serConAPI: '/gui/sendServerConfigCommand',
       cfgConAPI: '/gui/sendGlobalServerConfigCommand',
       tmaConAPI: '/gui/sendTimeAdjustConfigCommand',
+      dogConAPI: '/gui/sendWatchdogConfigCommand',
       airConditionerConAPI: '/gui/sendAirconConfigCommand',
       rtoConAPI: '/gui/sendRTOCommand',
       fotaAPI: '/gui/sendOTACommand',

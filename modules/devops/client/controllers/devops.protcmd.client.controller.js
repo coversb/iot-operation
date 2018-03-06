@@ -61,6 +61,20 @@
     vm.tmaGenData = tmaGenData;
     vm.tmaSendCmd = tmaSendCmd;
 
+    /* watchdog modal init */
+    vm.dogModal = {
+      sw: '0',
+      report: '1',
+      interval: '1',
+      rebootHour: '',
+      rebootMinute: '',
+      randomTime: '0',
+      uid: '0000000000600000',
+      genData: ''
+    };
+    vm.dogGenData = dogGenData;
+    vm.dogSendCmd = dogSendCmd;
+
     /* rto modal init */
     vm.rtoModal = {
       cmd: '0',
@@ -205,12 +219,42 @@
     function tmaAssembleTimeAdjust() {
       var tmaMode = assemblePadZero(Number(vm.tmaModal.autoAdjust).toString(2), 3)
         + '0000000000000';
-
       return parseInt(tmaMode, 2);
     }
 
     function tmaModalFillDatetime() {
       vm.tmaModal.utc = (Date.parse(new Date()) / 1000).toString(10);
+    }
+
+    /* watchdog */
+    function dogGenData() {
+    }
+
+    function dogSendCmd() {
+      var cmdObj = {};
+      cmdObj.uniqueId = vm.dogModal.uid;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0x05;
+      cmdObj.guiWatchdogConfigCommandRequest = {
+        'mode': dogAssembleMode(),
+        'rebootTime': dogAssembleRebootTime(),
+        'maximumRandomTime': parseInt(vm.dogModal.randomTime.trim(), 10)
+      };
+      sendCommandToBackend(cmdObj, DevopsSettings.dogConAPI);
+    }
+
+    function dogAssembleMode() {
+      var dogMode = assemblePadZero(Number(vm.dogModal.interval).toString(2), 5)
+        + assemblePadZero(Number(vm.dogModal.report).toString(2), 1)
+        + assemblePadZero(Number(vm.dogModal.sw).toString(2), 2);
+      return parseInt(dogMode, 2);
+    }
+
+    function dogAssembleRebootTime() {
+      var dogRebootTime = '00000'
+        + assemblePadZero(Number(vm.dogModal.rebootHour).toString(2), 5)
+        + assemblePadZero(Number(vm.dogModal.rebootMinute).toString(2), 6);
+      return parseInt(dogRebootTime, 2);
     }
 
     /* real time operation */
