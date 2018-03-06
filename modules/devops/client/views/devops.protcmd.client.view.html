@@ -9,7 +9,8 @@
       <div>
         <h4>服务器连接配置</h4>
         <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#apcModal">入网配置</button>
-        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#serModal">服务器连接配置</button>
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#serModal">服务器连接配置
+        </button>
         <hr>
       </div>
       <div>
@@ -31,8 +32,10 @@
       <div>
         <h4>其他命令</h4>
         <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#ouoModal">订单下发</button>
-        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#outModal">终端OUTPUT控制</button>
-        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#muoModal">多媒体操作命令</button>
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#outModal">终端OUTPUT控制
+        </button>
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#muoModal">多媒体操作命令
+        </button>
         <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#rtoModal">实时操作命令</button>
         <hr>
       </div>
@@ -357,7 +360,8 @@
                        required="required"
                        ng-model="vm.dogModal.rebootHour"/>
                 <label for="dogModalRebootTimeMinute">重启时刻分钟</label>
-                <input class="form-control col-md-6" id="dogModalRebootTimeMinute" name="dogModalRebootTimeMinute" type="text"
+                <input class="form-control col-md-6" id="dogModalRebootTimeMinute" name="dogModalRebootTimeMinute"
+                       type="text"
                        placeholder="重启时刻分钟(0 - 59)"
                        required="required"
                        ng-model="vm.dogModal.rebootMinute"/>
@@ -473,6 +477,48 @@
 
           <div class="modal-footer">
             <button type="button" class="btn btn-info" ng-click="vm.acoGenData()">
+              生成
+            </button>
+            <button type="button submit" class="btn btn-primary">
+              发送
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+
+    <!-- SEC Modal -->
+    <div class="modal fade" id="secModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.secSendCmd()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h4 class="modal-title">
+              安全配置(Security Configuration) [0x01 0x07]
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <h2>Not Implemented Now</h2>
+              </div>
+              <div>
+                <label for="secModalUID">UID</label>
+                <input class="form-control" id="secModalUID" name="secModalUID" type="text"
+                       required="required"
+                       ng-model="vm.secModal.uid"/>
+              </div>
+              <div>
+                <label for="secModalGenData">Generated data</label>
+                <textarea class="form-control" rows="3" id="secModalGenData" name="secModalGenData"
+                          ng-model="vm.secModal.genData"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-info" ng-click="vm.secGenData()">
               生成
             </button>
             <button type="button submit" class="btn btn-primary">

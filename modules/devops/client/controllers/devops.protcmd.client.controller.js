@@ -40,7 +40,7 @@
     vm.serGenData = serGenData;
     vm.serSendCmd = serSendCmd;
 
-    /* configuration modal init */
+    /* cfg modal init */
     vm.cfgModal = {
       mask: '',
       infInterval: '',
@@ -50,7 +50,7 @@
     vm.cfgGenData = cfgGenData;
     vm.cfgSendCmd = cfgSendCmd;
 
-    /* time adjust modal init */
+    /* tma modal init */
     vm.tmaModal = {
       autoAdjust: '1',
       utc: '',
@@ -61,7 +61,7 @@
     vm.tmaGenData = tmaGenData;
     vm.tmaSendCmd = tmaSendCmd;
 
-    /* watchdog modal init */
+    /* dog modal init */
     vm.dogModal = {
       sw: '0',
       report: '1',
@@ -75,7 +75,7 @@
     vm.dogGenData = dogGenData;
     vm.dogSendCmd = dogSendCmd;
 
-    /* air conditioner operation */
+    /* aco modal init */
     vm.acoModal = {
       pwrMode: '1',
       workMode: '2',
@@ -88,6 +88,14 @@
     };
     vm.acoGenData = acoGenData;
     vm.acoSendCmd = acoSendCmd;
+
+    /* sec modal init */
+    vm.secModal = {
+      uid: '0000000000600000',
+      genData: ''
+    };
+    vm.secGenData = secGenData;
+    vm.secSendCmd = secSendCmd;
 
     /* rto modal init */
     vm.rtoModal = {
@@ -295,6 +303,14 @@
         + assemblePadZero(Number(vm.acoModal.workMode).toString(2), 2)
         + assemblePadZero(Number(vm.acoModal.pwrMode).toString(2), 2);
       return parseInt(devAirConMode, 2);
+    }
+
+    /* security configuration*/
+    function secGenData() {
+    }
+
+    function secSendCmd() {
+      console.log('SEC NOT IMPLEMENT');
     }
 
     /* real time operation */
