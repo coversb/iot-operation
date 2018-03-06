@@ -40,6 +40,16 @@
     vm.serGenData = serGenData;
     vm.serSendCmd = serSendCmd;
 
+    /* configuration modal init */
+    vm.cfgModal = {
+      mask: '',
+      infInterval: '',
+      uid: '0000000000600000',
+      genData: ''
+    };
+    vm.cfgGenData = cfgGenData;
+    vm.cfgSendCmd = cfgSendCmd;
+
     /* rto modal init */
     vm.rtoModal = {
       cmd: '0',
@@ -145,6 +155,23 @@
         'maxRandomTime': parseInt(vm.serModal.maxRandomTime.trim(), 10)
       };
       sendCommandToBackend(cmdObj, DevopsSettings.serConAPI);
+    }
+
+    /* configuration */
+    function cfgGenData() {
+
+    }
+
+    function cfgSendCmd() {
+      var cmdObj = {};
+      cmdObj.uniqueId = vm.cfgModal.uid;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0x03;
+      cmdObj.globalConfigCommandRequest = {
+        'eventMask': parseInt(vm.cfgModal.mask.trim(), 16),
+        'infoReportInterval': parseInt(vm.cfgModal.infInterval.trim(), 10)
+      };
+      sendCommandToBackend(cmdObj, DevopsSettings.cfgConAPI);
     }
 
     /* real time operation */

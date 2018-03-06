@@ -202,6 +202,59 @@
       </div><!-- /.modal -->
     </div>
 
+    <!-- CFG Modal -->
+    <div class="modal fade" id="cfgModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.cfgSendCmd()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h4 class="modal-title">
+              全局配置(Configuration) [0x01 0x03]
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label for="cfgModalEventMask">Event Mask</label>
+                <input class="form-control" id="cfgModalEventMask" name="cfgModalEventMask" type="text"
+                       placeholder="请输入HEX格式(0x0000 - 0xFFFF)"
+                       required="required"
+                       ng-model="vm.cfgModal.mask"/>
+              </div>
+              <div>
+                <label for="cfgModalInfInterval">Info Report Interval</label>
+                <input class="form-control" id="cfgModalInfInterval" name="cfgModalInfInterval" type="text"
+                       required="required"
+                       ng-model="vm.cfgModal.infInterval"/>
+              </div>
+              <div>
+                <label for="cfgModalUID">UID</label>
+                <input class="form-control" id="cfgModalUID" name="cfgModalUID" type="text"
+                       required="required"
+                       ng-model="vm.cfgModal.uid"/>
+              </div>
+              <div>
+                <label for="cfgModalGenData">Generated data</label>
+                <textarea class="form-control" rows="3" id="cfgModalGenData" name="cfgModalGenData"
+                          ng-model="vm.cfgModal.genData"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-info" ng-click="vm.cfgGenData()">
+              生成
+            </button>
+            <button type="button submit" class="btn btn-primary">
+              发送
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+
     <!-- RTO Modal -->
     <div class="modal fade" id="rtoModal" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog">

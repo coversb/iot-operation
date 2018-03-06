@@ -13,6 +13,7 @@
       // command API
       apcConAPI: '/gui/sendAccessPointCommand',
       serConAPI: '/gui/sendServerConfigCommand',
+      cfgConAPI: '/gui/sendGlobalServerConfigCommand',
       airConditionerConAPI: '/gui/sendAirconConfigCommand',
       rtoConAPI: '/gui/sendRTOCommand',
       fotaAPI: '/gui/sendOTACommand',
