@@ -19,6 +19,7 @@
       airConditionerConAPI: '/gui/sendAirconConfigCommand',
       omcConAPI: '/gui/sendOutputModeConfigCommand',
       doaConAPI: '/gui/sendDoorAlarmCommand',
+      smaConAPI: '/gui/sendSmokeAlarmCommand',
       rtoConAPI: '/gui/sendRTOCommand',
       fotaAPI: '/gui/sendOTACommand',
       // device info API

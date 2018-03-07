@@ -703,6 +703,74 @@
       </div><!-- /.modal -->
     </div>
 
+    <!-- DOA Modal -->
+    <div class="modal fade" id="smaModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.smaSendCmd()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h4 class="modal-title">
+              烟雾告警(Smoke Alarm) [0x01 0x32]
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label for="smaModalMode">Mode</label>
+                <input class="form-control" id="smaModalMode" name="smaModalMode" type="text"
+                       required="required"
+                       placeholder="(0 - 2)"
+                       ng-model="vm.smaModal.mode"/>
+              </div>
+              <div>
+                <label for="smaModalThreshold">Threshold</label>
+                <input class="form-control" id="smaModalThreshold" name="smaModalThreshold" type="text"
+                       required="required"
+                       placeholder="烟雾告警触发阈值，(0 - 255)"
+                       ng-model="vm.smaModal.threshold"/>
+              </div>
+              <div>
+                <label for="smaModalDuration">Duration</label>
+                <input class="form-control" id="smaModalDuration" name="smaModalDuration" type="text"
+                       required="required"
+                       placeholder="烟雾告警触发防误报时长，单位分钟(0 - 255)"
+                       ng-model="vm.smaModal.duration"/>
+              </div>
+              <div>
+                <label for="smaModalInterval">Interval</label>
+                <input class="form-control" id="smaModalInterval" name="smaModalInterval" type="text"
+                       required="required"
+                       placeholder="模式为2时，处于触发状态，告警报文上报间隔，单位为秒(0 - 255)"
+                       ng-model="vm.smaModal.interval"/>
+              </div>
+              <div>
+                <label for="smaModalUID">UID</label>
+                <input class="form-control" id="smaModalUID" name="smaModalUID" type="text"
+                       required="required"
+                       ng-model="vm.smaModal.uid"/>
+              </div>
+              <div>
+                <label for="smaModalGenData">Generated data</label>
+                <textarea class="form-control" rows="3" id="smaModalGenData" name="smaModalGenData"
+                          ng-model="vm.smaModal.genData"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-info" ng-click="vm.smaGenData()">
+              生成
+            </button>
+            <button type="button submit" class="btn btn-primary">
+              发送
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+
     <!-- RTO Modal -->
     <div class="modal fade" id="rtoModal" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog">

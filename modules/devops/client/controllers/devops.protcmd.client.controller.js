@@ -126,6 +126,18 @@
     vm.doaGenData = doaGenData;
     vm.doaSendCmd = doaSendCmd;
 
+    /* sma modal init */
+    vm.smaModal = {
+      mode: '2',
+      threshold: '50',
+      duration: '12',
+      interval: '60',
+      uid: '0000000000600000',
+      genData: ''
+    };
+    vm.smaGenData = smaGenData;
+    vm.smaSendCmd = smaSendCmd;
+
     /* rto modal init */
     vm.rtoModal = {
       cmd: '0',
@@ -389,6 +401,25 @@
         'doorAlarmSendInterval': parseInt(vm.doaModal.interval.trim(), 10)
       };
       sendCommandToBackend(cmdObj, DevopsSettings.doaConAPI);
+    }
+
+    /* smoke alarm */
+    function smaGenData() {
+
+    }
+
+    function smaSendCmd() {
+      var cmdObj = {};
+      cmdObj.uniqueId = vm.smaModal.uid;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0x32;
+      cmdObj.guiSmokeAlarmCommandRequest = {
+        'smokeAlarmMode': parseInt(vm.smaModal.mode.trim(), 10),
+        'smokeAlarmThreshold': parseInt(vm.smaModal.threshold.trim(), 10),
+        'smokeAlarmDuration': parseInt(vm.smaModal.duration.trim(), 10),
+        'smokeAlarmSendInterval': parseInt(vm.smaModal.interval.trim(), 10)
+      };
+      sendCommandToBackend(cmdObj, DevopsSettings.smaConAPI);
     }
 
     /* real time operation */
