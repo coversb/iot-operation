@@ -200,7 +200,10 @@
                 windStat = '自动风';
               }
               tempStat = row.detail.airConditionTemperature;
-              return '<span>' + workStat + ' | ' + windStat + ' | ' + '</span>';
+              if (tempStat === 0) {
+                tempStat = '-';
+              }
+              return '<span>' + workStat + ' | ' + windStat + ' | ' + tempStat + '</span>';
             }
           },
           {
@@ -408,30 +411,32 @@
       }
 
       // 通电状态
-      if (vm.selectedBox.detail.powerStatus === 1) {
+      if (vm.selectedBox.detail.powerStatus === '1') {
         vm.selectedBox.detail.powerStatus = '有市电';
         setElementColor('#power', 'green');
-      } else if (vm.selectedBox.detail.powerStatus === 0) {
+      } else if (vm.selectedBox.detail.powerStatus === '0') {
         vm.selectedBox.detail.powerStatus = '无市电';
         setElementColor('#power', 'red');
-      } else if (vm.selectedBox.detail.powerStatus === 2) {
+      } else if (vm.selectedBox.detail.powerStatus === '2') {
         vm.selectedBox.detail.powerStatus = '电压低';
         setElementColor('#power', 'yellow');
       }
 
       // 设备箱状态
-      if (vm.selectedBox.detail.deviceDoorStatus === '关着') {
+      if (vm.selectedBox.detail.deviceDoorStatus === 'Close') {
         setElementColor('#deviceDoor', 'green');
       } else {
         setElementColor('#deviceDoor', 'red');
       }
 
       // 空调开关状态
+      /* don't need color
       if (vm.selectedBox.detail.airConditionStatus === 'Open') {
         setElementColor('#air', 'green');
       } else {
         setElementColor('#air', 'red');
       }
+      */
     }
 
     function detailTableFormat() {
