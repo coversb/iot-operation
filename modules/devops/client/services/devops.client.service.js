@@ -20,6 +20,7 @@
       omcConAPI: '/gui/sendOutputModeConfigCommand',
       doaConAPI: '/gui/sendDoorAlarmCommand',
       smaConAPI: '/gui/sendSmokeAlarmCommand',
+      ouoConAPI: '/gui/sendOrderUpdateCommand',
       rtoConAPI: '/gui/sendRTOCommand',
       fotaAPI: '/gui/sendOTACommand',
       // device info API

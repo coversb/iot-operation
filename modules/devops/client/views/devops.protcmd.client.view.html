@@ -703,7 +703,7 @@
       </div><!-- /.modal -->
     </div>
 
-    <!-- DOA Modal -->
+    <!-- SMA Modal -->
     <div class="modal fade" id="smaModal" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog">
         <form class="modal-content" ng-submit="vm.smaSendCmd()">
@@ -761,6 +761,101 @@
 
           <div class="modal-footer">
             <button type="button" class="btn btn-info" ng-click="vm.smaGenData()">
+              生成
+            </button>
+            <button type="button submit" class="btn btn-primary">
+              发送
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+
+    <!-- OUO Modal -->
+    <div class="modal fade" id="ouoModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.ouoSendCmd()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h4 class="modal-title">
+              订单下发(Order Update Operation) [0x01 0x81]
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label for="ouoModalOrderNum">Order Number</label>
+                <input class="form-control" id="ouoModalOrderNum" name="ouoModalOrderNum" type="text"
+                       required="required" readonly
+                       ng-model="vm.ouoModal.orderNum"/>
+              </div>
+              <div>
+                <label for="ouoModalActType">Action Type</label>
+                <select class="select form-control" id="ouoModalActType" name="ouoModalActType"
+                        ng-model="vm.ouoModal.type">
+                  <option value="0">预约</option>
+                  <option value="1">取消预约</option>
+                  <option value="2">添加运维订单</option>
+                </select>
+              </div>
+              <div>
+                <label for="ouoModalOrderID">Order ID</label>
+                <input class="form-control" id="ouoModalOrderID" name="ouoModalOrderID" type="text"
+                       required="required"
+                       ng-model="vm.ouoModal.orderID"/>
+              </div>
+              <div>
+                <label for="ouoModalOrderStart">Start Datetime</label>
+                <input class="form-control" id="ouoModalOrderStart" name="ouoModalOrderStart" type="text"
+                       required="required"
+                       placeholder="Unix timestamp"
+                       ng-model="vm.ouoModal.orderStart"/>
+                <button type="button" class="btn btn-info" ng-click="vm.ouoModalFillStartDatetime()">当前服务器时间</button>
+              </div>
+              <div>
+                <label for="ouoModalOrderExpire">Expire Datetime</label>
+                <input class="form-control" id="ouoModalOrderExpire" name="ouoModalOrderExpire" type="text"
+                       required="required"
+                       placeholder="Unix timestamp"
+                       ng-model="vm.ouoModal.orderExpire"/>
+                <button type="button" class="btn btn-info" ng-click="vm.ouoModalFillExpireDatetime()">起始时间加1小时</button>
+              </div>
+              <div>
+                <label for="ouoModalOrderPassword">Password</label>
+                <input class="form-control" id="ouoModalOrderPassword" name="ouoModalOrderPassword" type="text"
+                       required="required"
+                       ng-model="vm.ouoModal.orderPassword"/>
+              </div>
+              <div>
+                <label for="ouoModalOrderPersonNumber">Person Number</label>
+                <input class="form-control" id="ouoModalOrderPersonNumber" name="ouoModalOrderPersonNumber" type="text"
+                       required="required"
+                       ng-model="vm.ouoModal.orderPersonNumber"/>
+              </div>
+              <div>
+                <label for="ouoModalOrderPasswordVaildCount">Password Valid Count</label>
+                <input class="form-control" id="ouoModalOrderPasswordVaildCount" name="ouoModalOrderPasswordVaildCount" type="text"
+                       required="required"
+                       ng-model="vm.ouoModal.orderPasswordValidConut"/>
+              </div>
+              <div>
+                <label for="ouoModalUID">UID</label>
+                <input class="form-control" id="ouoModalUID" name="ouoModalUID" type="text"
+                       required="required"
+                       ng-model="vm.ouoModal.uid"/>
+              </div>
+              <div>
+                <label for="ouoModalGenData">Generated data</label>
+                <textarea class="form-control" rows="3" id="ouoModalGenData" name="ouoModalGenData"
+                          ng-model="vm.ouoModal.genData"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-info" ng-click="vm.ouoGenData()">
               生成
             </button>
             <button type="button submit" class="btn btn-primary">

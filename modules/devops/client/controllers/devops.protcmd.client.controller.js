@@ -138,6 +138,24 @@
     vm.smaGenData = smaGenData;
     vm.smaSendCmd = smaSendCmd;
 
+    /* ouo modal init */
+    vm.ouoModal = {
+      orderNum: '1',
+      type: '0',
+      orderID: '',
+      orderStart: '',
+      orderExpire: '',
+      orderPassword: '',
+      orderPersonNumber: '',
+      orderPasswordValidConut: '',
+      uid: '0000000000600000',
+      genData: ''
+    };
+    vm.ouoGenData = ouoGenData;
+    vm.ouoSendCmd = ouoSendCmd;
+    vm.ouoModalFillStartDatetime = ouoModalFillStartDatetime;
+    vm.ouoModalFillExpireDatetime = ouoModalFillExpireDatetime;
+
     /* rto modal init */
     vm.rtoModal = {
       cmd: '0',
@@ -420,6 +438,37 @@
         'smokeAlarmSendInterval': parseInt(vm.smaModal.interval.trim(), 10)
       };
       sendCommandToBackend(cmdObj, DevopsSettings.smaConAPI);
+    }
+
+    /* order update operation */
+    function ouoGenData() {
+    }
+
+    function ouoSendCmd() {
+      var cmdObj = {};
+      cmdObj.uniqueId = vm.ouoModal.uid;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0x81;
+      cmdObj.guiUpdateOrderCommandRequest = {
+        'actionType': parseInt(vm.ouoModal.type.trim(), 10),
+        'orderID': parseInt(vm.ouoModal.orderID.trim(), 10),
+        'startDateTime': parseInt(vm.ouoModal.orderStart.trim(), 10),
+        'expireDateTime': parseInt(vm.ouoModal.orderExpire.trim(), 10),
+        'orderPassword': parseInt(vm.ouoModal.orderPassword.trim(), 10),
+        'personNumber': parseInt(vm.ouoModal.orderPersonNumber.trim(), 10),
+        'passwordValidCount': parseInt(vm.ouoModal.orderPasswordValidConut.trim(), 10)
+      };
+      sendCommandToBackend(cmdObj, DevopsSettings.ouoConAPI);
+    }
+
+    function ouoModalFillStartDatetime() {
+      vm.ouoModal.orderStart = (Date.parse(new Date()) / 1000).toString(10);
+    }
+
+    function ouoModalFillExpireDatetime() {
+      if (vm.ouoModal.orderStart.trim() !== '') {
+        vm.ouoModal.orderExpire = (parseInt(vm.ouoModal.orderStart.trim(), 10) + 3600).toString(10);
+      }
     }
 
     /* real time operation */
