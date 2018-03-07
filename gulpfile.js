@@ -3,14 +3,23 @@
 /**
  * Module dependencies.
  */
+var ENV = process.env.APP_ENV || 'development';
+
+// If our environment is development, we load our local environment variables
+if (ENV === 'development') {
+  require('dotenv').load();
+}
+
 var _ = require('lodash'),
   fs = require('fs'),
+  config = require('./ng-config.js'),
   defaultAssets = require('./config/assets/default'),
   testAssets = require('./config/assets/test'),
   testConfig = require('./config/env/test'),
   glob = require('glob'),
   gulp = require('gulp'),
   gulpLoadPlugins = require('gulp-load-plugins'),
+  ngConfig = require('gulp-ng-config'),
   runSequence = require('run-sequence'),
   plugins = gulpLoadPlugins({
     rename: {
@@ -26,6 +35,13 @@ var _ = require('lodash'),
 
 // Local settings
 var changedTestFiles = [];
+
+// We use this to create the json config file required by gulp-ng-config
+var makeJson = function (env, filePath) {
+  fs.writeFileSync(filePath,
+    JSON.stringify(env));
+};
+
 
 // Set NODE_ENV to 'test'
 gulp.task('env:test', function () {
@@ -64,6 +80,20 @@ gulp.task('nodemon-nodebug', function () {
     ext: 'js,html',
     watch: _.union(defaultAssets.server.views, defaultAssets.server.allJS, defaultAssets.server.config)
   });
+});
+
+//
+gulp.task('ng-config', function () {
+  makeJson(config[ENV], './ng-config.json');
+  gulp.src('./ng-config.json')
+    .pipe(
+      ngConfig('ngEnvVars', {
+        constants: config[ENV],
+        createModule: false,
+        wrap: true
+      })
+    )
+    .pipe(gulp.dest('./modules/core/client/app/'))
 });
 
 // Watch Files For Changes
@@ -482,7 +512,7 @@ gulp.task('test:coverage', function (done) {
 
 // Run the project in development mode with node debugger enabled
 gulp.task('default', function (done) {
-  runSequence('env:dev', ['copyLocalEnvConfig', 'makeUploadsDir'], 'lint', ['nodemon', 'watch'], done);
+  runSequence('env:dev', ['ng-config', 'copyLocalEnvConfig', 'makeUploadsDir'], 'lint', ['nodemon', 'watch'], done);
 });
 
 // Run the project in production mode

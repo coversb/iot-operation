@@ -5,9 +5,9 @@
     .module('monitor')
     .controller('MonitorController', MonitorController);
 
-  MonitorController.$inject = ['$scope', '$state', '$http', 'Authentication', 'DevopsSettings'];
+  MonitorController.$inject = ['$scope', '$state', '$http', 'Authentication', 'DevopsSettings', 'ENV_VARS'];
 
-  function MonitorController($scope, $state, $http, Authentication, DevopsSettings) {
+  function MonitorController($scope, $state, $http, Authentication, DevopsSettings, ENV_VARS) {
 
     var searchData = '';
     var vm = this;
@@ -39,11 +39,12 @@
     }
 
     function loadBoxList() {
+      console.log("ENV_VARS=" + ENV_VARS.backboneUrl);
       $('#boxTable').bootstrapTable({
         method: 'post',
         dataType: 'json',
         contentType: 'application/json',
-        url: DevopsSettings.backboneURL + DevopsSettings.boxListAPI,
+        url: ENV_VARS.backboneUrl + DevopsSettings.boxListAPI,
         striped: true,
         pagination: true, // 是否显示分页
         pageList: [10, 20], // 可供选择的每页的行数（*）
@@ -255,7 +256,7 @@
         'pageNum': 1,
         'pageSize': 10
       };
-      $http.post(DevopsSettings.backboneURL + DevopsSettings.boxListAPI, data, config)
+      $http.post(ENV_VARS.backboneUrl + DevopsSettings.boxListAPI, data, config)
         .success(function (data) {
           // console.log(data);
           vm.selectedBox = [];

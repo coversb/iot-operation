@@ -80,3 +80,7 @@ mongod
 *.ntvs*
 *.njsproj
 *.sln
+
+# angular env
+ng-config.json
+modules/core/client/app/ng-config.js

@@ -5,9 +5,9 @@
     .module('devops.tools')
     .controller('DevopsToolsController', DevopsToolsController);
 
-  DevopsToolsController.$inject = ['$scope', '$state', '$http', 'Authentication', 'DevopsSettings'];
+  DevopsToolsController.$inject = ['$scope', '$state', '$http', 'Authentication', 'DevopsSettings', 'ENV_VARS'];
 
-  function DevopsToolsController($scope, $state, $http, Authentication, DevopsSettings) {
+  function DevopsToolsController($scope, $state, $http, Authentication, DevopsSettings, ENV_VARS) {
 
     var vm = this;
 
@@ -38,7 +38,7 @@
           'Content-Type': 'application/json'
         }
       };
-      $http.post(DevopsSettings.backboneURL + apiURL, data, config)
+      $http.post(ENV_VARS.backboneUrl + apiURL, data, config)
         .success(function (data, status, header, config) {
           console.log('success');
         })

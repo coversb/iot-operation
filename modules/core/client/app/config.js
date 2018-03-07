@@ -6,7 +6,7 @@
   var service = {
     applicationEnvironment: window.env,
     applicationModuleName: applicationModuleName,
-    applicationModuleVendorDependencies: ['ngResource', 'ngAnimate', 'ngMessages', 'ui.router', 'ui.bootstrap', 'ngFileUpload', 'ui-notification', 'FileManagerApp'],
+    applicationModuleVendorDependencies: ['ngResource', 'ngAnimate', 'ngMessages', 'ui.router', 'ui.bootstrap', 'ngFileUpload', 'ui-notification', 'FileManagerApp', 'ngEnvVars'],
     registerModule: registerModule
   };
 
@@ -20,6 +20,11 @@
     // Add the module to the AngularJS configuration file
     angular.module(applicationModuleName).requires.push(moduleName);
   }
+
+  // angular.module('ngEnvVars', []);
+  // //
+  // angular.module("ngEnvVars")
+  //   .constant("ENV_VARS", {"apiUrl":"http://integration-iot.gongyuanhezi.cn","debug":true});
 
   // Angular-ui-notification configuration
   angular.module('ui-notification').config(function (NotificationProvider) {

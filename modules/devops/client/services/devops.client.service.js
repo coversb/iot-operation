@@ -9,7 +9,7 @@
 
   function DevopsSettings() {
     var settings = {
-      backboneURL: 'http://integration-iot.gongyuanhezi.cn',
+      // backboneURL: 'http://integration-iot.gongyuanhezi.cn',
       // command API
       apcConAPI: '/gui/sendAccessPointCommand',
       serConAPI: '/gui/sendServerConfigCommand',
