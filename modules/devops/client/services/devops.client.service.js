@@ -17,6 +17,7 @@
       tmaConAPI: '/gui/sendTimeAdjustConfigCommand',
       dogConAPI: '/gui/sendWatchdogConfigCommand',
       airConditionerConAPI: '/gui/sendAirconConfigCommand',
+      omcConAPI: '/gui/sendOutputModeConfigCommand',
       rtoConAPI: '/gui/sendRTOCommand',
       fotaAPI: '/gui/sendOTACommand',
       // device info API

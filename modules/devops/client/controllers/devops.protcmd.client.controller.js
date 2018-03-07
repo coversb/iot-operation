@@ -97,6 +97,23 @@
     vm.secGenData = secGenData;
     vm.secSendCmd = secSendCmd;
 
+    /* omc modal init */
+    vm.omcModal = {
+      idleOutput: '',
+      inserviceOutput: '',
+      mode: '0',
+      beginHour: '',
+      beginMinute: '',
+      endHour: '',
+      endMinute: '',
+      validIdleOutput: '',
+      validInserviceOutput: '',
+      uid: '0000000000600000',
+      genData: ''
+    };
+    vm.omcGenData = omcGenData;
+    vm.omcSendCmd = omcSendCmd;
+
     /* rto modal init */
     vm.rtoModal = {
       cmd: '0',
@@ -311,6 +328,36 @@
 
     function secSendCmd() {
       console.log('SEC NOT IMPLEMENT');
+    }
+
+    /* output mode configuration */
+    function omcGenData() {
+
+    }
+
+    function omcSendCmd() {
+      var cmdObj = {};
+      cmdObj.uniqueId = vm.omcModal.uid;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0x08;
+      cmdObj.guiOutputModeConfigCommandRequest = {
+        'idleOutput': parseInt(vm.omcModal.idleOutput, 16),
+        'inServiceOutput': parseInt(vm.omcModal.inserviceOutput, 16),
+        'validTimeIdleOutput': parseInt(vm.omcModal.validIdleOutput, 16),
+        'validTimeInServiceOutput': parseInt(vm.omcModal.validInserviceOutput, 16),
+        'mode': parseInt(vm.omcModal.mode, 10),
+        'validTime': omcAssembleValidTime()
+      };
+      sendCommandToBackend(cmdObj, DevopsSettings.omcConAPI);
+    }
+
+    function omcAssembleValidTime() {
+      var validTime = '00000000000'
+        + assemblePadZero(Number(vm.omcModal.endMinute).toString(2), 6)
+        + assemblePadZero(Number(vm.omcModal.endHour).toString(2), 5)
+        + assemblePadZero(Number(vm.omcModal.beginMinute).toString(2), 6)
+        + assemblePadZero(Number(vm.omcModal.beginHour).toString(2), 5);
+      return parseInt(validTime, 2);
     }
 
     /* real time operation */

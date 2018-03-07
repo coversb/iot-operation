@@ -529,6 +529,112 @@
       </div><!-- /.modal -->
     </div>
 
+    <!-- OMC Modal -->
+    <div class="modal fade" id="omcModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.omcSendCmd()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h4 class="modal-title">
+              输出模式配置(Output Mode Configuration) [0x01 0x08]
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label for="omcModalIdleOutput">Idle Output</label>
+                <input class="form-control" id="omcModalIdleOutput" name="omcModalIdleOutput" type="text"
+                       required="required"
+                       placeholder="无订单时输出状态，请输入HEX格式(0x00000000 - 0xFFFFFFFF)"
+                       ng-model="vm.omcModal.idleOutput"/>
+              </div>
+              <div>
+                <label for="omcModalInserviceOutput">In-service Output</label>
+                <input class="form-control" id="omcModalInserviceOutput" name="omcModalInserviceOutput" type="text"
+                       required="required"
+                       placeholder="有订单时输出状态，请输入HEX格式(0x00000000 - 0xFFFFFFFF)"
+                       ng-model="vm.omcModal.inserviceOutput"/>
+              </div>
+              <div>
+                <label for="omcModalMode">Mode</label>
+                <select class="select form-control" id="omcModalMode" name="omcModalMode"
+                        ng-model="vm.omcModal.mode">
+                  <option value="0">特定时段输出模式关</option>
+                  <option value="1">特定时段输出模式开</option>
+                  <option value="2">特定时段输出模式开，输出模式切换时上报报文</option>
+                </select>
+              </div>
+              <div>
+                <label for="omcModalValidTime">Valid Time</label>
+                <br>
+                <label for="omcModalValidTimeBeginHour">起始时刻小时</label>
+                <input class="form-control" id="omcModalValidTimeBeginHour" name="omcModalValidTimeBeginHour"
+                       type="text"
+                       required="required"
+                       placeholder="请输入起始时刻小时(0 - 23)"
+                       ng-model="vm.omcModal.beginHour"/>
+                <label for="omcModalValidTimeBeginMinute">起始时刻分钟</label>
+                <input class="form-control" id="omcModalValidTimeBeginMinute" name="omcModalValidTimeBeginMinute"
+                       type="text"
+                       required="required"
+                       placeholder="请输入起始时刻分钟(0 - 59)"
+                       ng-model="vm.omcModal.beginMinute"/>
+                <label for="omcModalValidTimeEndHour">结束时刻小时</label>
+                <input class="form-control" id="omcModalValidTimeEndHour" name="omcModalValidTimeEndHour" type="text"
+                       required="required"
+                       placeholder="请输入结束时刻小时(0 - 23)"
+                       ng-model="vm.omcModal.endHour"/>
+                <label for="omcModalValidTimeEndMinute">结束时刻分钟</label>
+                <input class="form-control" id="omcModalValidTimeEndMinute" name="omcModalValidTimeEndMinute"
+                       type="text"
+                       required="required"
+                       placeholder="请输入结束时刻分钟(0 - 59)"
+                       ng-model="vm.omcModal.endMinute"/>
+              </div>
+              <div>
+                <label for="omcModalValidTimeIdleOutput">Valid Time Idle Output</label>
+                <input class="form-control" id="omcModalValidTimeIdleOutput" name="omcModalValidTimeIdleOutput"
+                       type="text"
+                       required="required"
+                       placeholder="特定时段无订单时输出状态，请输入HEX格式(0x00000000 - 0xFFFFFFFF)"
+                       ng-model="vm.omcModal.validIdleOutput"/>
+              </div>
+              <div>
+                <label for="omcModalValidTimeInserviceOutput">Valid Time Idle Output</label>
+                <input class="form-control" id="omcModalValidTimeInserviceOutput"
+                       name="omcModalValidTimeInserviceOutput" type="text"
+                       required="required"
+                       placeholder="特定时段有订单时输出状态，请输入HEX格式(0x00000000 - 0xFFFFFFFF)"
+                       ng-model="vm.omcModal.validInserviceOutput"/>
+              </div>
+              <div>
+                <label for="omcModalUID">UID</label>
+                <input class="form-control" id="omcModalUID" name="omcModalUID" type="text"
+                       required="required"
+                       ng-model="vm.omcModal.uid"/>
+              </div>
+              <div>
+                <label for="omcModalGenData">Generated data</label>
+                <textarea class="form-control" rows="3" id="omcModalGenData" name="omcModalGenData"
+                          ng-model="vm.omcModal.genData"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-info" ng-click="vm.omcGenData()">
+              生成
+            </button>
+            <button type="button submit" class="btn btn-primary">
+              发送
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+
     <!-- RTO Modal -->
     <div class="modal fade" id="rtoModal" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog">
