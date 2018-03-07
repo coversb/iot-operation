@@ -98,7 +98,8 @@
     "validator": "~8.0.0",
     "winston": "~2.3.1",
     "wiredep": "~4.0.0",
-    "dotenv": "^4.0.0"
+    "dotenv": "^4.0.0",
+    "angular-filemanager-bridge": "^0.1.4"
   },
   "devDependencies": {
     "coveralls": "~2.13.0",

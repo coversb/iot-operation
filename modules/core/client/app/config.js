@@ -6,7 +6,7 @@
   var service = {
     applicationEnvironment: window.env,
     applicationModuleName: applicationModuleName,
-    applicationModuleVendorDependencies: ['ngResource', 'ngAnimate', 'ngMessages', 'ui.router', 'ui.bootstrap', 'ngFileUpload', 'ui-notification'],
+    applicationModuleVendorDependencies: ['ngResource', 'ngAnimate', 'ngMessages', 'ui.router', 'ui.bootstrap', 'ngFileUpload', 'ui-notification', 'FileManagerApp'],
     registerModule: registerModule
   };
 
@@ -31,6 +31,40 @@
       horizontalSpacing: 20,
       positionX: 'right',
       positionY: 'bottom'
+    });
+  });
+
+  // angular.module('FileManagerApp').config(['fileManagerConfigProvider', function (config) {
+  //   var defaults = config.$get();
+  //   config.set({
+  //     appName: 'angular-filemanager',
+  //     pickCallback: function(item) {
+  //       var msg = 'Picked %s "%s" for external use'
+  //         .replace('%s', item.type)
+  //         .replace('%s', item.fullPath());
+  //       window.alert(msg);
+  //     },
+  //
+  //     allowedActions: angular.extend(defaults.allowedActions, {
+  //       pickFiles: true,
+  //       pickFolders: false,
+  //     }),
+  //   });
+  // }]);
+
+  angular.module('FileManagerApp').config(function (fileManagerConfigProvider) {
+
+    fileManagerConfigProvider.set({
+      appName: 'Version Manager',
+      copyUrl: '/files/copy', // where {/files} is the mount path of this module.
+      createFolderUrl: '/files/createFolder',
+      downloadFileUrl: '/files/download',
+      editUrl: '/files/edit',
+      removeUrl: '/files/remove',
+      renameUrl: '/files/rename',
+      uploadUrl: '/files/upload',
+      getContentUrl: '/files/getContent',
+      listUrl: '/files/list'
     });
   });
 }(window));

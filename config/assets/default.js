@@ -10,15 +10,21 @@ module.exports = {
         'public/lib/bootstrap/dist/css/bootstrap.css',
         'public/lib/bootstrap/dist/css/bootstrap-theme.css',
         'public/lib/angular-ui-notification/dist/angular-ui-notification.css',
+        'public/lib/angular-filemanager/dist/angular-filemanager.min.css',
         // bootstrap-table
         'public/lib/bootstrap/dist/bootstrap-table.min.css'
         // endbower
       ],
       js: [
+        // jQuery
+        'public/lib/jquery/dist/jquery.js',
+
         // bower:js
         'public/lib/angular/angular.js',
         'public/lib/angular-animate/angular-animate.js',
         'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
+        'public/lib/angular-translate/angular-translate.js',
+        'public/lib/angular-filemanager/dist/angular-filemanager.min.js',
         'public/lib/ng-file-upload/ng-file-upload.js',
         'public/lib/angular-messages/angular-messages.js',
         'public/lib/angular-mocks/angular-mocks.js',
@@ -26,8 +32,7 @@ module.exports = {
         'public/lib/angular-ui-notification/dist/angular-ui-notification.js',
         'public/lib/angular-ui-router/release/angular-ui-router.js',
         'public/lib/owasp-password-strength-test/owasp-password-strength-test.js',
-        // jQuery
-        'public/lib/jquery/dist/jquery.js',
+
         // bootstrap
         'public/lib/bootstrap/dist/js/bootstrap.js',
         // bootstrap-table
