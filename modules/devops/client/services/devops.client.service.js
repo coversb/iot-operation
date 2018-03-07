@@ -22,6 +22,7 @@
       smaConAPI: '/gui/sendSmokeAlarmCommand',
       ouoConAPI: '/gui/sendOrderUpdateCommand',
       outConAPI: '/gui/sendOutputOperationCommand',
+      muoConAPI: '/gui/sendMultimediaConfigCommand',
       rtoConAPI: '/gui/sendRTOCommand',
       fotaAPI: '/gui/sendOTACommand',
       // device info API

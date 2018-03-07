@@ -929,6 +929,83 @@
       </div><!-- /.modal -->
     </div>
 
+    <!-- MUO Modal -->
+    <div class="modal fade" id="muoModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.muoSendCmd()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h4 class="modal-title">
+              多媒体操作命令(Multimedia Operation) [0x01 0x83]
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label for="muoModalMode">Mode</label>
+                <br>
+                <label for="muoModalType">多媒体操作类型</label>
+                <select class="select form-control" id="muoModalType" name="muoModalType"
+                        required="required"
+                        ng-model="vm.muoModal.type">
+                  <option value="1">SOUND</option>
+                </select>
+                <label for="muoModalAct">多媒体操作动作</label>
+                <select class="select form-control" id="muoModalAct" name="muoModalAct"
+                        required="required"
+                        ng-change="vm.muoModalActChange()"
+                        ng-model="vm.muoModal.act">
+                  <option value="0">取消播放</option>
+                  <option value="1">开始播放</option>
+                  <option value="10">设置背景音量</option>
+                  <option value="11">关闭背景音乐</option>
+                  <option value="12">开启背景音乐</option>
+                </select>
+              </div>
+              <div>
+                <label for="muoModalVolume">Volume</label>
+                <input class="form-control" id="muoModalVolume" name="muoModalVolume" type="text"
+                       required="required"
+                       ng-model="vm.muoModal.vol"/>
+              </div>
+              <div>
+                <label for="muoModalMediaFname">Media File Name</label>
+                <select class="select form-control" id="muoModalMediaFname" name="muoModalMediaFname"
+                        ng-model="vm.muoModal.mediaFname">
+                  <option value="0">播放欢迎音</option>
+                  <option value="1">播放结束音</option>
+                  <option value="2">播放烟雾告警</option>
+                  <option value="3">播放背景音乐</option>
+                </select>
+              </div>
+              <div>
+                <label for="muoModalUID">UID</label>
+                <input class="form-control" id="muoModalUID" name="muoModalUID" type="text"
+                       required="required"
+                       ng-model="vm.muoModal.uid"/>
+              </div>
+              <div>
+                <label for="muoModalGenData">Generated data</label>
+                <textarea class="form-control" rows="3" id="muoModalGenData" name="muoModalGenData"
+                          ng-model="vm.muoModal.genData"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-info" ng-click="vm.muoGenData()">
+              生成
+            </button>
+            <button type="button submit" class="btn btn-primary">
+              发送
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+
     <!-- RTO Modal -->
     <div class="modal fade" id="rtoModal" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog">

@@ -169,6 +169,19 @@
     vm.outModalPinChange = outModalPinChange;
     vm.outModalPinMaskChange = outModalPinMaskChange;
 
+    /* muo modal init */
+    vm.muoModal = {
+      type: '1',
+      act: '0',
+      vol: '',
+      mediaFname: '0',
+      uid: '0000000000600000',
+      genData: ''
+    };
+    vm.muoGenData = muoGenData;
+    vm.muoSendCmd = muoSendCmd;
+    vm.muoModalActChange = muoModalActChange;
+
     /* rto modal init */
     vm.rtoModal = {
       cmd: '0',
@@ -518,6 +531,63 @@
         $('#outModalPin').removeAttr('readOnly');
       }
     }
+
+    /* multimedia operation */
+    function muoGenData() {
+    }
+
+    function muoSendCmd() {
+      var cmdObj = {};
+      cmdObj.uniqueId = vm.muoModal.uid;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0x83;
+      cmdObj.guiMultimediaCommandConfigRequest = {
+        'mode': muoAssembleMode(),
+        'volume': parseInt(vm.muoModal.vol.trim(), 10),
+        'fileName': parseInt(vm.muoModal.mediaFname.trim(), 10)
+      };
+      sendCommandToBackend(cmdObj, DevopsSettings.muoConAPI);
+    }
+
+    function muoAssembleMode() {
+      var mode = assemblePadZero(Number(vm.muoModal.act).toString(2), 4)
+        + assemblePadZero(Number(vm.muoModal.type).toString(2), 4);
+      return parseInt(mode, 2);
+    }
+
+    function muoModalActChange() {
+      switch (vm.muoModal.act) {
+        case '0':
+        case '11':
+        case '12': {
+          $('#muoModalVolume').attr('readOnly', 'readOnly');
+          $('#muoModalMediaFname').attr('readOnly', 'readOnly');
+          $('#muoModalMediaFname').attr('disabled', 'disabled');
+          vm.muoModal.vol = '0';
+          break;
+        }
+        case '1': {
+          $('#muoModalVolume').attr('readOnly', 'readOnly');
+          $('#muoModalMediaFname').removeAttr('readOnly');
+          $('#muoModalMediaFname').removeAttr('disabled');
+          vm.muoModal.vol = '0';
+          break;
+        }
+        case '10': {
+          $('#muoModalVolume').removeAttr('readOnly');
+          $('#muoModalMediaFname').attr('readOnly', 'readOnly');
+          $('#muoModalMediaFname').attr('disabled', 'disabled');
+          vm.muoModal.vol = '';
+          break;
+        }
+        default:
+          break;
+      }
+    }
+
+    $('#muoModal').on('shown.bs.modal', function () {
+      muoModalActChange();
+    });
 
     /* real time operation */
     function rtoGenData() {
