@@ -21,6 +21,7 @@
       doaConAPI: '/gui/sendDoorAlarmCommand',
       smaConAPI: '/gui/sendSmokeAlarmCommand',
       ouoConAPI: '/gui/sendOrderUpdateCommand',
+      outConAPI: '/gui/sendOutputOperationCommand',
       rtoConAPI: '/gui/sendRTOCommand',
       fotaAPI: '/gui/sendOTACommand',
       // device info API

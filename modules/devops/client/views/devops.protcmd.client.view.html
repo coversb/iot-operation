@@ -866,6 +866,69 @@
       </div><!-- /.modal -->
     </div>
 
+    <!-- OUT Modal -->
+    <div class="modal fade" id="outModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.outSendCmd()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h4 class="modal-title">
+              终端OUTPUT控制(Output Operation) [0x01 0x82]
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label for="outModalPin">Output Pin Number</label>
+                <input class="form-control" id="outModalPin" name="outModalPin" type="text"
+                       required="required"
+                       placeholder="(0 - 255)"
+                       ng-change="vm.outModalPinChange()"
+                       ng-model="vm.outModal.pin"/>
+              </div>
+              <div>
+                <label for="ouoModalPinState">Output Pin State</label>
+                <select class="select form-control" id="ouoModalPinState" name="ouoModalPinState"
+                        ng-model="vm.outModal.pinValue">
+                  <option value="0">关闭</option>
+                  <option value="1">开启</option>
+                </select>
+              </div>
+              <div>
+                <label for="outModalPinMask">Output Pin Control Mask</label>
+                <input class="form-control" id="outModalPinMask" name="outModalPinMask" type="text"
+                       required="required"
+                       placeholder="请输入HEX格式(0x00000000 - 0xFFFFFFFF)"
+                       ng-change="vm.outModalPinMaskChange()"
+                       ng-model="vm.outModal.pinMask"/>
+              </div>
+              <div>
+                <label for="outModalUID">UID</label>
+                <input class="form-control" id="outModalUID" name="outModalUID" type="text"
+                       required="required"
+                       ng-model="vm.outModal.uid"/>
+              </div>
+              <div>
+                <label for="outModalGenData">Generated data</label>
+                <textarea class="form-control" rows="3" id="outModalGenData" name="outModalGenData"
+                          ng-model="vm.outModal.genData"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-info" ng-click="vm.outGenData()">
+              生成
+            </button>
+            <button type="button submit" class="btn btn-primary">
+              发送
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+
     <!-- RTO Modal -->
     <div class="modal fade" id="rtoModal" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog">

@@ -156,6 +156,19 @@
     vm.ouoModalFillStartDatetime = ouoModalFillStartDatetime;
     vm.ouoModalFillExpireDatetime = ouoModalFillExpireDatetime;
 
+    /* out modal init */
+    vm.outModal = {
+      pin: '',
+      pinValue: '0',
+      pinMask: '',
+      uid: '0000000000600000',
+      genData: ''
+    };
+    vm.outGenData = outGenData;
+    vm.outSendCmd = outSendCmd;
+    vm.outModalPinChange = outModalPinChange;
+    vm.outModalPinMaskChange = outModalPinMaskChange;
+
     /* rto modal init */
     vm.rtoModal = {
       cmd: '0',
@@ -468,6 +481,41 @@
     function ouoModalFillExpireDatetime() {
       if (vm.ouoModal.orderStart.trim() !== '') {
         vm.ouoModal.orderExpire = (parseInt(vm.ouoModal.orderStart.trim(), 10) + 3600).toString(10);
+      }
+    }
+
+    /* output operation */
+    function outGenData() {
+    }
+
+    function outSendCmd() {
+      var cmdObj = {};
+      cmdObj.uniqueId = vm.outModal.uid;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0x82;
+      cmdObj.outputConfigCommandRequest = {
+        'outputNumber': parseInt(vm.outModal.pin.trim(), 10),
+        'outputPin': parseInt(vm.outModal.pinValue.trim(), 10),
+        'controlMask': parseInt(vm.outModal.pinMask.trim(), 16)
+      };
+      sendCommandToBackend(cmdObj, DevopsSettings.outConAPI);
+    }
+
+    function outModalPinChange() {
+      if (vm.outModal.pin !== '0' && vm.outModal.pin !== undefined) {
+        $('#outModalPinMask').attr('readOnly', 'readOnly');
+        vm.outModal.pinMask = '00000000';
+      } else {
+        $('#outModalPinMask').removeAttr('readOnly');
+      }
+    }
+
+    function outModalPinMaskChange() {
+      if (vm.outModal.pinMask !== '' && vm.outModal.pinMask !== undefined) {
+        $('#outModalPin').attr('readOnly', 'readOnly');
+        vm.outModal.pin = '0';
+      } else {
+        $('#outModalPin').removeAttr('readOnly');
       }
     }
 
