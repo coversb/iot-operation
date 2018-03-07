@@ -635,6 +635,74 @@
       </div><!-- /.modal -->
     </div>
 
+    <!-- DOA Modal -->
+    <div class="modal fade" id="doaModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.doaSendCmd()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h4 class="modal-title">
+              门禁告警(Door Alarm) [0x01 0x31]
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label for="doaModalMode">Mode</label>
+                <input class="form-control" id="doaModalMode" name="doaModalMode" type="text"
+                       required="required"
+                       placeholder="(0 - 2)"
+                       ng-model="vm.doaModal.mode"/>
+              </div>
+              <div>
+                <label for="doaModalTriggerType">Trigger Type</label>
+                <input class="form-control" id="doaModalTriggerType" name="doaModalTriggerType" type="text"
+                       required="required"
+                       placeholder="门禁告警触发类型，(0 - 255)"
+                       ng-model="vm.doaModal.type"/>
+              </div>
+              <div>
+                <label for="doaModalDuration">Duration</label>
+                <input class="form-control" id="doaModalDuration" name="doaModalDuration" type="text"
+                       required="required"
+                       placeholder="门禁告警触发防误报时长，单位分钟(0 - 255)"
+                       ng-model="vm.doaModal.duration"/>
+              </div>
+              <div>
+                <label for="doaModalInterval">Interval</label>
+                <input class="form-control" id="doaModalInterval" name="doaModalInterval" type="text"
+                       required="required"
+                       placeholder="模式为2时，处于触发状态，告警报文上报间隔，单位为秒(0 - 255)"
+                       ng-model="vm.doaModal.interval"/>
+              </div>
+              <div>
+                <label for="doaModalUID">UID</label>
+                <input class="form-control" id="doaModalUID" name="doaModalUID" type="text"
+                       required="required"
+                       ng-model="vm.doaModal.uid"/>
+              </div>
+              <div>
+                <label for="doaModalGenData">Generated data</label>
+                <textarea class="form-control" rows="3" id="doaModalGenData" name="doaModalGenData"
+                          ng-model="vm.doaModal.genData"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-info" ng-click="vm.doaGenData()">
+              生成
+            </button>
+            <button type="button submit" class="btn btn-primary">
+              发送
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+
     <!-- RTO Modal -->
     <div class="modal fade" id="rtoModal" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog">

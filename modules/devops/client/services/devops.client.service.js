@@ -18,6 +18,7 @@
       dogConAPI: '/gui/sendWatchdogConfigCommand',
       airConditionerConAPI: '/gui/sendAirconConfigCommand',
       omcConAPI: '/gui/sendOutputModeConfigCommand',
+      doaConAPI: '/gui/sendDoorAlarmCommand',
       rtoConAPI: '/gui/sendRTOCommand',
       fotaAPI: '/gui/sendOTACommand',
       // device info API

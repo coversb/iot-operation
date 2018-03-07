@@ -114,6 +114,18 @@
     vm.omcGenData = omcGenData;
     vm.omcSendCmd = omcSendCmd;
 
+    /* doa modal init */
+    vm.doaModal = {
+      mode: '1',
+      type: '0',
+      duration: '15',
+      interval: '60',
+      uid: '0000000000600000',
+      genData: ''
+    };
+    vm.doaGenData = doaGenData;
+    vm.doaSendCmd = doaSendCmd;
+
     /* rto modal init */
     vm.rtoModal = {
       cmd: '0',
@@ -358,6 +370,25 @@
         + assemblePadZero(Number(vm.omcModal.beginMinute).toString(2), 6)
         + assemblePadZero(Number(vm.omcModal.beginHour).toString(2), 5);
       return parseInt(validTime, 2);
+    }
+
+    /* door alarm */
+    function doaGenData() {
+
+    }
+
+    function doaSendCmd() {
+      var cmdObj = {};
+      cmdObj.uniqueId = vm.doaModal.uid;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0x31;
+      cmdObj.guiDoorAlarmCommandRequest = {
+        'doorAlarmMode': parseInt(vm.doaModal.mode.trim(), 10),
+        'doorAlarmTrigger': parseInt(vm.doaModal.type.trim(), 10),
+        'doorAlarmDuration': parseInt(vm.doaModal.duration.trim(), 10),
+        'doorAlarmSendInterval': parseInt(vm.doaModal.interval.trim(), 10)
+      };
+      sendCommandToBackend(cmdObj, DevopsSettings.doaConAPI);
     }
 
     /* real time operation */
