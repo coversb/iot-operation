@@ -6,7 +6,7 @@
   var service = {
     applicationEnvironment: window.env,
     applicationModuleName: applicationModuleName,
-    applicationModuleVendorDependencies: ['ngResource', 'ngAnimate', 'ngMessages', 'ui.router', 'ui.bootstrap', 'ngFileUpload', 'ui-notification', 'FileManagerApp', 'ngEnvVars'],
+    applicationModuleVendorDependencies: ['ngResource', 'ngAnimate', 'ngMessages', 'ui.router', 'ui.bootstrap', 'ngFileUpload', 'ui-notification', 'FileManagerApp', 'ngEnvVars', 'angularCSS'],
     registerModule: registerModule
   };
 
@@ -71,5 +71,17 @@
       getContentUrl: '/files/getContent',
       listUrl: '/files/list'
     });
+  });
+
+  angular.module('angularCSS').config(function($cssProvider) {
+
+    angular.extend($cssProvider.defaults, {
+      container: 'head',
+      method: 'append',
+      persist: true,
+      preload: true,
+      bustCache: true
+    });
+
   });
 }(window));
