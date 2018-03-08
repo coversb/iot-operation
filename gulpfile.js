@@ -93,7 +93,7 @@ gulp.task('ng-config', function () {
         wrap: true
       })
     )
-    .pipe(gulp.dest('./modules/core/client/app/'))
+    .pipe(gulp.dest('./modules/core/client/app/'));
 });
 
 // Watch Files For Changes

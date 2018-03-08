@@ -5,9 +5,9 @@
     .module('devops.protcmd')
     .controller('DevopsProtCmdController', DevopsProtCmdController);
 
-  DevopsProtCmdController.$inject = ['$scope', '$state', '$http', 'Authentication', 'DevopsSettings', 'DevopsProt', 'ENV_VARS'];
+  DevopsProtCmdController.$inject = ['$scope', '$state', '$http', 'Authentication', 'DevopsSettings', 'DevopsProt'];
 
-  function DevopsProtCmdController($scope, $state, $http, Authentication, DevopsSettings, DevopsProt, ENV_VARS) {
+  function DevopsProtCmdController($scope, $state, $http, Authentication, DevopsSettings, DevopsProt) {
 
     var vm = this;
 
@@ -232,7 +232,7 @@
           'Content-Type': 'application/json'
         }
       };
-      $http.post(ENV_VARS.backboneUrl + apiURL, data, config)
+      $http.post(DevopsSettings.backboneURL + apiURL, data, config)
         .success(function (data, status, header, config) {
           console.log('success');
         })

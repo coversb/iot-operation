@@ -7,9 +7,12 @@
     .module('devops.services')
     .factory('DevopsSettings', DevopsSettings);
 
-  function DevopsSettings() {
+  DevopsSettings.$inject = ['ENV_VARS'];
+
+  function DevopsSettings(ENV_VARS) {
     var settings = {
-      // backboneURL: 'http://integration-iot.gongyuanhezi.cn',
+      // backbone base url
+      backboneURL: ENV_VARS.backboneUrl,
       // command API
       apcConAPI: '/gui/sendAccessPointCommand',
       serConAPI: '/gui/sendServerConfigCommand',
