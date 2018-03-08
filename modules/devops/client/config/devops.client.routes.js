@@ -23,6 +23,15 @@
           roles: ['user', 'admin']
         }
       })
+      .state('devops.functiontest', {
+        url: '/functiontest',
+        templateUrl: '/modules/devops/client/views/devops.functiontest.client.view.html',
+        controller: 'DevopsFunctionTestController',
+        controllerAs: 'vm',
+        data: {
+          roles: ['user', 'admin']
+        }
+      })
       .state('devops.protcmd', {
         url: '/protcmd',
         templateUrl: '/modules/devops/client/views/devops.protcmd.client.view.html',

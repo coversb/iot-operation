@@ -25,6 +25,13 @@
     });
 
     menuService.addSubMenuItem('topbar', 'devops', {
+      title: '功能测试工具',
+      state: 'devops.functiontest',
+      roles: ['user', 'admin'],
+      position: 1
+    });
+
+    menuService.addSubMenuItem('topbar', 'devops', {
       title: '协议命令',
       state: 'devops.protcmd',
       roles: ['admin'],

@@ -1,0 +1,121 @@
+<!-- The chat view -->
+<section class="container">
+  <div class="page-header">
+    <h1>功能测试工具</h1>
+  </div>
+
+  <div class="bootstrap-iso">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6">
+          <div class="form-group col-xs-12 col-sm-12 col-md-12">
+            <label class="control-label requiredField" for="uniqueID">
+              Unique ID
+              <span class="asteriskField">*</span>
+            </label>
+            <div class="input-group">
+              <div class="input-group-addon">
+                <i class="fa fa-magnet"></i>
+              </div>
+              <input class="form-control" id="uniqueID" name="uniqueID" type="text" ng-model="vm.devUID"/>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-6 col-md-6">
+            <h3><label class="label label-primary label-lg" for="lightSwitch">照明:</label></h3>
+            <div class="btn-group" id="lightSwitch">
+              <button type="button" class="btn btn-success btn-lg" ng-click="vm.sendOutCommand('light', 1)">打开</button>
+              <button type="button" class="btn btn-success btn-lg" ng-click="vm.sendOutCommand('light', 0)">关闭</button>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-6 col-md-6">
+            <h3><label class="label label-primary label-lg" for="emeLightSwitch">应急照明:</label></h3>
+            <div class="btn-group" id="emeLightSwitch">
+              <button type="button" class="btn btn-success btn-lg" ng-click="vm.sendOutCommand('emeLight', 1)">打开
+              </button>
+              <button type="button" class="btn btn-success btn-lg" ng-click="vm.sendOutCommand('emeLight', 0)">关闭
+              </button>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-6 col-md-6">
+            <h3><label class="label label-primary label-lg" for="airCon1Switch">空调1:</label></h3>
+            <div class="btn-group" id="airCon1Switch">
+              <button type="button" class="btn btn-success btn-lg" ng-click="vm.sendOutCommand('airCon1', 1)">打开
+              </button>
+              <button type="button" class="btn btn-success btn-lg" ng-click="vm.sendOutCommand('airCon1', 0)">关闭
+              </button>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-6 col-md-6">
+            <h3><label class="label label-primary label-lg" for="airCon2Switch">空调2:</label></h3>
+            <div class="btn-group" id="airCon2Switch">
+              <button type="button" class="btn btn-success btn-lg" ng-click="vm.sendOutCommand('airCon2', 1)">打开
+              </button>
+              <button type="button" class="btn btn-success btn-lg" ng-click="vm.sendOutCommand('airCon2', 0)">关闭
+              </button>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-6 col-md-6">
+            <h3><label class="label label-primary label-lg" for="groundPlug1Switch">地插1:</label></h3>
+            <div class="btn-group" id="groundPlug1Switch">
+              <button type="button" class="btn btn-success btn-lg" ng-click="vm.sendOutCommand('groundPlug1', 1)">打开
+              </button>
+              <button type="button" class="btn btn-success btn-lg" ng-click="vm.sendOutCommand('groundPlug1', 0)">关闭
+              </button>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-6 col-md-6">
+            <h3><label class="label label-primary label-lg" for="groundPlug2Switch">地插2:</label></h3>
+            <div class="btn-group" id="groundPlug2Switch">
+              <button type="button" class="btn btn-success btn-lg" ng-click="vm.sendOutCommand('groundPlug2', 1)">打开
+              </button>
+              <button type="button" class="btn btn-success btn-lg" ng-click="vm.sendOutCommand('groundPlug2', 0)">关闭
+              </button>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-6 col-md-6">
+            <h3><label class="label label-primary label-lg" for="exhaustSwitch">排风:</label></h3>
+            <div class="btn-group" id="exhaustSwitch">
+              <button type="button" class="btn btn-success btn-lg" ng-click="vm.sendOutCommand('exhaust', 1)">打开
+              </button>
+              <button type="button" class="btn btn-success btn-lg" ng-click="vm.sendOutCommand('exhaust', 0)">关闭
+              </button>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-6 col-md-6">
+            <h3><label class="label label-primary label-lg" for="freshAirSwitch">新风:</label></h3>
+            <div class="btn-group" id="freshAirSwitch">
+              <button type="button" class="btn btn-success btn-lg" ng-click="vm.sendOutCommand('freshAir', 1)">打开
+              </button>
+              <button type="button" class="btn btn-success btn-lg" ng-click="vm.sendOutCommand('freshAir', 0)">关闭
+              </button>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-6 col-md-6">
+            <h3><label class="label label-primary label-lg" for="indoorTvSwitch">电视机:</label></h3>
+            <div class="btn-group" id="indoorTvSwitch">
+              <button type="button" class="btn btn-success btn-lg" ng-click="vm.sendOutCommand('indoorTv', 1)">打开
+              </button>
+              <button type="button" class="btn btn-success btn-lg" ng-click="vm.sendOutCommand('indoorTv', 0)">关闭
+              </button>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-6 col-md-6">
+            <h3><label class="label label-primary label-lg" for="vendingMachineSwitch">售货机:</label></h3>
+            <div class="btn-group" id="vendingMachineSwitch">
+              <button type="button" class="btn btn-success btn-lg" ng-click="vm.sendOutCommand('vendingMachine', 1)">
+                打开
+              </button>
+              <button type="button" class="btn btn-success btn-lg" ng-click="vm.sendOutCommand('vendingMachine', 0)">
+                关闭
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12 col-sm-12 col-xs-12 alert alert-success" ng-show="vm.successMessagebool">
+          <strong>{{vm.successMessage }}</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
