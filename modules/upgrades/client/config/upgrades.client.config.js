@@ -10,29 +10,26 @@
   function menuConfig(menuService) {
     // Set top bar menu items
     menuService.addMenuItem('topbar', {
-      title: 'Upgrades',
+      title: '升级管理',
       state: 'upgrades',
       type: 'dropdown',
-      roles: ['*']
+      roles: ['user', 'admin'],
+      position: 2
     });
 
     // Add the dropdown list item
     menuService.addSubMenuItem('topbar', 'upgrades', {
-      title: 'Version Manager',
+      title: '版本管理',
+      state: 'upgrades.versions',
+      roles: ['user', 'admin'],
+      position: 0
+    });
+
+    // Add the dropdown list item
+    menuService.addSubMenuItem('topbar', 'upgrades', {
+      title: '固件管理',
       state: 'upgrades.version'
     });
 
-    // Add the dropdown list item
-    menuService.addSubMenuItem('topbar', 'upgrades', {
-      title: 'List Upgrades',
-      state: 'upgrades.list'
-    });
-
-    // Add the dropdown create item
-    menuService.addSubMenuItem('topbar', 'upgrades', {
-      title: 'Create Upgrade',
-      state: 'upgrades.create',
-      roles: ['*']
-    });
   }
 }());

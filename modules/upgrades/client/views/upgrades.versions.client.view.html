@@ -1,0 +1,109 @@
+<!-- The chat view -->
+<section class="container">
+  <div class="page-header">
+    <h1>版本管理</h1>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="panel-body">
+        <div class="panel panel-default">
+          <div class="panel-heading">查询条件</div>
+          <div class="panel-body">
+            <form id="formSearch" class="form-horizontal" ng-submit="vm.searchVersion()">
+              <div class="form-group" style="margin-top:15px">
+                <label class="control-label col-sm-1" for="searchDeviceType">硬件类型</label>
+                <div class="col-sm-3">
+                  <input type="text" class="form-control" id="searchDeviceType" ng-model="vm.txtSearchDevType">
+                </div>
+                <label class="control-label col-sm-1" for="searchVersion">版本号</label>
+                <div class="col-sm-3">
+                  <input type="text" class="form-control" id="searchVersion" ng-model="vm.txtSearchVersion">
+                </div>
+                <div class="col-sm-4" style="text-align:left;">
+                  <button type="button submit" style="margin-left:50px" class="btn btn-primary">查询</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div id="toolbar" class="btn-group">
+          <button id="btnAddVersion" type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+          </button>
+          <button id="btnDelVersion" type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+          </button>
+        </div>
+        <div class="tableMargin">
+          <table class="table table-hover table-striped" id="versionsTable"></table>
+          <ul class="pagination"></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Version Detail Modal -->
+    <div class="modal fade" id="versionUpdateDialog" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.versionUpdate()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h4 class="modal-title">
+              {{vm.versionUpdateDialogTitle }}
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label for="fotaBinName">版本名称</label>
+                <input class="form-control" id="fotaBinName" name="fotaBinName" type="text"
+                       required="required"
+                       ng-model="vm.version.name"/>
+                <!-- button class="btn btn-primary btn-file" ngf-select="" ng-model="vm.fotaBin" accept="*">上传固件</button-->
+              </div>
+              <div>
+                <label for="fotaBinURL">固件URL:{{vm.version.url}}</label>
+                <input class="form-control" id="fotaBinURL" name="fotaBinURL" type="text"
+                       required="required"
+                       ng-model="vm.version.url"/>
+                <!-- button class="btn btn-primary btn-file" ngf-select="" ng-model="vm.fotaBin" accept="*">上传固件</button-->
+              </div>
+              <div>
+                <label for="fotaBinMD5">MD5</label>
+                <input class="form-control" id="fotaBinMD5" name="fotaBinMD5" type="text"
+                       required="required"
+                       ng-model="vm.version.md5"/>
+              </div>
+              <div>
+                <label for="fotaBinDevType">硬件类型</label>
+                <select class="select form-control" id="fotaBinDevType" name="fotaBinDevType"
+                        required="required"
+                        ng-model="vm.version.devType">
+                  <option value="STM32F103">STM32F103</option>
+                  <option value="STM32F427">STM32F427</option>
+                </select>
+              </div>
+              <div>
+                <label for="fotaBinVerNo">固件版本号</label>
+                <input class="form-control" id="fotaBinVerNo" name="fotaBinVerNo" type="text"
+                       required="required"
+                       ng-model="vm.version.verNo"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button submit" class="btn btn-success">
+              保存
+            </button>
+            <button type="button submit" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">
+              取消
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+  </div>
+</section>

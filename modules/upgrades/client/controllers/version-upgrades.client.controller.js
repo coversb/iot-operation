@@ -5,11 +5,11 @@
     .module('upgrades')
     .controller('UpgradesVersionController', UpgradesListController);
 
-  UpgradesListController.$inject = ['UpgradesService'];
+  // UpgradesListController.$inject = ['UpgradesService'];
 
-  function UpgradesListController(UpgradesService) {
+  function UpgradesListController() {
     var vm = this;
 
-    vm.upgrades = UpgradesService.query();
+    // vm.upgrades = UpgradesService.query();
   }
 }());

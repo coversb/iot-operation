@@ -9,47 +9,38 @@ var acl = require('acl');
 acl = new acl(new acl.memoryBackend());
 
 /**
- * Invoke Upgrades Permissions
+ * Invoke Upgrades Versions Permissions
  */
 exports.invokeRolesPolicies = function () {
   acl.allow([{
     roles: ['admin'],
     allows: [{
-      resources: '/api/upgrades',
+      resources: '/api/upgrades/versions',
       permissions: '*'
     }, {
-      resources: '/api/upgrades/:upgradeId',
+      resources: '/api/upgrades/versions/:versionsId',
       permissions: '*'
     }]
   }, {
     roles: ['user'],
     allows: [{
-      resources: '/api/upgrades',
-      permissions: ['get', 'post']
-    }, {
-      resources: '/api/upgrades/:upgradeId',
-      permissions: ['get']
-    }]
-  }, {
-    roles: ['guest'],
-    allows: [{
-      resources: '/api/upgrades',
+      resources: '/api/upgrades/versions',
       permissions: ['get']
     }, {
-      resources: '/api/upgrades/:upgradeId',
+      resources: '/api/upgrades/versions/:versionsId',
       permissions: ['get']
     }]
   }]);
 };
 
 /**
- * Check If Upgrades Policy Allows
+ * Check If Upgrades Versions Policy Allows
  */
 exports.isAllowed = function (req, res, next) {
   var roles = (req.user) ? req.user.roles : ['guest'];
 
-  // If an Upgrade is being processed and the current user created it then allow any manipulation
-  if (req.upgrade && req.user && req.upgrade.user && req.upgrade.user.id === req.user.id) {
+  // If an version is being processed and the current user created it then allow any manipulation
+  if (req.version && req.user && req.version.user && req.version.user.id === req.user.id) {
     return next();
   }
 
