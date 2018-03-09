@@ -27,8 +27,9 @@
         }
       })
       .state('upgrades.version', {
-        url: '',
+        url: '/version',
         templateUrl: 'modules/upgrades/client/views/version-upgrades.client.view.html',
+        css: '/lib/angular-filemanager/dist/angular-filemanager.min.css',
         controller: 'UpgradesVersionController',
         controllerAs: 'vm',
         data: {
