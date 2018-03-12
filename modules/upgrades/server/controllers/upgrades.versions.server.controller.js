@@ -94,8 +94,8 @@ exports.list = function (req, res) {
   Version.find(
     {
       $and: [
-        {devType: {$regex: devTypeReg}},
-        {verNo: {$regex: verNoReg}}
+        { devType: { $regex: devTypeReg } },
+        { verNo: { $regex: verNoReg } }
       ]
     }
   ).exec(function (err, version) {
@@ -111,28 +111,25 @@ exports.list = function (req, res) {
   Version.find(
     {
       $and: [
-        {devType: {$regex: devTypeReg}},
-        {verNo: {$regex: verNoReg}}
+        { devType: { $regex: devTypeReg } },
+        { verNo: { $regex: verNoReg } }
       ]
     }
-  )
-    .skip((pageNum - 1) * pageSize)
-    .limit(pageSize)
-    .sort('-created').populate('user', 'displayName').exec(function (err, version) {
-
-    if (err) {
-      return res.status(422).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      var ret = {
-        code: 'success',
-        count: totalCount,
-        data: version
-      };
-      res.json(ret);
-    }
-  });
+  ).skip((pageNum - 1) * pageSize).limit(pageSize).sort('-created').populate('user', 'displayName')
+    .exec(function (err, version) {
+      if (err) {
+        return res.status(422).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        var ret = {
+          code: 'success',
+          count: totalCount,
+          data: version
+        };
+        res.json(ret);
+      }
+    });
 };
 
 /**
