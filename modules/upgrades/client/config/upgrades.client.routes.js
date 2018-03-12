@@ -12,7 +12,7 @@
       .state('upgrades', {
         abstract: true,
         url: '/upgrades',
-        template: '<ui-view/>'
+        template: '<ui-view></ui-view>'
       })
       .state('upgrades.versions', {
         url: '/versions',
@@ -28,7 +28,7 @@
       })
       .state('upgrades.version', {
         url: '/version',
-        templateUrl: 'modules/upgrades/client/views/version-upgrades.client.view.html',
+        templateUrl: '/modules/upgrades/client/views/version-upgrades.client.view.html',
         css: '/lib/angular-filemanager/dist/angular-filemanager.min.css',
         controller: 'UpgradesVersionController',
         controllerAs: 'vm',
@@ -51,22 +51,4 @@
   function newUpgradesVersions(UpgradesVersionsService) {
     return new UpgradesVersionsService();
   }
-
-  angular.module('FileManagerApp').config(['fileManagerConfigProvider', function (config) {
-    var defaults = config.$get();
-    config.set({
-      appName: 'angular-filemanager',
-      pickCallback: function (item) {
-        var msg = 'Picked %s "%s" for external use'
-          .replace('%s', item.type)
-          .replace('%s', item.fullPath());
-        window.alert(msg);
-      },
-      allowedActions: angular.extend(defaults.allowedActions, {
-        pickFiles: true,
-        pickFolders: false
-      })
-    });
-  }]);
-
 }());

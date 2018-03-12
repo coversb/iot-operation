@@ -2,14 +2,17 @@
   'use strict';
 
   angular
-    .module('upgrades')
-    .controller('UpgradesVersionController', UpgradesListController);
+    .module('upgrades.version')
+    .controller('UpgradesVersionController', UpgradesVersionController);
 
-  // UpgradesListController.$inject = ['UpgradesService'];
+  UpgradesVersionController.$inject = ['$scope', '$css'];
 
-  function UpgradesListController() {
+  function UpgradesVersionController($scope, $css ) {
     var vm = this;
 
-    // vm.upgrades = UpgradesService.query();
+    $scope.$on('$destroy', function( event ) {
+      $css.remove('/lib/angular-filemanager/dist/angular-filemanager.min.css');
+      console.log("removed");
+    });
   }
 }());
