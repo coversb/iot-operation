@@ -86,7 +86,39 @@ exports.delete = function (req, res) {
 exports.list = function (req, res) {
   console.log(req.query);
   console.log('List of versions');
-  Version.find().sort('-created').populate('user', 'displayName').exec(function (err, version) {
+  var devTypeReg = new RegExp(req.query.devType, 'i');
+  var verNoReg = new RegExp(req.query.verNo, 'i');
+  var pageNum = parseInt(req.query.pageNum, 10);
+  var pageSize = parseInt(req.query.pageSize, 10);
+  var totalCount = 0;
+  Version.find(
+    {
+      $and: [
+        {devType: {$regex: devTypeReg}},
+        {verNo: {$regex: verNoReg}}
+      ]
+    }
+  ).exec(function (err, version) {
+    if (err) {
+      return res.status(422).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      totalCount = version.length;
+    }
+  });
+
+  Version.find(
+    {
+      $and: [
+        {devType: {$regex: devTypeReg}},
+        {verNo: {$regex: verNoReg}}
+      ]
+    }
+  )
+    .skip((pageNum - 1) * pageSize)
+    .limit(pageSize)
+    .sort('-created').populate('user', 'displayName').exec(function (err, version) {
 
     if (err) {
       return res.status(422).send({
@@ -95,7 +127,7 @@ exports.list = function (req, res) {
     } else {
       var ret = {
         code: 'success',
-        count: version.length,
+        count: totalCount,
         data: version
       };
       res.json(ret);
