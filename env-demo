@@ -1,7 +1,5 @@
-MONGODB_URI=mongodb://mongouser:ztm42nHEBACc0W@172.31.240.17:27017/angularfullstack?authSource=admin
-#MONGODB_TEST_URI=mongodb://mongouser:ztm42nHEBACc0W172.31.240.17:27017/test
-#MONGODB_URI=mongodb://localhost/mean-dev
+MONGODB_URI=mongodb://##MONGO_DEFAULT_USER##:##MONGO_DEFAULT_PASS##@##MONGO_DEFAULT_HOST##:##MONGO_DEFAULT_PORT##/##MONGO_DEFAULT_NAME##?authSource=admin
 PORT=8080
 SECRET_TOKEN=catswillruletheworld
-DATA_DIR=/Users/apple/Downloads/tem
-BACKBONE_URL=http://iot.gongyuanhezi.cn
+DATA_DIR=/fota/bin
+BACKBONE_URL=##URL_IOT_FULL##
