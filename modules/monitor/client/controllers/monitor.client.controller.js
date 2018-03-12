@@ -104,7 +104,7 @@
             align: 'center',
             formatter: function (value, row) {
               var pwrStatDis = '<span style="color:green">' + '有市电' + '</span>';
-              if (value === 0) {
+              if (value === '0') {
                 pwrStatDis = '<span style="color:red">' + '无市电' + '</span>';
               }
               return pwrStatDis;
