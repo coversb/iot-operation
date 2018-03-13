@@ -43,15 +43,14 @@
     </div>
 
     <!-- Version Detail Modal -->
-    <div class="modal fade" id="versionUpdateDialog" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="versionUpdateDialog" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
       <div class="modal-dialog">
         <form class="modal-content" ng-submit="vm.versionUpdate()">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
               &times;
             </button>
-            <h4 class="modal-title">
-              {{vm.versionUpdateDialogTitle }}
+            <h4 class="modal-title" id="fotaModalTitle">
             </h4>
           </div>
           <div class="modal-body">
@@ -64,7 +63,7 @@
                 <!-- button class="btn btn-primary btn-file" ngf-select="" ng-model="vm.fotaBin" accept="*">上传固件</button-->
               </div>
               <div>
-                <label for="fotaBinURL">固件URL:{{vm.version.url}}</label>
+                <label for="fotaBinURL">固件URL</label>
                 <input class="form-control" id="fotaBinURL" name="fotaBinURL" type="text"
                        required="required"
                        ng-model="vm.version.url"/>

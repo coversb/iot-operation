@@ -12,7 +12,6 @@
     var vm = this;
 
     vm.version = upgradesVersions;
-    vm.versionUpdateDialogTitle = '新增版本';
     vm.txtSearchDevType = '';
     vm.txtSearchVersion = '';
     vm.searchVersion = searchVersion;
@@ -29,6 +28,10 @@
       $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['zh-CN']);
       loadVersionList();
     }
+
+    $('#versionUpdateDialog').on('shown.bs.modal', function () {
+      $('#fotaBinName').focus();
+    });
 
     function loadVersionList() {
       $('#versionsTable').bootstrapTable({
@@ -125,40 +128,73 @@
       });
     }
 
+
     /* toolbar */
     function searchVersion() {
-      console.log(vm.txtSearchDevType);
-      console.log(vm.txtSearchVersion);
       $('#versionsTable').bootstrapTable('refresh', {});
     }
 
     $('#btnAddVersion').click(function () {
-      vm.versionUpdateDialogTitle = '新增版本';
-
       vm.version.name = '';
       vm.version.devType = '';
       vm.version.verNo = '';
       vm.version.md5 = '';
       vm.version.url = '';
       vm.version._id = null;
-      $('#versionUpdateDialog').modal('show');
 
+      $('#fotaModalTitle').text('新增版本');
+      $('#fotaBinName').val('');
+      $('#fotaBinURL').val('');
+      $('#fotaBinMD5').val('');
+      $('#fotaBinDevType').val('');
+      $('#fotaBinVerNo').val('');
+
+      $('#versionUpdateDialog').modal('show');
     });
 
     $('#btnDelVersion').click(function () {
+      var selectedItem = $('#versionsTable').bootstrapTable('getSelections');
 
+      if (selectedItem.length === 0) {
+        alert('请选择需要删除的版本');
+      }
+      else {
+        if ($window.confirm('确定删除选中的[' + selectedItem.length + ']个版本?')) {
+          for (var idx = 0; idx < selectedItem.length; idx++) {
+            vm.version._id = selectedItem[idx]._id;
+            vm.version.deleteSingle()
+              .then(successCallback)
+              .catch(errorCallback);
+          }
+        }
+      }
+
+      function successCallback(res) {
+        Notification.success({message: '<i class="glyphicon glyphicon-ok"></i> 版本信息删除成功!'});
+        $('#versionsTable').bootstrapTable('refresh', {});
+      }
+
+      function errorCallback(res) {
+        Notification.error({message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> 版本信息删除失败!'});
+      }
     });
 
     /* version operation */
     function editSingleVersion(row) {
-      vm.versionUpdateDialogTitle = '修改版本';
-
       vm.version.name = row.name;
       vm.version.devType = row.devType;
       vm.version.verNo = row.verNo;
       vm.version.md5 = row.md5;
       vm.version.url = row.url;
       vm.version._id = row._id;
+
+      $('#fotaModalTitle').text('修改版本');
+      $('#fotaBinName').val(vm.version.name);
+      $('#fotaBinURL').val(vm.version.url);
+      $('#fotaBinMD5').val(vm.version.md5);
+      $('#fotaBinDevType').val(vm.version.devType);
+      $('#fotaBinVerNo').val(vm.version.verNo);
+
       $('#versionUpdateDialog').modal('show');
     }
 
@@ -171,12 +207,12 @@
       }
 
       function successCallback(res) {
-        Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> 版本信息删除成功!' });
+        Notification.success({message: '<i class="glyphicon glyphicon-ok"></i> 版本信息删除成功!'});
         $('#versionsTable').bootstrapTable('refresh', {});
       }
 
       function errorCallback(res) {
-        Notification.error({ message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> 版本信息删除失败!' });
+        Notification.error({message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> 版本信息删除失败!'});
       }
     }
 
@@ -187,13 +223,13 @@
         .catch(errorCallback);
 
       function successCallback(res) {
-        Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> 版本信息保存成功!' });
+        Notification.success({message: '<i class="glyphicon glyphicon-ok"></i> 版本信息保存成功!'});
         $('#versionUpdateDialog').modal('hide');
         $('#versionsTable').bootstrapTable('refresh', {});
       }
 
       function errorCallback(res) {
-        Notification.error({ message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> 版本信息保存失败!' });
+        Notification.error({message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> 版本信息保存失败!'});
       }
     }
 
