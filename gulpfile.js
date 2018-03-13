@@ -6,7 +6,7 @@
 var ENV = process.env.APP_ENV || 'development';
 
 // If our environment is development, we load our local environment variables
-if (ENV === 'development') {
+if (ENV === 'development' || ENV === 'production') {
   require('dotenv').load();
 }
 
@@ -481,7 +481,7 @@ gulp.task('lint', function (done) {
 
 // Lint project files and minify them into two production files.
 gulp.task('build', function (done) {
-  runSequence('env:dev', 'wiredep:prod', 'lint', ['uglify', 'cssmin'], done);
+  runSequence('env:prod', 'wiredep:prod', 'lint', ['uglify', 'cssmin'], done);
 });
 
 // Run the project tests
@@ -517,7 +517,7 @@ gulp.task('default', function (done) {
 
 // Run the project in production mode
 gulp.task('prod', function (done) {
-  runSequence(['copyLocalEnvConfig', 'makeUploadsDir', 'templatecache'], 'build', 'env:prod', 'lint', ['nodemon-nodebug', 'watch'], done);
+  runSequence(['ng-config', 'copyLocalEnvConfig', 'makeUploadsDir', 'templatecache'], 'build', 'env:prod', 'lint', ['nodemon-nodebug', 'watch'], done);
 });
 
 // Run Mongo Seed with default environment config
