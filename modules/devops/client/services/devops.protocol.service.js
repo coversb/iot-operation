@@ -19,7 +19,7 @@
     var cmd = 'INVALID INPUT';
     switch (cmdType) {
       case 'RTO': {
-        console.log(param);
+        // console.log(param);
         cmd = 'RTO COMMAND';
         break;
       }

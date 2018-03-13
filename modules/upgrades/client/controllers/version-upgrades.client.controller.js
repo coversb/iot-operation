@@ -7,12 +7,12 @@
 
   UpgradesVersionController.$inject = ['$scope', '$css'];
 
-  function UpgradesVersionController($scope, $css ) {
+  function UpgradesVersionController($scope, $css) {
     var vm = this;
 
-    $scope.$on('$destroy', function( event ) {
+    $scope.$on('$destroy', function (event) {
       $css.remove('/lib/angular-filemanager/dist/angular-filemanager.min.css');
-      console.log("removed");
+      console.log('removed');
     });
   }
 }());

@@ -157,8 +157,7 @@
 
       if (selectedItem.length === 0) {
         alert('请选择需要删除的版本');
-      }
-      else {
+      } else {
         if ($window.confirm('确定删除选中的[' + selectedItem.length + ']个版本?')) {
           for (var idx = 0; idx < selectedItem.length; idx++) {
             vm.version._id = selectedItem[idx]._id;
@@ -170,12 +169,12 @@
       }
 
       function successCallback(res) {
-        Notification.success({message: '<i class="glyphicon glyphicon-ok"></i> 版本信息删除成功!'});
+        Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> 版本信息删除成功!' });
         $('#versionsTable').bootstrapTable('refresh', {});
       }
 
       function errorCallback(res) {
-        Notification.error({message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> 版本信息删除失败!'});
+        Notification.error({ message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> 版本信息删除失败!' });
       }
     });
 
@@ -207,12 +206,12 @@
       }
 
       function successCallback(res) {
-        Notification.success({message: '<i class="glyphicon glyphicon-ok"></i> 版本信息删除成功!'});
+        Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> 版本信息删除成功!' });
         $('#versionsTable').bootstrapTable('refresh', {});
       }
 
       function errorCallback(res) {
-        Notification.error({message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> 版本信息删除失败!'});
+        Notification.error({ message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> 版本信息删除失败!' });
       }
     }
 
@@ -223,13 +222,13 @@
         .catch(errorCallback);
 
       function successCallback(res) {
-        Notification.success({message: '<i class="glyphicon glyphicon-ok"></i> 版本信息保存成功!'});
+        Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> 版本信息保存成功!' });
         $('#versionUpdateDialog').modal('hide');
         $('#versionsTable').bootstrapTable('refresh', {});
       }
 
       function errorCallback(res) {
-        Notification.error({message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> 版本信息保存失败!'});
+        Notification.error({ message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> 版本信息保存失败!' });
       }
     }
 

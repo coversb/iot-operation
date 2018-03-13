@@ -84,8 +84,8 @@ exports.delete = function (req, res) {
  * List of versions
  */
 exports.list = function (req, res) {
-  console.log(req.query);
-  console.log('List of versions');
+  // console.log(req.query);
+  // console.log('List of versions');
   var devTypeReg = new RegExp(req.query.devType, 'i');
   var verNoReg = new RegExp(req.query.verNo, 'i');
   var pageNum = parseInt(req.query.pageNum, 10);

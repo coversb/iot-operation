@@ -58,7 +58,7 @@
         + assemblePadZero(Number(windMode).toString(2), 2)
         + assemblePadZero(Number(workMode).toString(2), 2)
         + assemblePadZero(Number(pwrMode).toString(2), 2);
-      console.log(devAirConMode);
+      // console.log(devAirConMode);
       return parseInt(devAirConMode, 2);
     }
 
