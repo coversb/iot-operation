@@ -35,6 +35,18 @@
         data: {
           pageTitle: 'Version Manager'
         }
+      })
+      .state('upgrades.batch', {
+        url: '/batch',
+        templateUrl: '/modules/upgrades/client/views/batch-upgrades.client.view.html',
+        controller: 'UpgradesBatchController',
+        controllerAs: 'vm',
+        data: {
+          pageTitle: 'Version Batch'
+        },
+        resolve: {
+          upgradesBatchResolve: getUpgradesVersions
+        }
       });
   }
 

@@ -31,5 +31,11 @@
       state: 'upgrades.version'
     });
 
+    // Add the dropdown list item
+    menuService.addSubMenuItem('topbar', 'upgrades', {
+      title: '版本升级',
+      state: 'upgrades.batch'
+    });
+
   }
 }());
