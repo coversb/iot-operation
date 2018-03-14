@@ -533,3 +533,14 @@ gulp.task('seed:prod', function (done) {
 gulp.task('seed:test', function (done) {
   runSequence('env:test', 'mongo-seed', done);
 });
+
+// Run production build process
+gulp.task('build:prod', function (done) {
+  runSequence(['ng-config', 'copyLocalEnvConfig', 'makeUploadsDir', 'templatecache'], 'build', 'env:prod', 'lint', done);
+});
+
+// Run production
+gulp.task('go:prod', function (done) {
+  runSequence('env:prod', ['nodemon-nodebug', 'watch'], done);
+});
+

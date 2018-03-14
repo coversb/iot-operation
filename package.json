@@ -21,6 +21,8 @@
     "start": "gulp",
     "start:prod": "gulp prod",
     "start:debug": "node-debug --web-host 0.0.0.0 server.js & gulp debug",
+    "build:prod": "gulp build:prod",
+    "go:prod": "gulp go:prod",
     "gulp": "gulp",
     "bower": "bower install --allow-root && bower prune --allow-root",
     "lint": "gulp lint",
