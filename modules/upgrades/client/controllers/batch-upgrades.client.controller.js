@@ -144,6 +144,24 @@
             align: 'center'
           },
           {
+            field: 'base.softwareUpdateStart',
+            title: '最近FOTA开始升级',
+            valign: 'middle',
+            align: 'center',
+            formatter: function (value, row) {
+              return $filter('date')(value, 'yyyy-MM-dd HH:mm:ss Z');
+            }
+          },
+          {
+            field: 'base.softwareUpdateEnd',
+            title: '最近FOTA结束升级',
+            valign: 'middle',
+            align: 'center',
+            formatter: function (value, row) {
+              return $filter('date')(value, 'yyyy-MM-dd HH:mm:ss Z');
+            }
+          },
+          {
             title: '更多',
             valign: 'middle',
             align: 'center',
@@ -179,15 +197,15 @@
         'otaDownloadProtocol': 10,
         'otaServerUrlLength': vm.version.url.trim().length,
         'otaServerUrl': vm.version.url.trim(),
-        'otaServerPort': 800,
-        // 'otaServerUsernameLength': vm.version.userName.trim().length,
-        // 'otaServerUserName': vm.version.userName.trim(),
-        // 'otaServerPasswordLength': vm.version.userPasswd.trim().length,
-        // 'otaServerPassword': vm.version.userPasswd.trim(),
-        // 'otaServerMD5': vm.version.md5.trim(),
-        // 'otaServerKey': parseInt(vm.version.key.trim(), 10),
-        // 'otaDownloadAddress': parseInt(vm.version.dwnAddr.trim(), 16),
-        // 'otaAppBootupAddress': parseInt(vm.version.appAddr.trim(), 16)
+        'otaServerPort': 21,
+        'otaServerUsernameLength': "fota".length,
+        'otaServerUserName': "fota".trim(),
+        'otaServerPasswordLength': "fota".length,
+        'otaServerPassword': "fota".trim(),
+        'otaServerMD5': "47FE2BB394B4886490A90B0CF9DE374A", // TODO:fixme
+        'otaServerKey': 0,
+        'otaDownloadAddress': 0,
+        'otaAppBootupAddress': 0
       };
       console.log("cmdObj=" + cmdObj);
       console.dir(cmdObj);
