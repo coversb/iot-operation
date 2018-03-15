@@ -5,9 +5,9 @@
     .module('upgrades.batch')
     .controller('UpgradesBatchController', UpgradesBatchController);
 
-  UpgradesBatchController.$inject = ['$scope', '$state', '$http', 'Authentication', 'DevopsSettings', 'upgradesBatchResolve'];
+  UpgradesBatchController.$inject = ['$scope', '$filter', '$state', '$http', 'Authentication', 'DevopsSettings', 'upgradesBatchResolve'];
 
-  function UpgradesBatchController($scope, $state, $http, Authentication, DevopsSettings, upgradesVersions) {
+  function UpgradesBatchController($scope, $filter, $state, $http, Authentication, DevopsSettings, upgradesVersions) {
 
     var searchData = '';
     var vm = this;
