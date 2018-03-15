@@ -249,6 +249,7 @@
 
     /* access point configuration */
     function apcGenData() {
+      vm.apcModal.genData = DevopsProt.getCommand('APC', vm.apcModal);
     }
 
     function apcSendCmd() {
@@ -268,7 +269,7 @@
 
     /* server configuration */
     function serGenData() {
-
+      vm.serModal.genData = DevopsProt.getCommand('SER', vm.serModal);
     }
 
     function serSendCmd() {
@@ -291,7 +292,7 @@
 
     /* configuration */
     function cfgGenData() {
-
+      vm.cfgModal.genData = DevopsProt.getCommand('CFG', vm.cfgModal);
     }
 
     function cfgSendCmd() {
@@ -308,7 +309,7 @@
 
     /* time adjust */
     function tmaGenData() {
-
+      vm.tmaModal.genData = DevopsProt.getCommand('TMA', vm.tmaModal);
     }
 
     function tmaSendCmd() {
@@ -335,6 +336,7 @@
 
     /* watchdog */
     function dogGenData() {
+      vm.dogModal.genData = DevopsProt.getCommand('DOG', vm.dogModal);
     }
 
     function dogSendCmd() {
@@ -366,6 +368,7 @@
 
     /* air conditioner operation */
     function acoGenData() {
+      vm.acoModal.genData = DevopsProt.getCommand('ACO', vm.acoModal);
     }
 
     function acoSendCmd() {
@@ -392,6 +395,7 @@
 
     /* security configuration*/
     function secGenData() {
+      vm.secModal.genData = DevopsProt.getCommand('SEC', vm.secModal);
     }
 
     function secSendCmd() {
@@ -400,7 +404,7 @@
 
     /* output mode configuration */
     function omcGenData() {
-
+      vm.omcModal.genData = DevopsProt.getCommand('OMC', vm.omcModal);
     }
 
     function omcSendCmd() {
@@ -430,7 +434,7 @@
 
     /* door alarm */
     function doaGenData() {
-
+      vm.doaModal.genData = DevopsProt.getCommand('DOA', vm.doaModal);
     }
 
     function doaSendCmd() {
@@ -449,7 +453,7 @@
 
     /* smoke alarm */
     function smaGenData() {
-
+      vm.smaModal.genData = DevopsProt.getCommand('SMA', vm.smaModal);
     }
 
     function smaSendCmd() {
@@ -468,6 +472,7 @@
 
     /* order update operation */
     function ouoGenData() {
+      vm.ouoModal.genData = DevopsProt.getCommand('OUO', vm.ouoModal);
     }
 
     function ouoSendCmd() {
@@ -499,6 +504,7 @@
 
     /* output operation */
     function outGenData() {
+      vm.outModal.genData = DevopsProt.getCommand('OUT', vm.outModal);
     }
 
     function outSendCmd() {
@@ -534,6 +540,7 @@
 
     /* multimedia operation */
     function muoGenData() {
+      vm.muoModal.genData = DevopsProt.getCommand('MUO', vm.muoModal);
     }
 
     function muoSendCmd() {
@@ -591,14 +598,7 @@
 
     /* real time operation */
     function rtoGenData() {
-      /*
-      var param = {
-        'uid': vm.rtoModal.uid,
-        'rtoCommand': parseInt(vm.rtoModal.cmd, 10),
-        'rtoSubCommand': parseInt(vm.rtoModal.subCmd, 10)
-      };
-      vm.rtoModal.genData = DevopsProt.getCommand('RTO', param);
-      */
+      vm.rtoModal.genData = DevopsProt.getCommand('RTO', vm.rtoModal);
     }
 
     function rtoSendCmd() {
@@ -639,6 +639,7 @@
     }
 
     function fotaGenData() {
+      vm.fotaModal.genData = DevopsProt.getCommand('FOTA', vm.fotaModal);
     }
 
     function fotaSendCmd() {
