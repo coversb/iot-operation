@@ -149,7 +149,7 @@
             valign: 'middle',
             align: 'center',
             formatter: function (value, row) {
-              return $filter('date')(value, 'yyyy-MM-dd HH:mm:ss Z');
+              return $filter('date')(value * 1000, 'yyyy-MM-dd HH:mm:ss');
             }
           },
           {
@@ -158,7 +158,7 @@
             valign: 'middle',
             align: 'center',
             formatter: function (value, row) {
-              return $filter('date')(value, 'yyyy-MM-dd HH:mm:ss Z');
+              return $filter('date')(value * 1000, 'yyyy-MM-dd HH:mm:ss');
             }
           },
           {
