@@ -5,9 +5,9 @@
     .module('upgrades.batch')
     .controller('UpgradesBatchController', UpgradesBatchController);
 
-  UpgradesBatchController.$inject = ['$scope', '$filter', '$state', '$http', 'Authentication', 'DevopsSettings', 'upgradesBatchResolve'];
+  UpgradesBatchController.$inject = ['$scope', '$filter', '$state', '$http', 'Authentication', 'DevopsSettings', 'upgradesBatchResolve', 'Notification'];
 
-  function UpgradesBatchController($scope, $filter, $state, $http, Authentication, DevopsSettings, upgradesVersions) {
+  function UpgradesBatchController($scope, $filter, $state, $http, Authentication, DevopsSettings, upgradesVersions, Notification) {
 
     var searchData = '';
     var vm = this;
@@ -120,6 +120,19 @@
             align: 'center'
           },
           {
+            field: 'detail.networkStatus',
+            title: '网络',
+            valign: 'middle',
+            align: 'center',
+            formatter: function (value, row) {
+              var netStatDis = '<span style="color:green">' + value + '</span>';
+              if (value === '断网') {
+                netStatDis = '<span style="color:red">' + value + '</span>';
+              }
+              return netStatDis;
+            }
+          },
+          {
             field: 'base.deviceType',
             title: '设备类型',
             valign: 'middle',
@@ -180,6 +193,8 @@
 
     function batchUpdate() {
       vm.uniqueIds.forEach(sendCmd);
+      $('#versionUpdateDialog').modal('hide');
+      Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> 版本命令下发成功!' });
     }
 
     function sendCmd(item, index) {
@@ -194,7 +209,7 @@
       cmdObj.otaCommandRequest = {
         'otaRetryTimes': 10,
         'otaDownloadTimeout': 10,
-        'otaDownloadProtocol': 10,
+        'otaDownloadProtocol': 0,
         'otaServerUrlLength': vm.version.url.trim().length,
         'otaServerUrl': vm.version.url.trim(),
         'otaServerPort': 21,
@@ -202,7 +217,7 @@
         'otaServerUserName': "fota".trim(),
         'otaServerPasswordLength': "fota".length,
         'otaServerPassword': "fota".trim(),
-        'otaServerMD5': "47FE2BB394B4886490A90B0CF9DE374A", // TODO:fixme
+        'otaServerMD5': vm.version.md5, // TODO:fixme
         'otaServerKey': 0,
         'otaDownloadAddress': 0,
         'otaAppBootupAddress': 0

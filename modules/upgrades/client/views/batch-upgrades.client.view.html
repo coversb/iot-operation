@@ -11,7 +11,12 @@
           <div class="panel-heading">查询条件</div>
           <div class="panel-body">
             <form id="formSearch" class="form-horizontal" ng-submit="vm.searchVersion()">
-              <div class="form-group" style="margin-top:15px">
+              <div class="form-group">
+                <label class="control-label col-sm-1" for="searchName">盒子名称</label>
+                <div class="col-sm-3">
+                  <input class="form-control" type="text" name="searchName" id="searchName" placeholder="请输入盒子名称"
+                         ng-model="vm.searchName"/>
+                </div>
                 <label class="control-label col-sm-1" for="searchDeviceType">硬件类型</label>
                 <div class="col-sm-3">
                   <input type="text" class="form-control" id="searchDeviceType" ng-model="vm.txtSearchDevType">
@@ -20,8 +25,8 @@
                 <div class="col-sm-3">
                   <input type="text" class="form-control" id="searchVersion" ng-model="vm.txtSearchVersion">
                 </div>
-                <div class="col-sm-4" style="text-align:left;">
-                  <button type="submit" style="margin-left:50px" class="btn btn-primary">查询</button>
+                <div class="searchSubmit col-sm-4 pull-right">
+                  <button type="submit" class="btn btn-primary pull-right">查询</button>
                 </div>
               </div>
             </form>
@@ -38,7 +43,8 @@
         </div>
       </div>
     </div>
-    <div class="modal fade" id="versionUpdateDialog" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal fade" id="versionUpdateDialog" tabindex="-1" role="dialog" aria-hidden="true"
+         data-backdrop="static">
       <div class="modal-dialog">
         <form class="modal-content" ng-submit="vm.batchUpdate()">
           <div class="modal-header">

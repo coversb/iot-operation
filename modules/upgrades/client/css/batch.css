@@ -1,0 +1,14 @@
+.form-horizontal.form-group {
+	margin-top: 5px;
+
+}
+
+.form-horizontal .searchSubmit {
+	margin-left: 50px;
+
+}
+
+.form-horizontal .searchSubmit [button]  {
+	margin-left: 50px;
+
+}
