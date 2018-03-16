@@ -21,9 +21,16 @@
       ['vendingMachine', 13],
       ['emeLight', 14]
     ]);
+
+    var devMediaFileMap = new Map([
+      ['welcome', 0],
+      ['orderOver', 1],
+      ['smokeAlarm', 2],
+    ]);
     var vm = this;
 
     vm.sendOutCommand = sendOutCommand;
+    vm.sendMuoCommand = sendMuoCommand;
 
     init();
 
@@ -71,6 +78,19 @@
         'controlMask': 0x00000000
       };
       sendCommandToBackend(cmdObj, DevopsSettings.outConAPI);
+    }
+
+    function sendMuoCommand(mediaName) {
+      var cmdObj = {};
+      cmdObj.uniqueId = vm.devUID;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0x83;
+      cmdObj.guiMultimediaCommandConfigRequest = {
+        'mode': 0x11,
+        'volume': 0,
+        'fileName': devMediaFileMap.get(mediaName)
+      };
+      sendCommandToBackend(cmdObj, DevopsSettings.muoConAPI);
     }
   }
 }());

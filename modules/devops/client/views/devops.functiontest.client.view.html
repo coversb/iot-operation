@@ -110,6 +110,20 @@
               </button>
             </div>
           </div>
+          <div class="col-xs-12 col-sm-12 col-md-12">
+            <h3><label class="label label-primary label-lg" for="soundTest">背景音:</label></h3>
+            <div class="btn-group" id="soundTest">
+              <button type="button" class="btn btn-success btn-lg" ng-click="vm.sendMuoCommand('welcome')">
+                欢迎
+              </button>
+              <button type="button" class="btn btn-success btn-lg" ng-click="vm.sendMuoCommand('orderOver')">
+                结束
+              </button>
+              <button type="button" class="btn btn-success btn-lg" ng-click="vm.sendMuoCommand('smokeAlarm')">
+                烟雾告警
+              </button>
+            </div>
+          </div>
         </div>
         <div class="col-lg-12 col-sm-12 col-xs-12 alert alert-success" ng-show="vm.successMessagebool">
           <strong>{{vm.successMessage }}</strong>
