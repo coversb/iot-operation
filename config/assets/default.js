@@ -30,6 +30,7 @@ module.exports = {
         'public/lib/angular-messages/angular-messages.js',
         'public/lib/angular-mocks/angular-mocks.js',
         'public/lib/angular-resource/angular-resource.js',
+        'public/lib/angular-sanitize/angular-sanitize.min.js',
         'public/lib/angular-ui-notification/dist/angular-ui-notification.js',
         'public/lib/angular-ui-router/release/angular-ui-router.js',
         'public/lib/angular-css/angular-css.js',
