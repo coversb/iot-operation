@@ -113,8 +113,8 @@
     res += convertStrToHexStr(param.apn.trim());
     res += convertStrToHexStr(param.apnUserName.trim());
     res += convertStrToHexStr(param.apnPassword.trim());
-    res += param.mainDNS.trim();
-    res += param.backupDNS.trim();
+    res += assembleIP(param.mainDNS);
+    res += assembleIP(param.backupDNS);
 
     return res;
 
@@ -124,6 +124,14 @@
         + assemblePadZero(apnLen.toString(2), 6);
 
       return assemblePadZero(parseInt(filedLen, 2).toString(16), 4);
+    }
+
+    function assembleIP(ip) {
+      var ipAddr = convertDecStrToHexStr(ip[0], 2)
+        + convertDecStrToHexStr(ip[1], 2)
+        + convertDecStrToHexStr(ip[2], 2)
+        + convertDecStrToHexStr(ip[3], 2);
+      return ipAddr
     }
   }
 

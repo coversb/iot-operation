@@ -16,8 +16,8 @@
       apn: '',
       apnUserName: '',
       apnPassword: '',
-      mainDNS: '',
-      backupDNS: '',
+      mainDNS: [114, 114, 114, 114],
+      backupDNS: [114, 114, 114, 114],
       uid: '0000000000600000',
       genData: ''
     };
@@ -247,6 +247,10 @@
       return temp.substr(temp.length - n);
     }
 
+    function convertDecStrToHexStr(data, totalLen) {
+      return assemblePadZero(parseInt(data, 10).toString(16), totalLen);
+    }
+
     /* access point configuration */
     function apcGenData() {
       vm.apcModal.genData = DevopsProt.getCommand('APC', vm.apcModal);
@@ -261,10 +265,18 @@
         'accessPointName': vm.apcModal.apn.trim(),
         'aceessPointUserName': vm.apcModal.apnUserName.trim(),
         'accessPointPassword': vm.apcModal.apnPassword.trim(),
-        'mainDNSServer': vm.apcModal.mainDNS.trim(),
-        'backupDNSServer': vm.apcModal.backupDNS.trim()
+        'mainDNSServer': apcAssembleIP(vm.apcModal.mainDNS),
+        'backupDNSServer': apcAssembleIP(vm.apcModal.backupDNS)
       };
       sendCommandToBackend(cmdObj, DevopsSettings.apcConAPI);
+    }
+
+    function apcAssembleIP(ip) {
+      var ipAddr = convertDecStrToHexStr(ip[0], 2)
+      + convertDecStrToHexStr(ip[1], 2)
+      + convertDecStrToHexStr(ip[2], 2)
+      + convertDecStrToHexStr(ip[3], 2);
+      return ipAddr
     }
 
     /* server configuration */

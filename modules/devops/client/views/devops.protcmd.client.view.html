@@ -81,15 +81,43 @@
               </div>
               <div>
                 <label for="apcModalMainDNS">Main DNS Server</label>
-                <input class="form-control" id="apcModalMainDNS" name="apcModalMainDNS" type="text"
-                       required="required"
-                       ng-model="vm.apcModal.mainDNS"/>
+                <div class="form-inline" id="apcModalMainDNS">
+                  <input id="apcModalMainDNS1" name="apcModalMainDNS1" type="text"
+                         required="required"
+                         ng-model="vm.apcModal.mainDNS[0]"/>
+                  <label>.</label>
+                  <input id="apcModalMainDNS2" name="apcModalMainDNS2" type="text"
+                         required="required"
+                         ng-model="vm.apcModal.mainDNS[1]"/>
+                  <label>.</label>
+                  <input id="apcModalMainDNS3" name="apcModalMainDNS3" type="text"
+                         required="required"
+                         ng-model="vm.apcModal.mainDNS[2]"/>
+                  <label>.</label>
+                  <input id="apcModalMainDNS4" name="apcModalMainDNS4" type="text"
+                         required="required"
+                         ng-model="vm.apcModal.mainDNS[3]"/>
+                </div>
               </div>
               <div>
                 <label for="apcModalBackupDNS">Backup DNS Server</label>
-                <input class="form-control" id="apcModalBackupDNS" name="apcModalBackupDNS" type="text"
-                       required="required"
-                       ng-model="vm.apcModal.backupDNS"/>
+                <div class="form-inline" id="apcModalBackupDNS">
+                  <input id="apcModalBackupDNS1" name="apcModalBackupDNS1" type="text"
+                         required="required"
+                         ng-model="vm.apcModal.backupDNS[0]"/>
+                  <label>.</label>
+                  <input id="apcModalBackupDNS2" name="apcModalBackupDNS2" type="text"
+                         required="required"
+                         ng-model="vm.apcModal.backupDNS[1]"/>
+                  <label>.</label>
+                  <input id="apcModalBackupDNS3" name="apcModalBackupDNS3" type="text"
+                         required="required"
+                         ng-model="vm.apcModal.backupDNS[2]"/>
+                  <label>.</label>
+                  <input id="apcModalBackupDNS4" name="apcModalBackupDNS4" type="text"
+                         required="required"
+                         ng-model="vm.apcModal.backupDNS[3]"/>
+                </div>
               </div>
               <div>
                 <label for="apcModalUID">UID</label>
@@ -836,7 +864,8 @@
               </div>
               <div>
                 <label for="ouoModalOrderPasswordVaildCount">Password Valid Count</label>
-                <input class="form-control" id="ouoModalOrderPasswordVaildCount" name="ouoModalOrderPasswordVaildCount" type="text"
+                <input class="form-control" id="ouoModalOrderPasswordVaildCount" name="ouoModalOrderPasswordVaildCount"
+                       type="text"
                        required="required"
                        ng-model="vm.ouoModal.orderPasswordValidConut"/>
               </div>
