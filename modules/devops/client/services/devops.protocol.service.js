@@ -12,79 +12,100 @@
   var PROTSTART = '2B5042'; // protocol starter '+PB'
   var PROTTAIL = '0D0A';
 
-  function DevopsProt() {
+  DevopsProt.$inject = ['$http', 'DevopsSettings'];
+
+  function DevopsProt($http, DevopsSettings) {
     var prot = {
-      getCommand: getCommand
+      settings: DevopsSettings,
+      getCommand: getCommand,
+      sendCommand: sendCommand,
+      httpSendRequest: function (api, data) {
+        var config = {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        };
+
+        $http.post(DevopsSettings.backboneURL + api, data, config)
+          .success(function (data, status, header, config) {
+            console.log('success');
+            return true;
+          })
+          .error(function (data, status, header, config) {
+            console.log('error');
+            return false;
+          });
+      }
     };
 
     return prot;
   }
 
   function getCommand(cmdType, param) {
-    console.log(cmdType);
-    console.log(param);
+    // console.log(cmdType);
+    // console.log(param);
     var cmd = 'INVALID INPUT';
     var content = '';
     var uid = param.uid;
     switch (cmdType) {
       case 'APC': {
-        content = assembleAPC(param);
+        content = APC.assemble(param);
         break;
       }
       case 'SER': {
-        content = assembleSER(param);
+        content = SER.assemble(param);
         break;
       }
       case 'CFG': {
-        content = assembleCFG(param);
+        content = CFG.assemble(param);
         break;
       }
       case 'TMA': {
-        content = assembleTMA(param);
+        content = TMA.assemble(param);
         break;
       }
       case 'DOG': {
-        content = assembleDOG(param);
+        content = DOG.assemble(param);
         break;
       }
       case 'ACO': {
-        content = assembleACO(param);
+        content = ACO.assemble(param);
         break;
       }
       case 'SEC': {
-        content = assembleSEC(param);
+        content = SEC.assemble(param);
         break;
       }
       case 'OMC': {
-        content = assembleOMC(param);
+        content = OMC.assemble(param);
         break;
       }
       case 'DOA': {
-        content = assembleDOA(param);
+        content = DOA.assemble(param);
         break;
       }
       case 'SMA': {
-        content = assembleSMA(param);
+        content = SMA.assemble(param);
         break;
       }
       case 'OUO': {
-        content = assembleOUO(param);
+        content = OUO.assemble(param);
         break;
       }
       case 'OUT': {
-        content = assembleOUT(param);
+        content = OUT.assemble(param);
         break;
       }
       case 'MUO': {
-        content = assembleMUO(param);
+        content = MUO.assemble(param);
         break;
       }
       case 'RTO': {
-        content = assembleRTO(param);
+        content = RTO.assemble(param);
         break;
       }
       case 'FOTA': {
-        content = assembleFOTA(param);
+        content = FOTA.assemble(param);
         break;
       }
       default:
@@ -102,56 +123,204 @@
     cmd += assembleTail(cmd);
 
     return cmd.toUpperCase();
+
+    function assmebleHeader(uid, length) {
+      var cmdLen = assemblePadZero((length + 4 + 2).toString(16), 4);
+      var header = PROTSTART + PROTDEVTYPE + PROTVER + uid + cmdLen;
+      header += calculateCRC16(header);
+
+      return header;
+    }
+
+    function assembleSendtime() {
+      return (Date.parse(new Date()) / 1000).toString(16);
+    }
+
+    function assembleSN() {
+      return '0001';
+    }
+
+    function assembleTail(data) {
+      var crcSrc = data.substr(36, data.length - 36);
+      return calculateCRC16(crcSrc) + PROTTAIL;
+    }
+
+    function calculateCRC16(data) {
+      var bytes = [];
+
+      var idx;
+      // convert hex byte string to byte array
+      for (idx = 0; idx < data.length; idx += 2) {
+        bytes.push(parseInt(data.substr(idx, 2), 16));
+      }
+
+      var crc = 0x1D0F;
+      for (idx = 0; idx < bytes.length; idx++) {
+        crc = ((crc >>> 8) | (crc << 8)) & 0xffff;
+        crc ^= (bytes[idx] & 0xff); // byte to int, trunc sign
+        crc ^= ((crc & 0xff) >> 4);
+        crc ^= (crc << 12) & 0xffff;
+        crc ^= ((crc & 0xFF) << 5) & 0xffff;
+      }
+
+      return assemblePadZero(crc.toString(16), 4);
+    }
   }
 
-  /* assemble command content begin */
-  function assembleAPC(param) {
-    var res = '';
+  function sendCommand(cmdType, param) {
+    var res = false;
+    switch (cmdType) {
+      case 'APC': {
+        res = APC.send(this.httpSendRequest, this.settings.apcConAPI, param);
+        break;
+      }
+      case 'SER': {
+        res = SER.send(this.httpSendRequest, this.settings.serConAPI, param);
+        break;
+      }
+      case 'CFG': {
+        res = CFG.send(this.httpSendRequest, this.settings.cfgConAPI, param);
+        break;
+      }
+      case 'TMA': {
+        res = TMA.send(this.httpSendRequest, this.settings.tmaConAPI, param);
+        break;
+      }
+      case 'DOG': {
+        res = DOG.send(this.httpSendRequest, this.settings.dogConAPI, param);
+        break;
+      }
+      case 'ACO': {
+        res = ACO.send(this.httpSendRequest, this.settings.acoConAPI, param);
+        break;
+      }
+      case 'SEC': {
+        res = SEC.send(this.httpSendRequest, '', param);
+        break;
+      }
+      case 'OMC': {
+        res = OMC.send(this.httpSendRequest, this.settings.omcConAPI, param);
+        break;
+      }
+      case 'DOA': {
+        res = DOA.send(this.httpSendRequest, this.settings.doaConAPI, param);
+        break;
+      }
+      case 'SMA': {
+        res = SMA.send(this.httpSendRequest, this.settings.smaConAPI, param);
+        break;
+      }
+      case 'OUO': {
+        res = OUO.send(this.httpSendRequest, this.settings.ouoConAPI, param);
+        break;
+      }
+      case 'OUT': {
+        res = OUT.send(this.httpSendRequest, this.settings.outConAPI, param);
+        break;
+      }
+      case 'MUO': {
+        res = MUO.send(this.httpSendRequest, this.settings.muoConAPI, param);
+        break;
+      }
+      case 'RTO': {
+        res = RTO.send(this.httpSendRequest, this.settings.rtoConAPI, param);
+        break;
+      }
+      case 'FOTA': {
+        res = FOTA.send(this.httpSendRequest, this.settings.fotaAPI, param);
+        break;
+      }
+      default:
+        break;
 
-    res = assembleMessageType(res, '0101');
-    res += assembleFiledLength(param.apn.trim().length, param.apnUserName.trim().length, param.apnPassword.trim().length);
-    res += convertStrToHexStr(param.apn.trim());
-    res += convertStrToHexStr(param.apnUserName.trim());
-    res += convertStrToHexStr(param.apnPassword.trim());
-    res += assembleIP(param.mainDNS);
-    res += assembleIP(param.backupDNS);
+    }
 
     return res;
+  }
 
-    function assembleFiledLength(apnLen, apnUsrNameLen, apnPasswordLen) {
+  /* APC command begin */
+  var APC = {
+    assemble: function (param) {
+      var res = '';
+
+      res = assembleMessageType(res, '0101');
+      res += this.assembleFiledLength(param.apn.trim().length, param.apnUserName.trim().length, param.apnPassword.trim().length);
+      res += convertStrToHexStr(param.apn.trim());
+      res += convertStrToHexStr(param.apnUserName.trim());
+      res += convertStrToHexStr(param.apnPassword.trim());
+      res += this.assembleIP(param.mainDNS);
+      res += this.assembleIP(param.backupDNS);
+
+      return res;
+    },
+    send: function (httpSendRequest, api, param) {
+      var cmdObj = {};
+      cmdObj.uniqueId = param.uid;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0x01;
+      cmdObj.guiAccessPointConfigCommandRequest = {
+        'accessPointName': param.apn,
+        'aceessPointUserName': param.apnUserName,
+        'accessPointPassword': param.apnPassword,
+        'mainDNSServer': this.assembleIP(param.mainDNS),
+        'backupDNSServer': this.assembleIP(param.backupDNS)
+      };
+
+      return httpSendRequest(api, cmdObj);
+    },
+    assembleFiledLength: function (apnLen, apnUsrNameLen, apnPasswordLen) {
       var filedLen = assemblePadZero(apnPasswordLen.toString(2), 5)
         + assemblePadZero(apnUsrNameLen.toString(2), 5)
         + assemblePadZero(apnLen.toString(2), 6);
 
       return assemblePadZero(parseInt(filedLen, 2).toString(16), 4);
-    }
-
-    function assembleIP(ip) {
+    },
+    assembleIP: function (ip) {
       var ipAddr = convertDecStrToHexStr(ip[0], 2)
         + convertDecStrToHexStr(ip[1], 2)
         + convertDecStrToHexStr(ip[2], 2)
         + convertDecStrToHexStr(ip[3], 2);
       return ipAddr
     }
-  }
+  };
+  /* APC command end */
 
-  function assembleSER(param) {
-    var res = '';
+  /* SER command begin */
+  var SER = {
+    assemble: function (param) {
+      var res = '';
 
-    res = assembleMessageType(res, '0102');
-    res += assembleFiledLength(param.mainServer.trim().length, param.backupServer.trim().length, param.sms.trim().length);
-    res += convertDecStrToHexStr(param.mode, 2);
-    res += convertStrToHexStr(param.mainServer.trim());
-    res += convertDecStrToHexStr(param.mainPort, 4);
-    res += convertStrToHexStr(param.backupServer.trim());
-    res += convertDecStrToHexStr(param.backupPort, 4);
-    res += convertStrToHexStr(param.sms.trim());
-    res += convertDecStrToHexStr(param.hbpInterval, 2);
-    res += convertDecStrToHexStr(param.maxRandomTime, 4);
+      res = assembleMessageType(res, '0102');
+      res += this.assembleFiledLength(param.mainServer.trim().length, param.backupServer.trim().length, param.sms.trim().length);
+      res += convertDecStrToHexStr(param.mode, 2);
+      res += convertStrToHexStr(param.mainServer.trim());
+      res += convertDecStrToHexStr(param.mainPort, 4);
+      res += convertStrToHexStr(param.backupServer.trim());
+      res += convertDecStrToHexStr(param.backupPort, 4);
+      res += convertStrToHexStr(param.sms.trim());
+      res += convertDecStrToHexStr(param.hbpInterval, 2);
+      res += convertDecStrToHexStr(param.maxRandomTime, 4);
 
-    return res;
-
-    function assembleFiledLength(mainServerLen, backupServerLen, smsLen) {
+      return res;
+    },
+    send: function (httpSendRequest, api, param) {
+      var cmdObj = {};
+      cmdObj.uniqueId = param.uid;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0x02;
+      cmdObj.serverConfigCommandRequest = {
+        'reportMode': parseInt(param.mode.trim(), 10),
+        'mainServerDomainName': param.mainServer.trim(),
+        'mainServerPort': parseInt(param.mainPort.trim(), 10),
+        'backupServerDomainName': param.backupServer.trim(),
+        'backupServerPort': parseInt(param.backupPort.trim(), 10),
+        'smsGateway': param.sms.trim(),
+        'heartBeatInterval': parseInt(param.hbpInterval.trim(), 10),
+        'maxRandomTime': parseInt(param.maxRandomTime.trim(), 10)
+      };
+      return httpSendRequest(api, cmdObj);
+    },
+    assembleFiledLength: function (mainServerLen, backupServerLen, smsLen) {
       var filedLen = '0000000'
         + assemblePadZero(smsLen.toString(2), 5)
         + assemblePadZero(backupServerLen.toString(2), 6)
@@ -159,74 +328,133 @@
 
       return assemblePadZero(parseInt(filedLen, 2).toString(16), 6);
     }
-  }
+  };
+  /* SER command end */
 
-  function assembleCFG(param) {
-    var res = '';
+  /* CFG command begin */
+  var CFG = {
+    assemble: function (param) {
+      var res = '';
 
-    res = assembleMessageType(res, '0103');
-    res += convertDecStrToHexStr(parseInt(param.mask.trim(), 16).toString(10), 4);
-    res += convertDecStrToHexStr(param.infInterval.trim(), 4);
+      res = assembleMessageType(res, '0103');
+      res += convertDecStrToHexStr(parseInt(param.mask.trim(), 16).toString(10), 4);
+      res += convertDecStrToHexStr(param.infInterval.trim(), 4);
 
-    return res;
-  }
+      return res;
+    },
+    send: function (httpSendRequest, api, param) {
+      var cmdObj = {};
+      cmdObj.uniqueId = param.uid;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0x03;
+      cmdObj.globalConfigCommandRequest = {
+        'eventMask': parseInt(param.mask.trim(), 16),
+        'infoReportInterval': parseInt(param.infInterval.trim(), 10)
+      };
+      return httpSendRequest(api, cmdObj);
+    }
+  };
+  /* CFG command end */
 
-  function assembleTMA(param) {
-    var res = '';
+  /* TMA command begin */
+  var TMA = {
+    assemble: function (param) {
+      var res = '';
 
-    res = assembleMessageType(res, '0104');
-    res += assembleTimeAdjust(param.autoAdjust);
-    res += convertDecStrToHexStr(param.utc, 8);
+      res = assembleMessageType(res, '0104');
+      res += this.assembleTimeAdjust(param.autoAdjust);
+      res += convertDecStrToHexStr(param.utc, 8);
 
-    return res;
-
-    function assembleTimeAdjust(autoAdjust) {
+      return res;
+    },
+    send: function (httpSendRequest, api, param) {
+      var cmdObj = {};
+      cmdObj.uniqueId = param.uid;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0x04;
+      cmdObj.timeAdjustCommandRequest = {
+        'timeAdjust': this.assembleTimeAdjust(param.autoAdjust),
+        'utcTime': parseInt(param.utc.trim(), 10)
+      };
+      return httpSendRequest(api, cmdObj);
+    },
+    assembleTimeAdjust: function (autoAdjust) {
       var tmaMode = assemblePadZero(Number(autoAdjust).toString(2), 3)
         + '0000000000000';
 
       return assemblePadZero(parseInt(tmaMode, 2).toString(16), 4);
     }
-  }
+  };
+  /* TMA command end */
 
-  function assembleDOG(param) {
-    var res = '';
+  /* DOG command begin */
+  var DOG = {
+    assemble: function (param) {
+      var res = '';
 
-    res = assembleMessageType(res, '0105');
-    res += assembleMode(param.sw, param.report, param.interval);
-    res += assembleRebootTime(param.rebootHour, param.rebootMinute);
-    res += convertDecStrToHexStr(param.randomTime, 4);
+      res = assembleMessageType(res, '0105');
+      res += this.assembleMode(param.sw, param.report, param.interval);
+      res += this.assembleRebootTime(param.rebootHour, param.rebootMinute);
+      res += convertDecStrToHexStr(param.randomTime, 4);
 
-    return res;
-
-    function assembleMode(sw, report, interval) {
+      return res;
+    },
+    send: function (httpSendRequest, api, param) {
+      var cmdObj = {};
+      cmdObj.uniqueId = param.uid;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0x05;
+      cmdObj.guiWatchdogConfigCommandRequest = {
+        'mode': parseInt(this.assembleMode(param.sw, param.report, param.interval), 10),
+        'rebootTime': parseInt(this.assembleRebootTime(param.rebootHour, param.rebootMinute), 10),
+        'maximumRandomTime': parseInt(param.randomTime.trim(), 10)
+      };
+      return httpSendRequest(api, cmdObj);
+    },
+    assembleMode: function (sw, report, interval) {
       var dogMode = assemblePadZero(Number(interval).toString(2), 5)
         + assemblePadZero(Number(report).toString(2), 1)
         + assemblePadZero(Number(sw).toString(2), 2);
 
       return assemblePadZero(parseInt(dogMode, 2).toString(16), 2);
-    }
-
-    function assembleRebootTime(hour, minute) {
+    },
+    assembleRebootTime: function (hour, minute) {
       var dogRebootTime = '00000'
         + assemblePadZero(Number(hour).toString(2), 5)
         + assemblePadZero(Number(minute).toString(2), 6);
 
       return assemblePadZero(parseInt(dogRebootTime, 2).toString(16), 4);
     }
-  }
+  };
+  /* DOG command end */
 
-  function assembleACO(param) {
-    var res = '';
+  /* ACO command begin */
+  var ACO = {
+    assemble: function (param) {
+      var res = '';
 
-    res = assembleMessageType(res, '0106');
-    res += assembleMode(param.pwrMode, param.workMode, param.wind);
-    res += convertDecStrToHexStr(param.interval, 2);
-    res += convertDecStrToHexStr(param.duration, 2);
-    res += convertDecStrToHexStr(param.temperature, 2);
+      res = assembleMessageType(res, '0106');
+      res += this.assembleMode(param.pwrMode, param.workMode, param.wind);
+      res += convertDecStrToHexStr(param.interval, 2);
+      res += convertDecStrToHexStr(param.duration, 2);
+      res += convertDecStrToHexStr(param.temperature, 2);
 
-    return res;
-
-    function assembleMode(pwrMode, workMode, wind) {
+      return res;
+    },
+    send: function (httpSendRequest, api, param) {
+      var cmdObj = {};
+      cmdObj.uniqueId = param.uid;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0x06;
+      cmdObj.airconCommandRequest = {
+        'airConMode': parseInt(this.assembleMode(param.pwrMode, param.workMode, param.wind), 10),
+        'airConInterval': parseInt(param.interval.trim(), 10),
+        'airConDuration': parseInt(param.duration.trim(), 10),
+        'airConTemperature': parseInt(param.temperature.trim(), 10)
+      };
+      return httpSendRequest(api, cmdObj);
+    },
+    assembleMode: function (pwrMode, workMode, wind) {
       var devAirConMode = '00'
         + assemblePadZero(Number(wind).toString(2), 2)
         + assemblePadZero(Number(workMode).toString(2), 2)
@@ -234,31 +462,56 @@
 
       return assemblePadZero(parseInt(devAirConMode, 2).toString(16), 2);
     }
-  }
+  };
+  /* ACO command end */
 
-  function assembleSEC(param) {
-    console.log('SEC NOT IMPLEMENT');
-    var res = '';
+  /* SEC command begin */
+  var SEC = {
+    assemble: function (param) {
+      console.log('SEC NOT IMPLEMENT');
+      var res = '';
 
-    res = assembleMessageType(res, '0107');
+      res = assembleMessageType(res, '0107');
 
-    return res;
-  }
+      return res;
+    },
+    send: function (httpSendRequest, api, param) {
+      console.log('SEC NOT IMPLEMENT');
+    }
+  };
+  /* SEC command end */
 
-  function assembleOMC(param) {
-    var res = '';
+  /* OMC command begin */
+  var OMC = {
+    assemble: function (param) {
+      var res = '';
 
-    res = assembleMessageType(res, '0108');
-    res += convertDecStrToHexStr(parseInt(param.idleOutput.trim(), 16).toString(10), 8);
-    res += convertDecStrToHexStr(parseInt(param.inserviceOutput.trim(), 16).toString(10), 8);
-    res += convertDecStrToHexStr(param.mode, 2);
-    res += assembleValidTime(param.beginHour, param.beginMinute, param.endHour, param.endMinute);
-    res += convertDecStrToHexStr(parseInt(param.validIdleOutput.trim(), 16).toString(10), 8);
-    res += convertDecStrToHexStr(parseInt(param.validInserviceOutput.trim(), 16).toString(10), 8);
+      res = assembleMessageType(res, '0108');
+      res += convertDecStrToHexStr(parseInt(param.idleOutput.trim(), 16).toString(10), 8);
+      res += convertDecStrToHexStr(parseInt(param.inserviceOutput.trim(), 16).toString(10), 8);
+      res += convertDecStrToHexStr(param.mode, 2);
+      res += this.assembleValidTime(param.beginHour, param.beginMinute, param.endHour, param.endMinute);
+      res += convertDecStrToHexStr(parseInt(param.validIdleOutput.trim(), 16).toString(10), 8);
+      res += convertDecStrToHexStr(parseInt(param.validInserviceOutput.trim(), 16).toString(10), 8);
 
-    return res;
-
-    function assembleValidTime(beginHour, bgeinMinute, endHour, endMinute) {
+      return res;
+    },
+    send: function (httpSendRequest, api, param) {
+      var cmdObj = {};
+      cmdObj.uniqueId = param.uid;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0x08;
+      cmdObj.guiOutputModeConfigCommandRequest = {
+        'idleOutput': parseInt(param.idleOutput, 16),
+        'inServiceOutput': parseInt(param.inserviceOutput, 16),
+        'validTimeIdleOutput': parseInt(param.validIdleOutput, 16),
+        'validTimeInServiceOutput': parseInt(param.validInserviceOutput, 16),
+        'mode': parseInt(param.mode, 10),
+        'validTime': parseInt(this.assembleValidTime(param.beginHour, param.beginMinute, param.endHour, param.endMinute), 10)
+      };
+      return httpSendRequest(api, cmdObj);
+    },
+    assembleValidTime: function (beginHour, bgeinMinute, endHour, endMinute) {
       var validTime = '00000000000'
         + assemblePadZero(Number(endMinute).toString(2), 6)
         + assemblePadZero(Number(endHour).toString(2), 5)
@@ -267,155 +520,239 @@
 
       return assemblePadZero(parseInt(validTime, 2).toString(16), 8);
     }
-  }
+  };
+  /* OMC command end */
 
-  function assembleDOA(param) {
-    var res = '';
+  /* DOA command begin */
+  var DOA = {
+    assemble: function (param) {
+      var res = '';
 
-    res = assembleMessageType(res, '0131');
-    res += convertDecStrToHexStr(param.mode, 2);
-    res += convertDecStrToHexStr(param.type, 2);
-    res += convertDecStrToHexStr(param.duration, 2);
-    res += convertDecStrToHexStr(param.interval, 2);
+      res = assembleMessageType(res, '0131');
+      res += convertDecStrToHexStr(param.mode, 2);
+      res += convertDecStrToHexStr(param.type, 2);
+      res += convertDecStrToHexStr(param.duration, 2);
+      res += convertDecStrToHexStr(param.interval, 2);
 
-    return res;
-  }
+      return res;
+    },
+    send: function (httpSendRequest, api, param) {
+      var cmdObj = {};
+      cmdObj.uniqueId = param.uid;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0x31;
+      cmdObj.guiDoorAlarmCommandRequest = {
+        'doorAlarmMode': parseInt(param.mode.trim(), 10),
+        'doorAlarmTrigger': parseInt(param.type.trim(), 10),
+        'doorAlarmDuration': parseInt(param.duration.trim(), 10),
+        'doorAlarmSendInterval': parseInt(param.interval.trim(), 10)
+      };
+      return httpSendRequest(api, cmdObj);
+    }
+  };
+  /* DOA command end */
 
-  function assembleSMA(param) {
-    var res = '';
+  /* SMA command begin */
+  var SMA = {
+    assemble: function (param) {
+      var res = '';
 
-    res = assembleMessageType(res, '0132');
-    res += convertDecStrToHexStr(param.mode, 2);
-    res += convertDecStrToHexStr(param.threshold, 2);
-    res += convertDecStrToHexStr(param.duration, 2);
-    res += convertDecStrToHexStr(param.interval, 2);
+      res = assembleMessageType(res, '0132');
+      res += convertDecStrToHexStr(param.mode, 2);
+      res += convertDecStrToHexStr(param.threshold, 2);
+      res += convertDecStrToHexStr(param.duration, 2);
+      res += convertDecStrToHexStr(param.interval, 2);
 
-    return res;
-  }
+      return res;
+    },
+    send: function (httpSendRequest, api, param) {
+      var cmdObj = {};
+      cmdObj.uniqueId = param.uid;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0x32;
+      cmdObj.guiSmokeAlarmCommandRequest = {
+        'smokeAlarmMode': parseInt(param.mode.trim(), 10),
+        'smokeAlarmThreshold': parseInt(param.threshold.trim(), 10),
+        'smokeAlarmDuration': parseInt(param.duration.trim(), 10),
+        'smokeAlarmSendInterval': parseInt(param.interval.trim(), 10)
+      };
+      return httpSendRequest(api, cmdObj);
+    }
+  };
+  /* SMA command end */
 
-  function assembleOUO(param) {
-    var res = '';
+  /* OUO command begin */
+  var OUO = {
+    assemble: function (param) {
+      var res = '';
 
-    res = assembleMessageType(res, '0181');
-    res += convertDecStrToHexStr(param.orderNum, 2);
-    res += convertDecStrToHexStr(param.type, 2);
-    res += convertDecStrToHexStr(param.orderID, 8);
-    res += convertDecStrToHexStr(param.orderStart, 8);
-    res += convertDecStrToHexStr(param.orderExpire, 8);
-    res += convertDecStrToHexStr(param.orderPassword, 4);
-    res += convertDecStrToHexStr(param.orderPersonNumber, 2);
-    res += convertDecStrToHexStr(param.orderPasswordValidConut, 2);
+      res = assembleMessageType(res, '0181');
+      res += convertDecStrToHexStr(param.orderNum, 2);
+      res += convertDecStrToHexStr(param.type, 2);
+      res += convertDecStrToHexStr(param.orderID, 8);
+      res += convertDecStrToHexStr(param.orderStart, 8);
+      res += convertDecStrToHexStr(param.orderExpire, 8);
+      res += convertDecStrToHexStr(param.orderPassword, 4);
+      res += convertDecStrToHexStr(param.orderPersonNumber, 2);
+      res += convertDecStrToHexStr(param.orderPasswordValidConut, 2);
 
-    return res;
-  }
+      return res;
+    },
+    send: function (httpSendRequest, api, param) {
+      var cmdObj = {};
+      cmdObj.uniqueId = param.uid;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0x81;
+      cmdObj.guiUpdateOrderCommandRequest = {
+        'actionType': parseInt(param.type.trim(), 10),
+        'orderID': parseInt(param.orderID.trim(), 10),
+        'startDateTime': parseInt(param.orderStart.trim(), 10),
+        'expireDateTime': parseInt(param.orderExpire.trim(), 10),
+        'orderPassword': parseInt(param.orderPassword.trim(), 10),
+        'personNumber': parseInt(param.orderPersonNumber.trim(), 10),
+        'passwordValidCount': parseInt(param.orderPasswordValidConut.trim(), 10)
+      };
+      return httpSendRequest(api, cmdObj);
+    }
+  };
+  /* OUO command end */
 
-  function assembleOUT(param) {
-    var res = '';
+  /* OUT command begin */
+  var OUT = {
+    assemble: function (param) {
+      var res = '';
 
-    res = assembleMessageType(res, '0182');
-    res += convertDecStrToHexStr(param.pin, 2);
-    res += convertDecStrToHexStr(param.pinValue, 2);
-    res += convertDecStrToHexStr(parseInt(param.pinMask.trim(), 16).toString(10), 8);
+      res = assembleMessageType(res, '0182');
+      res += convertDecStrToHexStr(param.pin, 2);
+      res += convertDecStrToHexStr(param.pinValue, 2);
+      res += convertDecStrToHexStr(parseInt(param.pinMask.trim(), 16).toString(10), 8);
 
-    return res;
-  }
+      return res;
+    },
+    send: function (httpSendRequest, api, param) {
+      var cmdObj = {};
+      cmdObj.uniqueId = param.uid;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0x82;
+      cmdObj.outputConfigCommandRequest = {
+        'outputNumber': parseInt(param.pin.trim(), 10),
+        'outputPin': parseInt(param.pinValue.trim(), 10),
+        'controlMask': parseInt(param.pinMask.trim(), 16)
+      };
+      return httpSendRequest(api, cmdObj);
+    }
+  };
+  /* OUT command end */
 
-  function assembleMUO(param) {
-    var res = '';
+  /* MUO command begin */
+  var MUO = {
+    assemble: function (param) {
+      var res = '';
 
-    res = assembleMessageType(res, '0183');
-    res += assembleMode(param.act, param.type);
-    res += convertDecStrToHexStr(param.vol, 2);
-    res += convertDecStrToHexStr(param.mediaFname, 2);
+      res = assembleMessageType(res, '0183');
+      res += this.assembleMode(param.act, param.type);
+      res += convertDecStrToHexStr(param.vol, 2);
+      res += convertDecStrToHexStr(param.mediaFname, 2);
 
-    return res;
-
-    function assembleMode(act, type) {
+      return res;
+    },
+    send: function (httpSendRequest, api, param) {
+      var cmdObj = {};
+      cmdObj.uniqueId = param.uid;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0x83;
+      cmdObj.guiMultimediaCommandConfigRequest = {
+        'mode': parseInt(this.assembleMode(param.act, param.type), 10),
+        'volume': parseInt(param.vol.trim(), 10),
+        'fileName': parseInt(param.mediaFname.trim(), 10)
+      };
+      return httpSendRequest(api, cmdObj);
+    },
+    assembleMode: function (act, type) {
       var mode = assemblePadZero(Number(act).toString(2), 4)
         + assemblePadZero(Number(type).toString(2), 4);
 
       return assemblePadZero(parseInt(mode, 2).toString(16), 2);
     }
-  }
+  };
+  /* MUO command end */
 
-  function assembleRTO(param) {
-    var res = '';
+  /* RTO command begin */
+  var RTO = {
+    assemble:function (param) {
+      var res = '';
 
-    res = assembleMessageType(res, '0184');
-    res += convertDecStrToHexStr(param.cmd, 2);
-    res += convertDecStrToHexStr(param.subCmd, 2);
+      res = assembleMessageType(res, '0184');
+      res += convertDecStrToHexStr(param.cmd, 2);
+      res += convertDecStrToHexStr(param.subCmd, 2);
 
-    return res;
-  }
+      return res;
+    },
+    send: function (httpSendRequest, api, param) {
+      var cmdObj = {};
+      cmdObj.uniqueId = param.uid;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0x84;
+      cmdObj.rtoCommandRequest = {
+        'rtoCommand': parseInt(param.cmd, 10),
+        'rtoSubCommand': parseInt(param.subCmd, 10)
+      };
+      return httpSendRequest(api, cmdObj);
+    }
+  };
+  /* RTO command end */
 
-  function assembleFOTA(param) {
-    var res = '';
+  /* FOTA command begin */
+  var FOTA = {
+    assemble: function (param) {
+      var res = '';
 
-    res = assembleMessageType(res, '01F1');
-    res += convertDecStrToHexStr(param.retry, 2);
-    res += convertDecStrToHexStr(param.timeout, 2);
-    res += convertDecStrToHexStr(param.protocol, 2);
-    res += convertDecStrToHexStr(param.urlLen, 2);
-    res += convertStrToHexStr(param.url);
-    res += convertDecStrToHexStr(param.port, 4);
-    res += convertDecStrToHexStr(param.userNameLen, 2);
-    res += convertStrToHexStr(param.userName);
-    res += convertDecStrToHexStr(param.userPasswdLen, 2);
-    res += convertStrToHexStr(param.userPasswd);
-    res += assemblePadZero(param.md5.trim(), 32);
-    res += convertDecStrToHexStr(parseInt(param.key.trim(), 16).toString(10), 8);
-    res += convertDecStrToHexStr(parseInt(param.dwnAddr.trim(), 16).toString(10), 8);
-    res += convertDecStrToHexStr(parseInt(param.appAddr.trim(), 16).toString(10), 8);
+      res = assembleMessageType(res, '01F1');
+      res += convertDecStrToHexStr(param.retry, 2);
+      res += convertDecStrToHexStr(param.timeout, 2);
+      res += convertDecStrToHexStr(param.protocol, 2);
+      res += convertDecStrToHexStr(param.urlLen, 2);
+      res += convertStrToHexStr(param.url);
+      res += convertDecStrToHexStr(param.port, 4);
+      res += convertDecStrToHexStr(param.userNameLen, 2);
+      res += convertStrToHexStr(param.userName);
+      res += convertDecStrToHexStr(param.userPasswdLen, 2);
+      res += convertStrToHexStr(param.userPasswd);
+      res += assemblePadZero(param.md5.trim(), 32);
+      res += convertDecStrToHexStr(parseInt(param.key.trim(), 16).toString(10), 8);
+      res += convertDecStrToHexStr(parseInt(param.dwnAddr.trim(), 16).toString(10), 8);
+      res += convertDecStrToHexStr(parseInt(param.appAddr.trim(), 16).toString(10), 8);
 
-    return res;
-  }
-
-  /* assemble command content end */
+      return res;
+    },
+    send: function (httpSendRequest, api, param) {
+      var cmdObj = {};
+      cmdObj.uniqueId = param.uid;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0xF1;
+      cmdObj.otaCommandRequest = {
+        'otaRetryTimes': parseInt(param.retry.trim(), 10),
+        'otaDownloadTimeout': parseInt(param.timeout.trim(), 10),
+        'otaDownloadProtocol': parseInt(param.protocol.trim(), 10),
+        'otaServerUrlLength': param.url.trim().length,
+        'otaServerUrl': param.url.trim(),
+        'otaServerPort': parseInt(param.port.trim(), 10),
+        'otaServerUsernameLength': param.userName.trim().length,
+        'otaServerUserName': param.userName.trim(),
+        'otaServerPasswordLength': param.userPasswd.trim().length,
+        'otaServerPassword': param.userPasswd.trim(),
+        'otaServerMD5': assemblePadZero(param.md5.trim(), 32),
+        'otaServerKey': parseInt(param.key.trim(), 10),
+        'otaDownloadAddress': parseInt(param.dwnAddr.trim(), 16),
+        'otaAppBootupAddress': parseInt(param.appAddr.trim(), 16)
+      };
+      return httpSendRequest(api, cmdObj);
+    }
+  };
+  /* FOTA command end */
 
   function assembleMessageType(data, type) {
     return data + type;
-  }
-
-  function assmebleHeader(uid, length) {
-    var cmdLen = assemblePadZero((length + 4 + 2).toString(16), 4);
-    var header = PROTSTART + PROTDEVTYPE + PROTVER + uid + cmdLen;
-    header += calculateCRC16(header);
-
-    return header;
-  }
-
-  function assembleSendtime() {
-    return (Date.parse(new Date()) / 1000).toString(16);
-  }
-
-  function assembleSN() {
-    return '0001';
-  }
-
-  function assembleTail(data) {
-    var crcSrc = data.substr(36, data.length - 36);
-    return calculateCRC16(crcSrc) + PROTTAIL;
-  }
-
-  function calculateCRC16(data) {
-    var bytes = [];
-
-    var idx;
-    // convert hex byte string to byte array
-    for (idx = 0; idx < data.length; idx += 2) {
-      bytes.push(parseInt(data.substr(idx, 2), 16));
-    }
-
-    var crc = 0x1D0F;
-    for (idx = 0; idx < bytes.length; idx++) {
-      crc = ((crc >>> 8) | (crc << 8)) & 0xffff;
-      crc ^= (bytes[idx] & 0xff); // byte to int, trunc sign
-      crc ^= ((crc & 0xff) >> 4);
-      crc ^= (crc << 12) & 0xffff;
-      crc ^= ((crc & 0xFF) << 5) & 0xffff;
-    }
-
-    return assemblePadZero(crc.toString(16), 4);
   }
 
   function convertStrToHexStr(data) {

@@ -5,9 +5,9 @@
     .module('devops.protcmd')
     .controller('DevopsProtCmdController', DevopsProtCmdController);
 
-  DevopsProtCmdController.$inject = ['$scope', '$state', '$http', 'Authentication', 'DevopsSettings', 'DevopsProt'];
+  DevopsProtCmdController.$inject = ['$scope', '$state', 'Authentication', 'DevopsProt'];
 
-  function DevopsProtCmdController($scope, $state, $http, Authentication, DevopsSettings, DevopsProt) {
+  function DevopsProtCmdController($scope, $state, Authentication, DevopsProt) {
 
     var vm = this;
 
@@ -226,57 +226,13 @@
       }
     }
 
-    function sendCommandToBackend(data, apiURL) {
-      var config = {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      };
-      $http.post(DevopsSettings.backboneURL + apiURL, data, config)
-        .success(function (data, status, header, config) {
-          console.log('success');
-        })
-        .error(function (data, status, header, config) {
-          console.log('error');
-        });
-    }
-
-    // fill '0' before string
-    function assemblePadZero(str, n) {
-      var temp = '0000000000000000' + str;
-      return temp.substr(temp.length - n);
-    }
-
-    function convertDecStrToHexStr(data, totalLen) {
-      return assemblePadZero(parseInt(data, 10).toString(16), totalLen);
-    }
-
     /* access point configuration */
     function apcGenData() {
       vm.apcModal.genData = DevopsProt.getCommand('APC', vm.apcModal);
     }
 
     function apcSendCmd() {
-      var cmdObj = {};
-      cmdObj.uniqueId = vm.apcModal.uid;
-      cmdObj.messageType = 0x01;
-      cmdObj.messageSubType = 0x01;
-      cmdObj.guiAccessPointConfigCommandRequest = {
-        'accessPointName': vm.apcModal.apn.trim(),
-        'aceessPointUserName': vm.apcModal.apnUserName.trim(),
-        'accessPointPassword': vm.apcModal.apnPassword.trim(),
-        'mainDNSServer': apcAssembleIP(vm.apcModal.mainDNS),
-        'backupDNSServer': apcAssembleIP(vm.apcModal.backupDNS)
-      };
-      sendCommandToBackend(cmdObj, DevopsSettings.apcConAPI);
-    }
-
-    function apcAssembleIP(ip) {
-      var ipAddr = convertDecStrToHexStr(ip[0], 2)
-      + convertDecStrToHexStr(ip[1], 2)
-      + convertDecStrToHexStr(ip[2], 2)
-      + convertDecStrToHexStr(ip[3], 2);
-      return ipAddr
+      DevopsProt.sendCommand('APC', vm.apcModal);
     }
 
     /* server configuration */
@@ -285,21 +241,7 @@
     }
 
     function serSendCmd() {
-      var cmdObj = {};
-      cmdObj.uniqueId = vm.serModal.uid;
-      cmdObj.messageType = 0x01;
-      cmdObj.messageSubType = 0x02;
-      cmdObj.serverConfigCommandRequest = {
-        'reportMode': parseInt(vm.serModal.mode.trim(), 10),
-        'mainServerDomainName': vm.serModal.mainServer.trim(),
-        'mainServerPort': parseInt(vm.serModal.mainPort.trim(), 10),
-        'backupServerDomainName': vm.serModal.backupServer.trim(),
-        'backupServerPort': parseInt(vm.serModal.backupPort.trim(), 10),
-        'smsGateway': vm.serModal.sms.trim(),
-        'heartBeatInterval': parseInt(vm.serModal.hbpInterval.trim(), 10),
-        'maxRandomTime': parseInt(vm.serModal.maxRandomTime.trim(), 10)
-      };
-      sendCommandToBackend(cmdObj, DevopsSettings.serConAPI);
+      DevopsProt.sendCommand('SER', vm.serModal);
     }
 
     /* configuration */
@@ -308,15 +250,7 @@
     }
 
     function cfgSendCmd() {
-      var cmdObj = {};
-      cmdObj.uniqueId = vm.cfgModal.uid;
-      cmdObj.messageType = 0x01;
-      cmdObj.messageSubType = 0x03;
-      cmdObj.globalConfigCommandRequest = {
-        'eventMask': parseInt(vm.cfgModal.mask.trim(), 16),
-        'infoReportInterval': parseInt(vm.cfgModal.infInterval.trim(), 10)
-      };
-      sendCommandToBackend(cmdObj, DevopsSettings.cfgConAPI);
+      DevopsProt.sendCommand('CFG', vm.cfgModal);
     }
 
     /* time adjust */
@@ -325,21 +259,7 @@
     }
 
     function tmaSendCmd() {
-      var cmdObj = {};
-      cmdObj.uniqueId = vm.tmaModal.uid;
-      cmdObj.messageType = 0x01;
-      cmdObj.messageSubType = 0x04;
-      cmdObj.timeAdjustCommandRequest = {
-        'timeAdjust': tmaAssembleTimeAdjust(),
-        'utcTime': parseInt(vm.tmaModal.utc.trim(), 10)
-      };
-      sendCommandToBackend(cmdObj, DevopsSettings.tmaConAPI);
-    }
-
-    function tmaAssembleTimeAdjust() {
-      var tmaMode = assemblePadZero(Number(vm.tmaModal.autoAdjust).toString(2), 3)
-        + '0000000000000';
-      return parseInt(tmaMode, 2);
+      DevopsProt.sendCommand('TMA', vm.tmaModal);
     }
 
     function tmaModalFillDatetime() {
@@ -352,30 +272,7 @@
     }
 
     function dogSendCmd() {
-      var cmdObj = {};
-      cmdObj.uniqueId = vm.dogModal.uid;
-      cmdObj.messageType = 0x01;
-      cmdObj.messageSubType = 0x05;
-      cmdObj.guiWatchdogConfigCommandRequest = {
-        'mode': dogAssembleMode(),
-        'rebootTime': dogAssembleRebootTime(),
-        'maximumRandomTime': parseInt(vm.dogModal.randomTime.trim(), 10)
-      };
-      sendCommandToBackend(cmdObj, DevopsSettings.dogConAPI);
-    }
-
-    function dogAssembleMode() {
-      var dogMode = assemblePadZero(Number(vm.dogModal.interval).toString(2), 5)
-        + assemblePadZero(Number(vm.dogModal.report).toString(2), 1)
-        + assemblePadZero(Number(vm.dogModal.sw).toString(2), 2);
-      return parseInt(dogMode, 2);
-    }
-
-    function dogAssembleRebootTime() {
-      var dogRebootTime = '00000'
-        + assemblePadZero(Number(vm.dogModal.rebootHour).toString(2), 5)
-        + assemblePadZero(Number(vm.dogModal.rebootMinute).toString(2), 6);
-      return parseInt(dogRebootTime, 2);
+      DevopsProt.sendCommand('DOG', vm.dogModal);
     }
 
     /* air conditioner operation */
@@ -384,25 +281,7 @@
     }
 
     function acoSendCmd() {
-      var cmdObj = {};
-      cmdObj.uniqueId = vm.acoModal.uid;
-      cmdObj.messageType = 0x01;
-      cmdObj.messageSubType = 0x06;
-      cmdObj.airconCommandRequest = {
-        'airConMode': acoAssembleMode(),
-        'airConInterval': parseInt(vm.acoModal.interval.trim(), 10),
-        'airConDuration': parseInt(vm.acoModal.duration.trim(), 10),
-        'airConTemperature': parseInt(vm.acoModal.temperature.trim(), 10)
-      };
-      sendCommandToBackend(cmdObj, DevopsSettings.airConditionerConAPI);
-    }
-
-    function acoAssembleMode() {
-      var devAirConMode = '00'
-        + assemblePadZero(Number(vm.acoModal.wind).toString(2), 2)
-        + assemblePadZero(Number(vm.acoModal.workMode).toString(2), 2)
-        + assemblePadZero(Number(vm.acoModal.pwrMode).toString(2), 2);
-      return parseInt(devAirConMode, 2);
+      DevopsProt.sendCommand('ACO', vm.acoModal);
     }
 
     /* security configuration*/
@@ -411,7 +290,7 @@
     }
 
     function secSendCmd() {
-      console.log('SEC NOT IMPLEMENT');
+      DevopsProt.sendCommand('SEC', vm.secModal);
     }
 
     /* output mode configuration */
@@ -420,28 +299,7 @@
     }
 
     function omcSendCmd() {
-      var cmdObj = {};
-      cmdObj.uniqueId = vm.omcModal.uid;
-      cmdObj.messageType = 0x01;
-      cmdObj.messageSubType = 0x08;
-      cmdObj.guiOutputModeConfigCommandRequest = {
-        'idleOutput': parseInt(vm.omcModal.idleOutput, 16),
-        'inServiceOutput': parseInt(vm.omcModal.inserviceOutput, 16),
-        'validTimeIdleOutput': parseInt(vm.omcModal.validIdleOutput, 16),
-        'validTimeInServiceOutput': parseInt(vm.omcModal.validInserviceOutput, 16),
-        'mode': parseInt(vm.omcModal.mode, 10),
-        'validTime': omcAssembleValidTime()
-      };
-      sendCommandToBackend(cmdObj, DevopsSettings.omcConAPI);
-    }
-
-    function omcAssembleValidTime() {
-      var validTime = '00000000000'
-        + assemblePadZero(Number(vm.omcModal.endMinute).toString(2), 6)
-        + assemblePadZero(Number(vm.omcModal.endHour).toString(2), 5)
-        + assemblePadZero(Number(vm.omcModal.beginMinute).toString(2), 6)
-        + assemblePadZero(Number(vm.omcModal.beginHour).toString(2), 5);
-      return parseInt(validTime, 2);
+      DevopsProt.sendCommand('OMC', vm.omcModal);
     }
 
     /* door alarm */
@@ -450,17 +308,7 @@
     }
 
     function doaSendCmd() {
-      var cmdObj = {};
-      cmdObj.uniqueId = vm.doaModal.uid;
-      cmdObj.messageType = 0x01;
-      cmdObj.messageSubType = 0x31;
-      cmdObj.guiDoorAlarmCommandRequest = {
-        'doorAlarmMode': parseInt(vm.doaModal.mode.trim(), 10),
-        'doorAlarmTrigger': parseInt(vm.doaModal.type.trim(), 10),
-        'doorAlarmDuration': parseInt(vm.doaModal.duration.trim(), 10),
-        'doorAlarmSendInterval': parseInt(vm.doaModal.interval.trim(), 10)
-      };
-      sendCommandToBackend(cmdObj, DevopsSettings.doaConAPI);
+      DevopsProt.sendCommand('DOA', vm.doaModal);
     }
 
     /* smoke alarm */
@@ -469,17 +317,7 @@
     }
 
     function smaSendCmd() {
-      var cmdObj = {};
-      cmdObj.uniqueId = vm.smaModal.uid;
-      cmdObj.messageType = 0x01;
-      cmdObj.messageSubType = 0x32;
-      cmdObj.guiSmokeAlarmCommandRequest = {
-        'smokeAlarmMode': parseInt(vm.smaModal.mode.trim(), 10),
-        'smokeAlarmThreshold': parseInt(vm.smaModal.threshold.trim(), 10),
-        'smokeAlarmDuration': parseInt(vm.smaModal.duration.trim(), 10),
-        'smokeAlarmSendInterval': parseInt(vm.smaModal.interval.trim(), 10)
-      };
-      sendCommandToBackend(cmdObj, DevopsSettings.smaConAPI);
+      DevopsProt.sendCommand('SMA', vm.smaModal);
     }
 
     /* order update operation */
@@ -488,20 +326,7 @@
     }
 
     function ouoSendCmd() {
-      var cmdObj = {};
-      cmdObj.uniqueId = vm.ouoModal.uid;
-      cmdObj.messageType = 0x01;
-      cmdObj.messageSubType = 0x81;
-      cmdObj.guiUpdateOrderCommandRequest = {
-        'actionType': parseInt(vm.ouoModal.type.trim(), 10),
-        'orderID': parseInt(vm.ouoModal.orderID.trim(), 10),
-        'startDateTime': parseInt(vm.ouoModal.orderStart.trim(), 10),
-        'expireDateTime': parseInt(vm.ouoModal.orderExpire.trim(), 10),
-        'orderPassword': parseInt(vm.ouoModal.orderPassword.trim(), 10),
-        'personNumber': parseInt(vm.ouoModal.orderPersonNumber.trim(), 10),
-        'passwordValidCount': parseInt(vm.ouoModal.orderPasswordValidConut.trim(), 10)
-      };
-      sendCommandToBackend(cmdObj, DevopsSettings.ouoConAPI);
+      DevopsProt.sendCommand('OUO', vm.ouoModal);
     }
 
     function ouoModalFillStartDatetime() {
@@ -520,16 +345,7 @@
     }
 
     function outSendCmd() {
-      var cmdObj = {};
-      cmdObj.uniqueId = vm.outModal.uid;
-      cmdObj.messageType = 0x01;
-      cmdObj.messageSubType = 0x82;
-      cmdObj.outputConfigCommandRequest = {
-        'outputNumber': parseInt(vm.outModal.pin.trim(), 10),
-        'outputPin': parseInt(vm.outModal.pinValue.trim(), 10),
-        'controlMask': parseInt(vm.outModal.pinMask.trim(), 16)
-      };
-      sendCommandToBackend(cmdObj, DevopsSettings.outConAPI);
+      DevopsProt.sendCommand('OUT', vm.outModal);
     }
 
     function outModalPinChange() {
@@ -556,22 +372,7 @@
     }
 
     function muoSendCmd() {
-      var cmdObj = {};
-      cmdObj.uniqueId = vm.muoModal.uid;
-      cmdObj.messageType = 0x01;
-      cmdObj.messageSubType = 0x83;
-      cmdObj.guiMultimediaCommandConfigRequest = {
-        'mode': muoAssembleMode(),
-        'volume': parseInt(vm.muoModal.vol.trim(), 10),
-        'fileName': parseInt(vm.muoModal.mediaFname.trim(), 10)
-      };
-      sendCommandToBackend(cmdObj, DevopsSettings.muoConAPI);
-    }
-
-    function muoAssembleMode() {
-      var mode = assemblePadZero(Number(vm.muoModal.act).toString(2), 4)
-        + assemblePadZero(Number(vm.muoModal.type).toString(2), 4);
-      return parseInt(mode, 2);
+      DevopsProt.sendCommand('MUO', vm.muoModal);
     }
 
     function muoModalActChange() {
@@ -614,15 +415,7 @@
     }
 
     function rtoSendCmd() {
-      var cmdObj = {};
-      cmdObj.uniqueId = vm.rtoModal.uid;
-      cmdObj.messageType = 0x01;
-      cmdObj.messageSubType = 0x84;
-      cmdObj.rtoCommandRequest = {
-        'rtoCommand': parseInt(vm.rtoModal.cmd, 10),
-        'rtoSubCommand': parseInt(vm.rtoModal.subCmd, 10)
-      };
-      sendCommandToBackend(cmdObj, DevopsSettings.rtoConAPI);
+      DevopsProt.sendCommand('RTO', vm.rtoModal);
     }
 
     /* firmware over the air */
@@ -655,27 +448,7 @@
     }
 
     function fotaSendCmd() {
-      var cmdObj = {};
-      cmdObj.uniqueId = vm.fotaModal.uid;
-      cmdObj.messageType = 0x01;
-      cmdObj.messageSubType = 0xF1;
-      cmdObj.otaCommandRequest = {
-        'otaRetryTimes': parseInt(vm.fotaModal.retry.trim(), 10),
-        'otaDownloadTimeout': parseInt(vm.fotaModal.timeout.trim(), 10),
-        'otaDownloadProtocol': parseInt(vm.fotaModal.protocol.trim(), 10),
-        'otaServerUrlLength': vm.fotaModal.url.trim().length,
-        'otaServerUrl': vm.fotaModal.url.trim(),
-        'otaServerPort': parseInt(vm.fotaModal.port.trim(), 10),
-        'otaServerUsernameLength': vm.fotaModal.userName.trim().length,
-        'otaServerUserName': vm.fotaModal.userName.trim(),
-        'otaServerPasswordLength': vm.fotaModal.userPasswd.trim().length,
-        'otaServerPassword': vm.fotaModal.userPasswd.trim(),
-        'otaServerMD5': vm.fotaModal.md5.trim(),
-        'otaServerKey': parseInt(vm.fotaModal.key.trim(), 10),
-        'otaDownloadAddress': parseInt(vm.fotaModal.dwnAddr.trim(), 16),
-        'otaAppBootupAddress': parseInt(vm.fotaModal.appAddr.trim(), 16)
-      };
-      sendCommandToBackend(cmdObj, DevopsSettings.fotaAPI);
+      DevopsProt.sendCommand('FOTA', vm.fotaModal);
     }
 
   }
