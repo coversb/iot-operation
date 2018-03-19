@@ -9,14 +9,15 @@
 
   function UpgradesBatchController($scope, $filter, $state, $http, Authentication, DevopsSettings, upgradesVersions, Notification) {
 
-    var searchData = '';
+    var searchName = '';
+    var softwareVersion = '';
+    var deviceType = undefined;
     var vm = this;
 
     vm.uniqueIds = [];
     vm.availableVersions = upgradesVersions.data;
     vm.version = upgradesVersions.data[0] || {};
-    vm.searchByName = searchByName;
-    vm.updateBoxDetail = updateBoxDetail;
+    vm.search = search;
     vm.batchUpdate = batchUpdate;
 
     init();
@@ -46,14 +47,15 @@
     }
 
     // search button
-    function searchByName() {
-      searchData = vm.searchData;
-      $('#boxTable').bootstrapTable('refresh', {});
-      vm.searchData = searchData = '';
-    }
+    function search() {
+      searchName = vm.searchName;
+      softwareVersion = vm.txtSearchVersion;
+      deviceType = vm.txtSearchDevType;
 
-    function updateBoxDetail() {
-      getBoxDetail(vm.selectedBox.base.uniqueId);
+      $('#boxTable').bootstrapTable('refresh', {});
+
+      vm.txtSearchVersion = softwareVersion = '';
+      vm.searchName = searchName = '';
     }
 
     function loadBoxList() {
@@ -79,12 +81,18 @@
             pageNumber = (params.offset / params.limit) + 1;
           }
           var param = {
-            name: searchData,
+            name: searchName,
+            softwareVersion: softwareVersion,
             pageNum: pageNumber,  // 页码
             pageSize: params.limit  // 页面大小
           };
-          searchData = '';
-          vm.searchData = '';
+
+          if(deviceType){
+            param.deviceType = deviceType;
+          }
+
+          searchName = '';
+          vm.searchName = '';
           return param;
         },
         responseHandler: function (res) {
@@ -194,7 +202,7 @@
     function batchUpdate() {
       vm.uniqueIds.forEach(sendCmd);
       $('#versionUpdateDialog').modal('hide');
-      Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> 版本命令下发成功!' });
+      Notification.success({message: '<i class="glyphicon glyphicon-ok"></i> 版本命令下发成功!'});
     }
 
     function sendCmd(item, index) {
@@ -207,9 +215,9 @@
       cmdObj.messageType = 0x01;
       cmdObj.messageSubType = 0xF1;
       cmdObj.otaCommandRequest = {
-        'otaRetryTimes': 10,
-        'otaDownloadTimeout': 10,
-        'otaDownloadProtocol': 0,
+        'otaRetryTimes': 2,
+        'otaDownloadTimeout': 3, // min
+        'otaDownloadProtocol': 0, // must be zero, if you want to upgrade
         'otaServerUrlLength': vm.version.url.trim().length,
         'otaServerUrl': vm.version.url.trim(),
         'otaServerPort': 21,
@@ -217,7 +225,7 @@
         'otaServerUserName': "fota".trim(),
         'otaServerPasswordLength': "fota".length,
         'otaServerPassword': "fota".trim(),
-        'otaServerMD5': vm.version.md5, // TODO:fixme
+        'otaServerMD5': vm.version.md5,
         'otaServerKey': 0,
         'otaDownloadAddress': 0,
         'otaAppBootupAddress': 0
