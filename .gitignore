@@ -26,6 +26,7 @@ config/env/local.js
 config/env/local-*.js
 *.pem
 package-lock.json
+yarn.lock
 
 # Compiled less and sass files
 # ============================
