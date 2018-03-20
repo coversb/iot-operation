@@ -20,7 +20,7 @@
         controller: 'UpgradesVersionsController',
         controllerAs: 'vm',
         data: {
-          roles: ['user', 'admin']
+          roles: ['admin', '开发/测试']
         },
         resolve: {
           upgradesVersionsResolve: getUpgradesVersions
@@ -33,6 +33,7 @@
         controller: 'UpgradesVersionController',
         controllerAs: 'vm',
         data: {
+          roles: ['admin', '开发/测试'],
           pageTitle: 'Version Manager'
         }
       })
@@ -42,6 +43,7 @@
         controller: 'UpgradesBatchController',
         controllerAs: 'vm',
         data: {
+          roles: ['admin', '开发/测试'],
           pageTitle: 'Version Batch'
         },
         resolve: {

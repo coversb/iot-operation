@@ -20,7 +20,7 @@
         controller: 'DevopsToolsController',
         controllerAs: 'vm',
         data: {
-          roles: ['user', 'admin']
+          roles: ['admin', '运维/客服/工程', '开发/测试']
         }
       })
       .state('devops.functiontest', {
@@ -29,7 +29,7 @@
         controller: 'DevopsFunctionTestController',
         controllerAs: 'vm',
         data: {
-          roles: ['user', 'admin']
+          roles: ['admin', '运维/客服/工程', '开发/测试']
         }
       })
       .state('devops.protcmd', {
@@ -38,7 +38,7 @@
         controller: 'DevopsProtCmdController',
         controllerAs: 'vm',
         data: {
-          roles: ['admin']
+          roles: ['admin', '开发/测试']
         }
       });
   }

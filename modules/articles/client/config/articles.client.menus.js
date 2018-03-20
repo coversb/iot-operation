@@ -12,7 +12,7 @@
       title: '文档',
       state: 'articles',
       type: 'dropdown',
-      roles: ['user', 'admin'],
+      roles: ['user', 'admin', '运维/客服/工程', '开发/测试'],
       position: 99
     });
 
@@ -20,7 +20,7 @@
     menuService.addSubMenuItem('topbar', 'articles', {
       title: '帮助',
       state: 'articles.list',
-      roles: ['*']
+      roles: ['user', 'admin', '运维/客服/工程', '开发/测试']
     });
   }
 }());

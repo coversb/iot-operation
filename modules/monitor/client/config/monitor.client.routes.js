@@ -15,7 +15,7 @@
         controller: 'MonitorController',
         controllerAs: 'vm',
         data: {
-          roles: ['user', 'admin']
+          roles: ['user', 'admin', '运维/客服/工程', '开发/测试']
         }
       });
   }
