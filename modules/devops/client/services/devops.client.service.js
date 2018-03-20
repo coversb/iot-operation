@@ -19,7 +19,6 @@
       cfgConAPI: '/gui/sendGlobalServerConfigCommand',
       tmaConAPI: '/gui/sendTimeAdjustConfigCommand',
       dogConAPI: '/gui/sendWatchdogConfigCommand',
-      airConditionerConAPI: '/gui/sendAirconConfigCommand',
       acoConAPI: '/gui/sendAirconConfigCommand',
       omcConAPI: '/gui/sendOutputModeConfigCommand',
       doaConAPI: '/gui/sendDoorAlarmCommand',

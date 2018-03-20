@@ -5,16 +5,24 @@
     .module('devops.tools')
     .controller('DevopsToolsController', DevopsToolsController);
 
-  DevopsToolsController.$inject = ['$scope', '$state', '$http', 'Authentication', 'DevopsSettings'];
+  DevopsToolsController.$inject = ['$scope', '$state', 'Authentication', 'DevopsProt', 'Notification'];
 
-  function DevopsToolsController($scope, $state, $http, Authentication, DevopsSettings) {
+  function DevopsToolsController($scope, $state, Authentication, DevopsProt, Notification) {
 
     var vm = this;
 
+    var actMap = new Map([
+      ['door', 4],
+      ['deviceBox', 7]
+    ]);
+
+    var ctrlMap = new Map([
+      ['close', 0],
+      ['open', 1]
+    ]);
+
     vm.sendDevAirConCommand = sendDevAirConCommand;
-    vm.sendDevOpenDoorCommand = sendDevOpenDoorCommand;
-    vm.sendDevOpenDeviceBoxCommand = sendDevOpenDeviceBoxCommand;
-    vm.sendDevCloseDoorCommand = sendDevCloseDoorCommand;
+    vm.sendDevRTOCommand = sendDevRTOCommand;
 
     init();
 
@@ -32,93 +40,34 @@
       vm.devUID = '0000000000600000'; // UID
     }
 
-    function sendCommandToBackend(data, apiURL) {
-      var config = {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      };
-      $http.post(DevopsSettings.backboneURL + apiURL, data, config)
-        .success(function (data, status, header, config) {
-          console.log('success');
-        })
-        .error(function (data, status, header, config) {
-          console.log('error');
-        });
-    }
-
-    // fill '0' before string
-    function assemblePadZero(str, n) {
-      var temp = '0000' + str;
-      return temp.substr(temp.length - n);
-    }
-
-    function assembleDevAirConMode(pwrMode, workMode, windMode) {
-      var devAirConMode = '00'
-        + assemblePadZero(Number(windMode).toString(2), 2)
-        + assemblePadZero(Number(workMode).toString(2), 2)
-        + assemblePadZero(Number(pwrMode).toString(2), 2);
-      // console.log(devAirConMode);
-      return parseInt(devAirConMode, 2);
+    function showSendRes(data, status) {
+      if (status === 200) {
+        Notification.success({message: '<i class="glyphicon glyphicon-ok"></i> 发送成功!'});
+      } else {
+        Notification.error({message: data, title: '<i class="glyphicon glyphicon-remove"></i> 发送失败!'});
+      }
     }
 
     function sendDevAirConCommand() {
-      var devAirMode = assembleDevAirConMode(vm.devAirConPwrMode, vm.devAirConWorkMode, vm.devAirConWindMode);
-      var cmdObj = {};
-      cmdObj.uniqueId = vm.devUID;
-      cmdObj.messageType = 0x01;
-      cmdObj.messageSubType = 0x06;
-      cmdObj.airconCommandRequest = {
-        'airConMode': devAirMode,
-        'airConInterval': 60, // use default value, should be devAirConInterval
-        'airConDuration': 60, // use default value, should be devAirConDuration
-        'airConTemperature': parseInt(vm.devAirConTemperature, 10)
+      var param = {
+        uid: vm.devUID,
+        pwrMode: vm.devAirConPwrMode,
+        workMode: vm.devAirConWorkMode,
+        wind: vm.devAirConWindMode,
+        interval: '60',
+        duration: '60',
+        temperature: vm.devAirConTemperature
       };
-      console.log('sendDevAirConCommand ' + JSON.stringify(cmdObj));
-
-      sendCommandToBackend(cmdObj, DevopsSettings.airConditionerConAPI);
+      DevopsProt.sendCommand('ACO', param, showSendRes);
     }
 
-    function sendDevOpenDoorCommand() {
-      var cmdObj = {};
-      cmdObj.uniqueId = vm.devUID;
-      cmdObj.messageType = 0x01;
-      cmdObj.messageSubType = 0x84;
-      cmdObj.rtoCommandRequest = {
-        'rtoCommand': 4,
-        'rtoSubCommand': 1
+    function sendDevRTOCommand(act, ctrl) {
+      var param = {
+        uid: vm.devUID,
+        cmd: actMap.get(act).toString(10),
+        subCmd: ctrlMap.get(ctrl).toString(10)
       };
-      console.log('sendDevOpenDoorCommand ' + JSON.stringify(cmdObj));
-
-      sendCommandToBackend(cmdObj, DevopsSettings.rtoConAPI);
-    }
-
-    function sendDevOpenDeviceBoxCommand() {
-      var cmdObj = {};
-      cmdObj.uniqueId = vm.devUID;
-      cmdObj.messageType = 0x01;
-      cmdObj.messageSubType = 0x84;
-      cmdObj.rtoCommandRequest = {
-        'rtoCommand': 7,
-        'rtoSubCommand': 1
-      };
-      console.log('sendDevOpenDeviceBoxCommand ' + JSON.stringify(cmdObj));
-
-      sendCommandToBackend(cmdObj, DevopsSettings.rtoConAPI);
-    }
-
-    function sendDevCloseDoorCommand() {
-      var cmdObj = {};
-      cmdObj.uniqueId = vm.devUID;
-      cmdObj.messageType = 0x01;
-      cmdObj.messageSubType = 0x84;
-      cmdObj.rtoCommandRequest = {
-        'rtoCommand': 7,
-        'rtoSubCommand': 0
-      };
-      console.log('sendDevCloseDoorCommand ' + JSON.stringify(cmdObj));
-
-      sendCommandToBackend(cmdObj, DevopsSettings.rtoConAPI);
+      DevopsProt.sendCommand('RTO', param, showSendRes);
     }
 
   }

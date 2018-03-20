@@ -114,23 +114,20 @@
               </div>
               <div class="form-group">
                 <button class="btn btn-success btn-lg" name="submit" type="button"
-                        ng-click="vm.sendDevOpenDoorCommand()">
+                        ng-click="vm.sendDevRTOCommand('door', 'open')">
                   开盒门
                 </button>
               </div>
               <div class="form-group">
                 <button class="btn btn-success btn-lg" name="submit" type="button"
-                        ng-click="vm.sendDevOpenDeviceBoxCommand()">
+                        ng-click="vm.sendDevRTOCommand('deviceBox', 'open')">
                   开设备箱
                 </button>
                 <button class="btn btn-success btn-lg" name="submit" type="button"
-                        ng-click="vm.sendDevCloseDoorCommand()">
+                        ng-click="vm.sendDevRTOCommand('deviceBox', 'close')">
                   关设备箱
                 </button>
               </div>
-            </div>
-            <div class="col-lg-12 col-sm-12 col-xs-12 alert alert-success" ng-show="successMessagebool ">
-              <strong>{{successMessage }}</strong>
             </div>
           </form>
         </div>
