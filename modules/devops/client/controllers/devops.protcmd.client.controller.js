@@ -5,9 +5,9 @@
     .module('devops.protcmd')
     .controller('DevopsProtCmdController', DevopsProtCmdController);
 
-  DevopsProtCmdController.$inject = ['$scope', '$state', 'Authentication', 'DevopsProt'];
+  DevopsProtCmdController.$inject = ['$scope', '$state', 'Authentication', 'DevopsProt', 'Notification'];
 
-  function DevopsProtCmdController($scope, $state, Authentication, DevopsProt) {
+  function DevopsProtCmdController($scope, $state, Authentication, DevopsProt, Notification) {
 
     var vm = this;
 
@@ -226,13 +226,21 @@
       }
     }
 
+    function showSendRes(data, status) {
+      if (status === 200) {
+        Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> 发送成功!' });
+      } else {
+        Notification.error({ message: data, title: '<i class="glyphicon glyphicon-remove"></i> 发送失败!' });
+      }
+    }
+
     /* access point configuration */
     function apcGenData() {
       vm.apcModal.genData = DevopsProt.getCommand('APC', vm.apcModal);
     }
 
     function apcSendCmd() {
-      DevopsProt.sendCommand('APC', vm.apcModal);
+      DevopsProt.sendCommand('APC', vm.apcModal, showSendRes);
     }
 
     /* server configuration */
@@ -241,7 +249,7 @@
     }
 
     function serSendCmd() {
-      DevopsProt.sendCommand('SER', vm.serModal);
+      DevopsProt.sendCommand('SER', vm.serModal, showSendRes);
     }
 
     /* configuration */
@@ -250,7 +258,7 @@
     }
 
     function cfgSendCmd() {
-      DevopsProt.sendCommand('CFG', vm.cfgModal);
+      DevopsProt.sendCommand('CFG', vm.cfgModal, showSendRes);
     }
 
     /* time adjust */
@@ -259,7 +267,7 @@
     }
 
     function tmaSendCmd() {
-      DevopsProt.sendCommand('TMA', vm.tmaModal);
+      DevopsProt.sendCommand('TMA', vm.tmaModal, showSendRes);
     }
 
     function tmaModalFillDatetime() {
@@ -272,7 +280,7 @@
     }
 
     function dogSendCmd() {
-      DevopsProt.sendCommand('DOG', vm.dogModal);
+      DevopsProt.sendCommand('DOG', vm.dogModal, showSendRes);
     }
 
     /* air conditioner operation */
@@ -281,7 +289,7 @@
     }
 
     function acoSendCmd() {
-      DevopsProt.sendCommand('ACO', vm.acoModal);
+      DevopsProt.sendCommand('ACO', vm.acoModal, showSendRes);
     }
 
     /* security configuration*/
@@ -290,7 +298,7 @@
     }
 
     function secSendCmd() {
-      DevopsProt.sendCommand('SEC', vm.secModal);
+      DevopsProt.sendCommand('SEC', vm.secModal, showSendRes);
     }
 
     /* output mode configuration */
@@ -299,7 +307,7 @@
     }
 
     function omcSendCmd() {
-      DevopsProt.sendCommand('OMC', vm.omcModal);
+      DevopsProt.sendCommand('OMC', vm.omcModal, showSendRes);
     }
 
     /* door alarm */
@@ -308,7 +316,7 @@
     }
 
     function doaSendCmd() {
-      DevopsProt.sendCommand('DOA', vm.doaModal);
+      DevopsProt.sendCommand('DOA', vm.doaModal, showSendRes);
     }
 
     /* smoke alarm */
@@ -317,7 +325,7 @@
     }
 
     function smaSendCmd() {
-      DevopsProt.sendCommand('SMA', vm.smaModal);
+      DevopsProt.sendCommand('SMA', vm.smaModal, showSendRes);
     }
 
     /* order update operation */
@@ -326,7 +334,7 @@
     }
 
     function ouoSendCmd() {
-      DevopsProt.sendCommand('OUO', vm.ouoModal);
+      DevopsProt.sendCommand('OUO', vm.ouoModal, showSendRes);
     }
 
     function ouoModalFillStartDatetime() {
@@ -345,7 +353,7 @@
     }
 
     function outSendCmd() {
-      DevopsProt.sendCommand('OUT', vm.outModal);
+      DevopsProt.sendCommand('OUT', vm.outModal, showSendRes);
     }
 
     function outModalPinChange() {
@@ -372,7 +380,7 @@
     }
 
     function muoSendCmd() {
-      DevopsProt.sendCommand('MUO', vm.muoModal);
+      DevopsProt.sendCommand('MUO', vm.muoModal, showSendRes);
     }
 
     function muoModalActChange() {
@@ -415,7 +423,7 @@
     }
 
     function rtoSendCmd() {
-      DevopsProt.sendCommand('RTO', vm.rtoModal);
+      DevopsProt.sendCommand('RTO', vm.rtoModal, showSendRes);
     }
 
     /* firmware over the air */
@@ -448,7 +456,7 @@
     }
 
     function fotaSendCmd() {
-      DevopsProt.sendCommand('FOTA', vm.fotaModal);
+      DevopsProt.sendCommand('FOTA', vm.fotaModal, showSendRes);
     }
 
   }
