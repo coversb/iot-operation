@@ -31,6 +31,7 @@ module.exports = {
 
       */
     },
+    concurrent: process.env.AGENDA_DEFAULT_CONCURRENCY || 5,
     // Enable mongoose debug mode
     debug: process.env.MONGODB_DEBUG || false
   },

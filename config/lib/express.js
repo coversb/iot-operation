@@ -21,6 +21,11 @@ var config = require('../config'),
   _ = require('lodash'),
   lusca = require('lusca');
 
+const LoadAgenda = require('./agenda/agenda');
+// const Agenda = require('agenda');
+const Agendash = require('agendash');
+const worker = require('./agenda/worker');
+
 /**
  * Initialize local variables
  */
@@ -89,7 +94,28 @@ module.exports.initMiddleware = function (app) {
   // Add the cookie parser and flash middleware
   app.use(cookieParser());
   app.use(flash());
+
+  this.initAgendash(app);
 };
+
+
+/**
+ * Initialize agendash middleware
+ */
+module.exports.initAgendash = function (app) {
+  // const agendaConfig = {
+  //   db: {address: "mongodb://mongouser:ztm42nHEBACc0W@172.31.240.17:27017/agenda_test_dev?authSource=admin"},
+  //   defaultConcurrency: process.env.AGENDA_DEFAULT_CONCURRENCY
+  // };
+  //
+  // console.log('Starting agenda with config:', agendaConfig);
+  // const agenda = new Agenda(agendaConfig);
+  const agenda = LoadAgenda.get(config);
+  app.use('/agendash', Agendash(agenda));
+
+  worker.init(agenda);
+};
+
 
 /**
  * Configure view engine
