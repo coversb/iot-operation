@@ -32,6 +32,13 @@
     });
 
     menuService.addSubMenuItem('topbar', 'devops', {
+      title: '任务管理',
+      state: 'devops.tasks',
+      roles: ['admin', '运维/客服/工程', '开发/测试'],
+      position: 3
+    });
+
+    menuService.addSubMenuItem('topbar', 'devops', {
       title: '协议命令',
       state: 'devops.protcmd',
       roles: ['admin', '开发/测试'],
