@@ -47,7 +47,8 @@
           scope.requirementsColor = requirementsMeter[requirementsIdx].color;
           scope.requirementsProgress = requirementsMeter[requirementsIdx].progress;
 
-          if (result.errors.length) {
+          // if (result.errors.length) {
+          if (result.strong === false) {
             scope.getPopoverMsg = PasswordValidator.getPopoverMsg();
             scope.passwordErrors = result.errors;
             status = false;
