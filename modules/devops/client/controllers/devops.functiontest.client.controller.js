@@ -5,9 +5,9 @@
     .module('devops.functiontest')
     .controller('DevopsFunctionTestController', DevopsFunctionTestController);
 
-  DevopsFunctionTestController.$inject = ['$scope', '$state', '$http', '$timeout', 'Authentication', 'DevopsSettings'];
+  DevopsFunctionTestController.$inject = ['$scope', '$state', '$timeout', 'Authentication', 'DevopsProt', 'Notification'];
 
-  function DevopsFunctionTestController($scope, $state, $http, $timeout, Authentication, DevopsSettings) {
+  function DevopsFunctionTestController($scope, $state, $timeout, Authentication, DevopsProt, Notification) {
 
     var devPinMap = new Map([
       ['exhaust', 5],
@@ -25,7 +25,7 @@
     var devMediaFileMap = new Map([
       ['welcome', 0],
       ['orderOver', 1],
-      ['smokeAlarm', 2],
+      ['smokeAlarm', 2]
     ]);
     var vm = this;
 
@@ -44,53 +44,34 @@
       vm.devUID = '0000000000600000'; // UID
     }
 
-    function sendCommandToBackend(data, apiURL) {
-      var config = {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      };
-      $http.post(DevopsSettings.backboneURL + apiURL, data, config)
-        .success(function (data, status, header, config) {
-          console.log('success');
-
-          vm.successMessage = '发送至' + vm.devUID + '成功';
-        })
-        .error(function (data, status, header, config) {
-          console.log('error');
-          vm.successMessage = '发送至' + vm.devUID + '失败';
-        });
-
-      vm.successMessagebool = true;
-      $timeout(function () {
-        vm.successMessagebool = false;
-      }, 3000);
+    function showSendRes(data, status) {
+      if (status === 200) {
+        Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> 发送至' + vm.devUID + '成功!' });
+      } else {
+        Notification.error({ message: data, title: '<i class="glyphicon glyphicon-remove"></i> 发送至' + vm.devUID + '失败!' });
+      }
     }
 
     function sendOutCommand(pinName, value) {
-      var cmdObj = {};
-      cmdObj.uniqueId = vm.devUID;
-      cmdObj.messageType = 0x01;
-      cmdObj.messageSubType = 0x82;
-      cmdObj.outputConfigCommandRequest = {
-        'outputNumber': devPinMap.get(pinName),
-        'outputPin': value,
-        'controlMask': 0x00000000
+      var param = {
+        uid: vm.devUID,
+        pin: devPinMap.get(pinName).toString(10),
+        pinValue: value.toString(10),
+        pinMask: '0x00000000'
       };
-      sendCommandToBackend(cmdObj, DevopsSettings.outConAPI);
+      DevopsProt.sendCommand('OUT', param, showSendRes);
+
     }
 
     function sendMuoCommand(mediaName) {
-      var cmdObj = {};
-      cmdObj.uniqueId = vm.devUID;
-      cmdObj.messageType = 0x01;
-      cmdObj.messageSubType = 0x83;
-      cmdObj.guiMultimediaCommandConfigRequest = {
-        'mode': 0x11,
-        'volume': 0,
-        'fileName': devMediaFileMap.get(mediaName)
+      var param = {
+        uid: vm.devUID,
+        act: '1',
+        type: '1',
+        vol: '0',
+        mediaFname: devMediaFileMap.get(mediaName).toString(10)
       };
-      sendCommandToBackend(cmdObj, DevopsSettings.muoConAPI);
+      DevopsProt.sendCommand('MUO', param, showSendRes);
     }
   }
 }());

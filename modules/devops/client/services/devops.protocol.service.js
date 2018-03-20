@@ -19,7 +19,7 @@
       settings: DevopsSettings,
       getCommand: getCommand,
       sendCommand: sendCommand,
-      httpSendRequest: function (api, data) {
+      httpSendRequest: function (api, data, resCallback) {
         var config = {
           headers: {
             'Content-Type': 'application/json'
@@ -27,14 +27,18 @@
         };
 
         $http.post(DevopsSettings.backboneURL + api, data, config)
-          .success(function (data, status, header, config) {
-            console.log('success');
-            return true;
+          .success(function (data, status) {
+            if (resCallback !== undefined) {
+              resCallback(data, status);
+            }
           })
-          .error(function (data, status, header, config) {
-            console.log('error');
-            return false;
+          .error(function (data, status) {
+            // console.log('error');
+            if (resCallback !== undefined) {
+              resCallback(data, status);
+            }
           });
+
       }
     };
 
@@ -167,74 +171,73 @@
     }
   }
 
-  function sendCommand(cmdType, param) {
+  function sendCommand(cmdType, param, cb) {
     var res = false;
+
     switch (cmdType) {
       case 'APC': {
-        res = APC.send(this.httpSendRequest, this.settings.apcConAPI, param);
+        res = APC.send(this.httpSendRequest, this.settings.apcConAPI, param, cb);
         break;
       }
       case 'SER': {
-        res = SER.send(this.httpSendRequest, this.settings.serConAPI, param);
+        res = SER.send(this.httpSendRequest, this.settings.serConAPI, param, cb);
         break;
       }
       case 'CFG': {
-        res = CFG.send(this.httpSendRequest, this.settings.cfgConAPI, param);
+        res = CFG.send(this.httpSendRequest, this.settings.cfgConAPI, param, cb);
         break;
       }
       case 'TMA': {
-        res = TMA.send(this.httpSendRequest, this.settings.tmaConAPI, param);
+        res = TMA.send(this.httpSendRequest, this.settings.tmaConAPI, param, cb);
         break;
       }
       case 'DOG': {
-        res = DOG.send(this.httpSendRequest, this.settings.dogConAPI, param);
+        res = DOG.send(this.httpSendRequest, this.settings.dogConAPI, param, cb);
         break;
       }
       case 'ACO': {
-        res = ACO.send(this.httpSendRequest, this.settings.acoConAPI, param);
+        res = ACO.send(this.httpSendRequest, this.settings.acoConAPI, param, cb);
         break;
       }
       case 'SEC': {
-        res = SEC.send(this.httpSendRequest, '', param);
+        res = SEC.send(this.httpSendRequest, '', param, cb);
         break;
       }
       case 'OMC': {
-        res = OMC.send(this.httpSendRequest, this.settings.omcConAPI, param);
+        res = OMC.send(this.httpSendRequest, this.settings.omcConAPI, param, cb);
         break;
       }
       case 'DOA': {
-        res = DOA.send(this.httpSendRequest, this.settings.doaConAPI, param);
+        res = DOA.send(this.httpSendRequest, this.settings.doaConAPI, param, cb);
         break;
       }
       case 'SMA': {
-        res = SMA.send(this.httpSendRequest, this.settings.smaConAPI, param);
+        res = SMA.send(this.httpSendRequest, this.settings.smaConAPI, param, cb);
         break;
       }
       case 'OUO': {
-        res = OUO.send(this.httpSendRequest, this.settings.ouoConAPI, param);
+        res = OUO.send(this.httpSendRequest, this.settings.ouoConAPI, param, cb);
         break;
       }
       case 'OUT': {
-        res = OUT.send(this.httpSendRequest, this.settings.outConAPI, param);
+        res = OUT.send(this.httpSendRequest, this.settings.outConAPI, param, cb);
         break;
       }
       case 'MUO': {
-        res = MUO.send(this.httpSendRequest, this.settings.muoConAPI, param);
+        res = MUO.send(this.httpSendRequest, this.settings.muoConAPI, param, cb);
         break;
       }
       case 'RTO': {
-        res = RTO.send(this.httpSendRequest, this.settings.rtoConAPI, param);
+        res = RTO.send(this.httpSendRequest, this.settings.rtoConAPI, param, cb);
         break;
       }
       case 'FOTA': {
-        res = FOTA.send(this.httpSendRequest, this.settings.fotaAPI, param);
+        res = FOTA.send(this.httpSendRequest, this.settings.fotaAPI, param, cb);
         break;
       }
       default:
         break;
-
     }
-
     return res;
   }
 
@@ -253,7 +256,7 @@
 
       return res;
     },
-    send: function (httpSendRequest, api, param) {
+    send: function (httpSendRequest, api, param, cb) {
       var cmdObj = {};
       cmdObj.uniqueId = param.uid;
       cmdObj.messageType = 0x01;
@@ -266,7 +269,7 @@
         'backupDNSServer': this.assembleIP(param.backupDNS)
       };
 
-      return httpSendRequest(api, cmdObj);
+      httpSendRequest(api, cmdObj, cb);
     },
     assembleFiledLength: function (apnLen, apnUsrNameLen, apnPasswordLen) {
       var filedLen = assemblePadZero(apnPasswordLen.toString(2), 5)
@@ -280,7 +283,7 @@
         + convertDecStrToHexStr(ip[1], 2)
         + convertDecStrToHexStr(ip[2], 2)
         + convertDecStrToHexStr(ip[3], 2);
-      return ipAddr
+      return ipAddr;
     }
   };
   /* APC command end */
@@ -303,7 +306,7 @@
 
       return res;
     },
-    send: function (httpSendRequest, api, param) {
+    send: function (httpSendRequest, api, param, cb) {
       var cmdObj = {};
       cmdObj.uniqueId = param.uid;
       cmdObj.messageType = 0x01;
@@ -318,7 +321,7 @@
         'heartBeatInterval': parseInt(param.hbpInterval.trim(), 10),
         'maxRandomTime': parseInt(param.maxRandomTime.trim(), 10)
       };
-      return httpSendRequest(api, cmdObj);
+      httpSendRequest(api, cmdObj, cb);
     },
     assembleFiledLength: function (mainServerLen, backupServerLen, smsLen) {
       var filedLen = '0000000'
@@ -342,7 +345,7 @@
 
       return res;
     },
-    send: function (httpSendRequest, api, param) {
+    send: function (httpSendRequest, api, param, cb) {
       var cmdObj = {};
       cmdObj.uniqueId = param.uid;
       cmdObj.messageType = 0x01;
@@ -351,7 +354,7 @@
         'eventMask': parseInt(param.mask.trim(), 16),
         'infoReportInterval': parseInt(param.infInterval.trim(), 10)
       };
-      return httpSendRequest(api, cmdObj);
+      httpSendRequest(api, cmdObj, cb);
     }
   };
   /* CFG command end */
@@ -367,7 +370,7 @@
 
       return res;
     },
-    send: function (httpSendRequest, api, param) {
+    send: function (httpSendRequest, api, param, cb) {
       var cmdObj = {};
       cmdObj.uniqueId = param.uid;
       cmdObj.messageType = 0x01;
@@ -376,7 +379,7 @@
         'timeAdjust': this.assembleTimeAdjust(param.autoAdjust),
         'utcTime': parseInt(param.utc.trim(), 10)
       };
-      return httpSendRequest(api, cmdObj);
+      httpSendRequest(api, cmdObj, cb);
     },
     assembleTimeAdjust: function (autoAdjust) {
       var tmaMode = assemblePadZero(Number(autoAdjust).toString(2), 3)
@@ -399,7 +402,7 @@
 
       return res;
     },
-    send: function (httpSendRequest, api, param) {
+    send: function (httpSendRequest, api, param, cb) {
       var cmdObj = {};
       cmdObj.uniqueId = param.uid;
       cmdObj.messageType = 0x01;
@@ -409,7 +412,7 @@
         'rebootTime': parseInt(this.assembleRebootTime(param.rebootHour, param.rebootMinute), 10),
         'maximumRandomTime': parseInt(param.randomTime.trim(), 10)
       };
-      return httpSendRequest(api, cmdObj);
+      httpSendRequest(api, cmdObj, cb);
     },
     assembleMode: function (sw, report, interval) {
       var dogMode = assemblePadZero(Number(interval).toString(2), 5)
@@ -441,7 +444,7 @@
 
       return res;
     },
-    send: function (httpSendRequest, api, param) {
+    send: function (httpSendRequest, api, param, cb) {
       var cmdObj = {};
       cmdObj.uniqueId = param.uid;
       cmdObj.messageType = 0x01;
@@ -452,7 +455,7 @@
         'airConDuration': parseInt(param.duration.trim(), 10),
         'airConTemperature': parseInt(param.temperature.trim(), 10)
       };
-      return httpSendRequest(api, cmdObj);
+      httpSendRequest(api, cmdObj, cb);
     },
     assembleMode: function (pwrMode, workMode, wind) {
       var devAirConMode = '00'
@@ -475,7 +478,7 @@
 
       return res;
     },
-    send: function (httpSendRequest, api, param) {
+    send: function (httpSendRequest, api, param, cb) {
       console.log('SEC NOT IMPLEMENT');
     }
   };
@@ -496,7 +499,7 @@
 
       return res;
     },
-    send: function (httpSendRequest, api, param) {
+    send: function (httpSendRequest, api, param, cb) {
       var cmdObj = {};
       cmdObj.uniqueId = param.uid;
       cmdObj.messageType = 0x01;
@@ -509,7 +512,7 @@
         'mode': parseInt(param.mode, 10),
         'validTime': parseInt(this.assembleValidTime(param.beginHour, param.beginMinute, param.endHour, param.endMinute), 10)
       };
-      return httpSendRequest(api, cmdObj);
+      httpSendRequest(api, cmdObj, cb);
     },
     assembleValidTime: function (beginHour, bgeinMinute, endHour, endMinute) {
       var validTime = '00000000000'
@@ -536,7 +539,7 @@
 
       return res;
     },
-    send: function (httpSendRequest, api, param) {
+    send: function (httpSendRequest, api, param, cb) {
       var cmdObj = {};
       cmdObj.uniqueId = param.uid;
       cmdObj.messageType = 0x01;
@@ -547,7 +550,7 @@
         'doorAlarmDuration': parseInt(param.duration.trim(), 10),
         'doorAlarmSendInterval': parseInt(param.interval.trim(), 10)
       };
-      return httpSendRequest(api, cmdObj);
+      httpSendRequest(api, cmdObj, cb);
     }
   };
   /* DOA command end */
@@ -565,7 +568,7 @@
 
       return res;
     },
-    send: function (httpSendRequest, api, param) {
+    send: function (httpSendRequest, api, param, cb) {
       var cmdObj = {};
       cmdObj.uniqueId = param.uid;
       cmdObj.messageType = 0x01;
@@ -576,7 +579,7 @@
         'smokeAlarmDuration': parseInt(param.duration.trim(), 10),
         'smokeAlarmSendInterval': parseInt(param.interval.trim(), 10)
       };
-      return httpSendRequest(api, cmdObj);
+      httpSendRequest(api, cmdObj, cb);
     }
   };
   /* SMA command end */
@@ -598,7 +601,7 @@
 
       return res;
     },
-    send: function (httpSendRequest, api, param) {
+    send: function (httpSendRequest, api, param, cb) {
       var cmdObj = {};
       cmdObj.uniqueId = param.uid;
       cmdObj.messageType = 0x01;
@@ -612,7 +615,7 @@
         'personNumber': parseInt(param.orderPersonNumber.trim(), 10),
         'passwordValidCount': parseInt(param.orderPasswordValidConut.trim(), 10)
       };
-      return httpSendRequest(api, cmdObj);
+      httpSendRequest(api, cmdObj, cb);
     }
   };
   /* OUO command end */
@@ -629,7 +632,7 @@
 
       return res;
     },
-    send: function (httpSendRequest, api, param) {
+    send: function (httpSendRequest, api, param, cb) {
       var cmdObj = {};
       cmdObj.uniqueId = param.uid;
       cmdObj.messageType = 0x01;
@@ -639,7 +642,7 @@
         'outputPin': parseInt(param.pinValue.trim(), 10),
         'controlMask': parseInt(param.pinMask.trim(), 16)
       };
-      return httpSendRequest(api, cmdObj);
+      httpSendRequest(api, cmdObj, cb);
     }
   };
   /* OUT command end */
@@ -656,7 +659,7 @@
 
       return res;
     },
-    send: function (httpSendRequest, api, param) {
+    send: function (httpSendRequest, api, param, cb) {
       var cmdObj = {};
       cmdObj.uniqueId = param.uid;
       cmdObj.messageType = 0x01;
@@ -666,7 +669,7 @@
         'volume': parseInt(param.vol.trim(), 10),
         'fileName': parseInt(param.mediaFname.trim(), 10)
       };
-      return httpSendRequest(api, cmdObj);
+      httpSendRequest(api, cmdObj, cb);
     },
     assembleMode: function (act, type) {
       var mode = assemblePadZero(Number(act).toString(2), 4)
@@ -679,7 +682,7 @@
 
   /* RTO command begin */
   var RTO = {
-    assemble:function (param) {
+    assemble: function (param) {
       var res = '';
 
       res = assembleMessageType(res, '0184');
@@ -688,7 +691,7 @@
 
       return res;
     },
-    send: function (httpSendRequest, api, param) {
+    send: function (httpSendRequest, api, param, cb) {
       var cmdObj = {};
       cmdObj.uniqueId = param.uid;
       cmdObj.messageType = 0x01;
@@ -697,7 +700,7 @@
         'rtoCommand': parseInt(param.cmd, 10),
         'rtoSubCommand': parseInt(param.subCmd, 10)
       };
-      return httpSendRequest(api, cmdObj);
+      httpSendRequest(api, cmdObj, cb);
     }
   };
   /* RTO command end */
@@ -725,7 +728,7 @@
 
       return res;
     },
-    send: function (httpSendRequest, api, param) {
+    send: function (httpSendRequest, api, param, cb) {
       var cmdObj = {};
       cmdObj.uniqueId = param.uid;
       cmdObj.messageType = 0x01;
@@ -746,9 +749,10 @@
         'otaDownloadAddress': parseInt(param.dwnAddr.trim(), 16),
         'otaAppBootupAddress': parseInt(param.appAddr.trim(), 16)
       };
-      return httpSendRequest(api, cmdObj);
+      httpSendRequest(api, cmdObj, cb);
     }
   };
+
   /* FOTA command end */
 
   function assembleMessageType(data, type) {
