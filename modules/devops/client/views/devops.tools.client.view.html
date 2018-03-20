@@ -8,7 +8,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-6 col-sm-6 col-xs-12">
-          <form method="post">
+          <form method="post" name="cronForm">
             <div class="form-group ">
               <label class="control-label requiredField" for="devAirConPwrMode">
                 空调开关
@@ -111,6 +111,27 @@
                         ng-click="vm.sendDevAirConCommand()">
                   配置空调
                 </button>
+              </div>
+              <div class="form-group">
+                <cron-gen ng-model="cronExpression" ng-disabled="isCronDisabled" options="cronOptions" name="cron">
+                </cron-gen>
+                <div class="row container">
+                  <div class="col-xs-12">
+                    Generated Cron Expression:
+                    <span class="text-success"><b>{{cronExpression}}</b></span>
+                  </div>
+                  <div class="col-xs-12">
+                    Is Valid:
+                    <span class="text-success" ng-show="cronForm.cron.$valid"><b>True</b></span>
+                    <span class="text-danger" ng-show="cronForm.cron.$invalid"><b>False</b></span>
+                  </div>
+                </div>
+
+                <button class="btn btn-success btn-lg" name="submit" type="button"
+                        ng-click="vm.sendBatchDevAirConCommand()">
+                  空调任务
+                </button>
+
               </div>
               <div class="form-group">
                 <button class="btn btn-success btn-lg" name="submit" type="button"

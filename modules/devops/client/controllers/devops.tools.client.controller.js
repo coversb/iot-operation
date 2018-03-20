@@ -11,6 +11,12 @@
 
     var vm = this;
 
+    $scope.cronExpression = '0 8 9 9 1/8 ? *';
+    $scope.cronOptions = {
+      hideAdvancedTab: false
+    };
+    $scope.isCronDisabled = false;
+
     var actMap = new Map([
       ['door', 4],
       ['deviceBox', 7]
@@ -23,6 +29,7 @@
 
     vm.sendDevAirConCommand = sendDevAirConCommand;
     vm.sendDevRTOCommand = sendDevRTOCommand;
+    vm.sendBatchDevAirConCommand = sendBatchDevAirConCommand;
 
     init();
 
@@ -59,6 +66,21 @@
         temperature: vm.devAirConTemperature
       };
       DevopsProt.sendCommand('ACO', param, showSendRes);
+    }
+
+    function sendBatchDevAirConCommand() {
+      DevopsProt.uniqueIds.forEach((id)=>{
+        var param = {
+          uid: id,
+          pwrMode: vm.devAirConPwrMode,
+          workMode: vm.devAirConWorkMode,
+          wind: vm.devAirConWindMode,
+          interval: '60',
+          duration: '60',
+          temperature: vm.devAirConTemperature
+        };
+        DevopsProt.sendCommand('ACO', param, showSendRes);
+      });
     }
 
     function sendDevRTOCommand(act, ctrl) {
