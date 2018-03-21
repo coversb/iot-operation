@@ -1,7 +1,7 @@
 <!-- The chat view -->
 <section class="container">
   <div class="page-header">
-    <h1>运维工具</h1>
+    <h1>运维工具 <a ng-href="/agendash" target="_blank">> dashboard</a></h1>
   </div>
 
   <div class="bootstrap-iso">
@@ -109,24 +109,26 @@
               <div class="form-group">
                 <button class="btn btn-success btn-lg" name="submit" type="button"
                         ng-click="vm.sendDevAirConCommand()">
-                  配置空调
+                  配置制定空调
+                </button>
+                <button class="btn btn-success btn-lg" name="submit" type="button"
+                        ng-click="vm.sendBatchDevAirConCommand()">
+                  配置所有空调
                 </button>
               </div>
               <div class="form-group">
+                <div class="col-xs-12 select-options cron-wrap ng-isolate-scope ng-valid ng-not-empty ng-dirty ng-valid-parse">
+                  <cron-selection ng-model="cronExpression" config="cronOptions"></cron-selection>
+                </div>
+                <div class="col-xs-12">
+                  Generated Cron Expression:
+                  <span class="text-success"><b>{{cronExpression}}</b></span>
+                </div>
                 <button class="btn btn-success btn-lg" name="submit" type="button"
-                        ng-click="vm.sendDevRTOCommand('door', 'open')">
-                  开盒门
+                        ng-click="vm.addBatchAirConTasks()">
+                  空调任务
                 </button>
-              </div>
-              <div class="form-group">
-                <button class="btn btn-success btn-lg" name="submit" type="button"
-                        ng-click="vm.sendDevRTOCommand('deviceBox', 'open')">
-                  开设备箱
-                </button>
-                <button class="btn btn-success btn-lg" name="submit" type="button"
-                        ng-click="vm.sendDevRTOCommand('deviceBox', 'close')">
-                  关设备箱
-                </button>
+
               </div>
             </div>
           </form>

@@ -2,14 +2,21 @@
   'use strict';
 
   angular
-    .module('devops.tools')
-    .controller('DevopsToolsController', DevopsToolsController);
+    .module('devops.tasks')
+    .controller('DevopsTasksController', DevopsTasksController);
 
-  DevopsToolsController.$inject = ['$scope', '$state', 'Authentication', 'DevopsProt', 'Notification'];
+  DevopsTasksController.$inject = ['$scope', '$state', 'Authentication', 'DevopsProt', 'DevopsTasks', 'Notification'];
 
-  function DevopsToolsController($scope, $state, Authentication, DevopsProt, Notification) {
+  function DevopsTasksController($scope, $state, Authentication, DevopsProt, DevopsTasks, Notification) {
 
     var vm = this;
+
+    $scope.cronExpression = '0 0 * * *';
+
+    $scope.cronOptions = {
+      options: {
+      }
+    };
 
     var actMap = new Map([
       ['door', 4],
@@ -23,6 +30,8 @@
 
     vm.sendDevAirConCommand = sendDevAirConCommand;
     vm.sendDevRTOCommand = sendDevRTOCommand;
+    vm.sendBatchDevAirConCommand = sendBatchDevAirConCommand;
+    vm.addBatchAirConTasks = addBatchAirConTasks;
 
     init();
 
@@ -38,6 +47,7 @@
       vm.devAirConWindMode = '3'; // 空调风量自动
       vm.devAirConTemperature = '20'; // 温度
       vm.devUID = '0000000000600000'; // UID
+
     }
 
     function showSendRes(data, status) {
@@ -46,6 +56,21 @@
       } else {
         Notification.error({message: data, title: '<i class="glyphicon glyphicon-remove"></i> 发送失败!'});
       }
+    }
+
+    function addBatchAirConTasks() {
+      var param = {
+        jobName: "airCon",
+        jobSchedule: "",
+        jobRepeatEvery: $scope.cronExpression,
+        jobData: {
+          devAirConPwrMode:  vm.devAirConPwrMode, // 空调供电常开
+          devAirConWorkMode: vm.devAirConWorkMode, // 空调工作模式自动
+          devAirConWindMode: vm.devAirConWindMode, // 空调风量自动
+          devAirConTemperature:vm.devAirConTemperature // 温度
+        }
+      };
+      DevopsTasks.addTask('/agendash/api/jobs/create', param);
     }
 
     function sendDevAirConCommand() {
@@ -61,6 +86,21 @@
       DevopsProt.sendCommand('ACO', param, showSendRes);
     }
 
+    function sendBatchDevAirConCommand() {
+      DevopsTasks.uniqueIds.forEach(function(id){
+        var param = {
+          uid: id,
+          pwrMode: vm.devAirConPwrMode,
+          workMode: vm.devAirConWorkMode,
+          wind: vm.devAirConWindMode,
+          interval: '60',
+          duration: '60',
+          temperature: vm.devAirConTemperature
+        };
+        DevopsProt.sendCommand('ACO', param, showSendRes);
+      });
+    }
+
     function sendDevRTOCommand(act, ctrl) {
       var param = {
         uid: vm.devUID,
@@ -69,6 +109,5 @@
       };
       DevopsProt.sendCommand('RTO', param, showSendRes);
     }
-
   }
 }());
