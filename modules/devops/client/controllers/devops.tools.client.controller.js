@@ -69,7 +69,7 @@
     }
 
     function sendBatchDevAirConCommand() {
-      DevopsProt.uniqueIds.forEach((id)=>{
+      DevopsProt.uniqueIds.forEach(function(id){
         var param = {
           uid: id,
           pwrMode: vm.devAirConPwrMode,

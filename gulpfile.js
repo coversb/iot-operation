@@ -147,8 +147,8 @@ gulp.task('csslint', function () {
   return gulp.src(defaultAssets.client.css)
     .pipe(plugins.csslint('.csslintrc'))
     .pipe(plugins.csslint.formatter());
-    // Don't fail CSS issues yet
-    // .pipe(plugins.csslint.failFormatter());
+  // Don't fail CSS issues yet
+  // .pipe(plugins.csslint.failFormatter());
 });
 
 // ESLint JS linting task
@@ -176,9 +176,10 @@ gulp.task('uglify', function () {
   del(['public/dist/*']);
 
   return gulp.src(assets)
-    .pipe(plugins.ngAnnotate())
+    .pipe(plugins.ngAnnotate({add: true}))
+    .pipe(plugins.babel({presets: ['es2016']})) // transpile ES2015 to ES5 using ES2015 preset
     .pipe(plugins.uglify({
-      mangle: true
+      mangle: false
     }).on('error', function (err) {
       console.log('Uglify error : ', err.toString());
     }))
@@ -217,7 +218,7 @@ gulp.task('imagemin', function () {
   return gulp.src(defaultAssets.client.img)
     .pipe(plugins.imagemin({
       progressive: true,
-      svgoPlugins: [{ removeViewBox: false }],
+      svgoPlugins: [{removeViewBox: false}],
       use: [pngquant()]
     }))
     .pipe(gulp.dest('public/dist/img'));
@@ -272,7 +273,7 @@ gulp.task('copyLocalEnvConfig', function () {
 
   // only add the copy source if our destination file doesn't already exist
   if (!fs.existsSync('config/env/' + renameTo)) {
-    src.push('config/env/local.example.js');
+    sprc.push('config/env/local.example.js');
   }
 
   return gulp.src(src)
@@ -340,7 +341,7 @@ gulp.task('pre-test', function () {
 
   // Display coverage for all server JavaScript files
   return gulp.src(defaultAssets.server.allJS)
-    // Covering files
+  // Covering files
     .pipe(plugins.istanbul())
     // Force `require` to return covered files
     .pipe(plugins.istanbul.hookRequire());
@@ -352,7 +353,7 @@ gulp.task('mocha:coverage', ['pre-test', 'mocha'], function () {
 
   return gulp.src(testSuites)
     .pipe(plugins.istanbul.writeReports({
-      reportOpts: { dir: './coverage/server' }
+      reportOpts: {dir: './coverage/server'}
     }));
 });
 
@@ -383,7 +384,7 @@ gulp.task('karma:coverage', function (done) {
     coverageReporter: {
       dir: 'coverage/client',
       reporters: [
-        { type: 'lcov', subdir: '.' }
+        {type: 'lcov', subdir: '.'}
         // printing summary to console currently weirdly causes gulp to hang so disabled for now
         // https://github.com/karma-runner/karma-coverage/issues/209
         // { type: 'text-summary' }

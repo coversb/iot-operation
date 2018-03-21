@@ -49,7 +49,7 @@
     function showSendRes(data, status) {
       console.log("data:", data, status);
       if (data.data) {
-        data.data.forEach((d) => {
+        data.data.forEach(function(d){
           prot.uniqueIds.push(d.base.uniqueId);
         })
       }

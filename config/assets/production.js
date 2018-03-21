@@ -28,6 +28,7 @@ module.exports = {
         'public/lib/ng-file-upload/ng-file-upload.min.js',
         'public/lib/angular-mocks/angular-mocks.js',
         'public/lib/angular-resource/angular-resource.min.js',
+        'public/lib/angular-sanitize/angular-sanitize.min.js',
         'public/lib/angular-ui-notification/dist/angular-ui-notification.min.js',
         'public/lib/angular-ui-router/release/angular-ui-router.min.js',
         'public/lib/angular-css/angular-css.min.js',
