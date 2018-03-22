@@ -31,6 +31,7 @@
 
     vm.sendOutCommand = sendOutCommand;
     vm.sendMuoCommand = sendMuoCommand;
+    vm.sendMuoVolumeCommand = sendMuoVolumeCommand;
 
     init();
 
@@ -70,6 +71,17 @@
         type: '1',
         vol: '0',
         mediaFname: devMediaFileMap.get(mediaName).toString(10)
+      };
+      DevopsProt.sendCommand('MUO', param, showSendRes);
+    }
+
+    function sendMuoVolumeCommand(act){
+      var param = {
+        uid: vm.devUID,
+        act: act,
+        type: '1',
+        vol: '0',
+        mediaFname: '0'
       };
       DevopsProt.sendCommand('MUO', param, showSendRes);
     }
