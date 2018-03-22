@@ -449,7 +449,7 @@
                         ng-model="vm.acoModal.pwrMode">
                   <option value="0">空调常关</option>
                   <option value="1">空调常开</option>
-                  <option value="2">空调间隔开</option>
+                  <option value="2">空调自动控制模式</option>
                 </select>
                 <label for="acoModalWorkMode">模式</label>
                 <select class="select form-control" id="acoModalWorkMode" name="acoModalWorkMode"
@@ -471,14 +471,14 @@
               <div>
                 <label for="acoModalInterval">Interval</label>
                 <input class="form-control" id="acoModalInterval" name="acoModalInterval" type="text"
-                       placeholder="间隔开启模式下，空调开启间隔，单位为分钟(0 - 255)"
+                       placeholder="自动控制模式下，空调开启间隔，单位为分钟(0 - 255)"
                        required="required"
                        ng-model="vm.acoModal.interval"/>
               </div>
               <div>
                 <label for="acoModalDuration">Duration</label>
                 <input class="form-control" id="acoModalDuration" name="acoModalDuration" type="text"
-                       placeholder="间隔开启模式下，空调开启时长，单位为分钟(0 - 255)"
+                       placeholder="自动控制模式下，空调开启时长，单位为分钟(0 - 255)"
                        required="required"
                        ng-model="vm.acoModal.duration"/>
               </div>
@@ -988,6 +988,8 @@
                         ng-model="vm.muoModal.act">
                   <option value="0">取消播放</option>
                   <option value="1">开始播放</option>
+                  <option value="2">背景音量减</option>
+                  <option value="3">背景音量加</option>
                   <option value="10">设置背景音量</option>
                   <option value="11">关闭背景音乐</option>
                   <option value="12">开启背景音乐</option>

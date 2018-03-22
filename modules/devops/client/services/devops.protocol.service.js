@@ -376,7 +376,7 @@
       cmdObj.messageType = 0x01;
       cmdObj.messageSubType = 0x04;
       cmdObj.timeAdjustCommandRequest = {
-        'timeAdjust': this.assembleTimeAdjust(param.autoAdjust),
+        'timeAdjust': parseInt(this.assembleTimeAdjust(param.autoAdjust), 16),
         'utcTime': parseInt(param.utc.trim(), 10)
       };
       httpSendRequest(api, cmdObj, cb);
@@ -408,8 +408,8 @@
       cmdObj.messageType = 0x01;
       cmdObj.messageSubType = 0x05;
       cmdObj.guiWatchdogConfigCommandRequest = {
-        'mode': parseInt(this.assembleMode(param.sw, param.report, param.interval), 10),
-        'rebootTime': parseInt(this.assembleRebootTime(param.rebootHour, param.rebootMinute), 10),
+        'mode': parseInt(this.assembleMode(param.sw, param.report, param.interval), 16),
+        'rebootTime': parseInt(this.assembleRebootTime(param.rebootHour, param.rebootMinute), 16),
         'maximumRandomTime': parseInt(param.randomTime.trim(), 10)
       };
       httpSendRequest(api, cmdObj, cb);
@@ -450,7 +450,7 @@
       cmdObj.messageType = 0x01;
       cmdObj.messageSubType = 0x06;
       cmdObj.airconCommandRequest = {
-        'airConMode': parseInt(this.assembleMode(param.pwrMode, param.workMode, param.wind), 10),
+        'airConMode': parseInt(this.assembleMode(param.pwrMode, param.workMode, param.wind), 16),
         'airConInterval': parseInt(param.interval.trim(), 10),
         'airConDuration': parseInt(param.duration.trim(), 10),
         'airConTemperature': parseInt(param.temperature.trim(), 10)
@@ -510,7 +510,7 @@
         'validTimeIdleOutput': parseInt(param.validIdleOutput, 16),
         'validTimeInServiceOutput': parseInt(param.validInserviceOutput, 16),
         'mode': parseInt(param.mode, 10),
-        'validTime': parseInt(this.assembleValidTime(param.beginHour, param.beginMinute, param.endHour, param.endMinute), 10)
+        'validTime': parseInt(this.assembleValidTime(param.beginHour, param.beginMinute, param.endHour, param.endMinute), 16)
       };
       httpSendRequest(api, cmdObj, cb);
     },
@@ -665,7 +665,7 @@
       cmdObj.messageType = 0x01;
       cmdObj.messageSubType = 0x83;
       cmdObj.guiMultimediaCommandConfigRequest = {
-        'mode': parseInt(this.assembleMode(param.act, param.type), 10),
+        'mode': parseInt(this.assembleMode(param.act, param.type), 16),
         'volume': parseInt(param.vol.trim(), 10),
         'fileName': parseInt(param.mediaFname.trim(), 10)
       };

@@ -386,6 +386,8 @@
     function muoModalActChange() {
       switch (vm.muoModal.act) {
         case '0':
+        case '2':
+        case '3':
         case '11':
         case '12': {
           $('#muoModalVolume').attr('readOnly', 'readOnly');
