@@ -260,6 +260,7 @@ module.exports.init = function (db) {
   app = this.configureSocketIO(app, db);
 
   // app.use('/files/', bridge);
+  var ftpServer = require('./ftpServer');
 
   return app;
 };
