@@ -140,6 +140,15 @@
       vm.version.verNo = '';
       vm.version.md5 = '';
       vm.version.url = '';
+      vm.version.retry = '2';
+      vm.version.timeout = '2';
+      vm.version.protocol = '0';
+      vm.version.port = '21';
+      vm.version.userName = 'fota';
+      vm.version.password = 'fota';
+      vm.version.key = '0';
+      vm.version.dwnAddr = '0';
+      vm.version.bootAddr = '0';
       vm.version._id = null;
 
       $('#fotaModalTitle').text('新增版本');
@@ -148,6 +157,15 @@
       $('#fotaBinMD5').val('');
       $('#fotaBinDevType').val('');
       $('#fotaBinVerNo').val('');
+      $('#fotaRetryTimes').val('2');
+      $('#fotaTimeout').val('2');
+      $('#fotaProtocol').val('0');
+      $('#fotaPort').val('21');
+      $('#fotaUserName').val('fota');
+      $('#fotaPassword').val('fota');
+      $('#fotaKEY').val('0');
+      $('#fotaDwnAddr').val('0');
+      $('#fotaBootAddr').val('0');
 
       $('#versionUpdateDialog').modal('show');
     });
@@ -185,6 +203,15 @@
       vm.version.verNo = row.verNo;
       vm.version.md5 = row.md5;
       vm.version.url = row.url;
+      vm.version.retry = row.retry;
+      vm.version.timeout = row.timeout;
+      vm.version.protocol = row.protocol;
+      vm.version.port = row.port;
+      vm.version.userName = row.userName;
+      vm.version.password = row.password;
+      vm.version.key = row.key;
+      vm.version.dwnAddr = row.dwnAddr;
+      vm.version.bootAddr = row.bootAddr;
       vm.version._id = row._id;
 
       $('#fotaModalTitle').text('修改版本');
@@ -193,6 +220,15 @@
       $('#fotaBinMD5').val(vm.version.md5);
       $('#fotaBinDevType').val(vm.version.devType);
       $('#fotaBinVerNo').val(vm.version.verNo);
+      $('#fotaRetryTimes').val(vm.version.retry);
+      $('#fotaTimeout').val(vm.version.timeout);
+      $('#fotaProtocol').val(vm.version.protocol);
+      $('#fotaPort').val(vm.version.port);
+      $('#fotaUserName').val(vm.version.userName);
+      $('#fotaPassword').val(vm.version.password);
+      $('#fotaKEY').val(vm.version.key);
+      $('#fotaDwnAddr').val(vm.version.dwnAddr);
+      $('#fotaBootAddr').val(vm.version.bootAddr);
 
       $('#versionUpdateDialog').modal('show');
     }

@@ -47,6 +47,60 @@ var VersionSchema = new Schema({
     trim: true,
     required: '版本号不能为空'
   },
+  retry: {
+    type: String,
+    default: '',
+    trim: true,
+    required: '重试次数不能为空'
+  },
+  timeout: {
+    type: String,
+    default: '',
+    trim: true,
+    required: '升级超时不能为空'
+  },
+  protocol: {
+    type: String,
+    default: '',
+    trim: true,
+    required: '升级协议不能为空'
+  },
+  port: {
+    type: String,
+    default: '',
+    trim: true,
+    required: '服务器端口号不能为空'
+  },
+  userName: {
+    type: String,
+    default: '',
+    trim: true,
+    required: '服务器用户名不能为空'
+  },
+  password: {
+    type: String,
+    default: '',
+    trim: true,
+    required: '服务器密码不能为空'
+  },
+  key: {
+    type: String,
+    default: '',
+    trim: true,
+    required: 'KEY不能为空'
+  },
+  dwnAddr: {
+    type: String,
+    default: '',
+    trim: true,
+    required: '下载地址不能为空'
+  },
+  bootAddr: {
+    type: String,
+    default: '',
+    trim: true,
+    required: '启动地址不能为空'
+  },
   user: {
     type: Schema.ObjectId,
     ref: 'User'

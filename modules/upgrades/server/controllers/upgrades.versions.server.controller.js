@@ -52,6 +52,16 @@ exports.update = function (req, res) {
   version.url = req.body.url;
   version.md5 = req.body.md5;
 
+  version.retry = req.body.retry;
+  version.timeout = req.body.timeout;
+  version.protocol = req.body.protocol;
+  version.port = req.body.port;
+  version.userName = req.body.userName;
+  version.password = req.body.password;
+  version.key = req.body.key;
+  version.dwnAddr = req.body.dwnAddr;
+  version.bootAddr = req.body.bootAddr;
+
   version.save(function (err) {
     if (err) {
       return res.status(422).send({

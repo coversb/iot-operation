@@ -90,6 +90,63 @@
                        required="required"
                        ng-model="vm.version.verNo"/>
               </div>
+              <div>
+                <label for="fotaRetryTimes">升级重试次数</label>
+                <input class="form-control" id="fotaRetryTimes" name="fotaRetryTimes" type="text"
+                       required="required"
+                       ng-model="vm.version.retry"/>
+              </div>
+              <div>
+                <label for="fotaTimeout">升级超时</label>
+                <input class="form-control" id="fotaTimeout" name="fotaTimeout" type="text"
+                       placeholder="单次升级超时，单位为分钟"
+                       required="required"
+                       ng-model="vm.version.timeout"/>
+              </div>
+              <div>
+                <label for="fotaProtocol">升级协议</label>
+                <select class="select form-control" id="fotaProtocol" name="fotaProtocol"
+                        required="required"
+                        ng-model="vm.version.protocol">
+                  <option value="0">FTP</option>
+                </select>
+              </div>
+              <div>
+                <label for="fotaPort">服务器端口号</label>
+                <input class="form-control" id="fotaPort" name="fotaPort" type="text"
+                       required="required"
+                       ng-model="vm.version.port"/>
+              </div>
+              <div>
+                <label for="fotaUserName">服务器用户名</label>
+                <input class="form-control" id="fotaUserName" name="fotaUserName" type="text"
+                       required="required"
+                       ng-model="vm.version.userName"/>
+              </div>
+              <div>
+                <label for="fotaPassword">服务器密码</label>
+                <input class="form-control" id="fotaPassword" name="fotaPassword" type="text"
+                       required="required"
+                       ng-model="vm.version.password"/>
+              </div>
+              <div>
+                <label for="fotaKEY">KEY</label>
+                <input class="form-control" id="fotaKEY" name="fotaKEY" type="text"
+                       required="required"
+                       ng-model="vm.version.key"/>
+              </div>
+              <div>
+                <label for="fotaDwnAddr">下载地址</label>
+                <input class="form-control" id="fotaDwnAddr" name="fotaDwnAddr" type="text"
+                       required="required"
+                       ng-model="vm.version.dwnAddr"/>
+              </div>
+              <div>
+                <label for="fotaBootAddr">启动地址</label>
+                <input class="form-control" id="fotaBootAddr" name="fotaBootAddr" type="text"
+                       required="required"
+                       ng-model="vm.version.bootAddr"/>
+              </div>
             </div>
           </div>
 
