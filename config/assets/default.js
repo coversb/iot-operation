@@ -18,11 +18,11 @@ module.exports = {
         // endbower
       ],
       js: [
+        // bower:js
+        'public/lib/angular/angular.js',
         // jQuery
         'public/lib/jquery/dist/jquery.js',
 
-        // bower:js
-        'public/lib/angular/angular.js',
         'public/lib/angular-animate/angular-animate.js',
         'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
         'public/lib/angular-translate/angular-translate.js',
