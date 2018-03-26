@@ -10,6 +10,7 @@
   function MonitorController($scope, $state, $http, Authentication, DevopsSettings) {
 
     var searchData = '';
+    var doSearch = false;
     var vm = this;
 
     vm.searchByName = searchByName;
@@ -30,6 +31,7 @@
     // search button
     function searchByName() {
       searchData = vm.searchData;
+      doSearch = true;
       $('#boxTable').bootstrapTable('refresh', {});
       vm.searchData = searchData = '';
     }
@@ -57,8 +59,12 @@
         showColumns: true,
         queryParams: function (params) {  // 配置参数
           var pageNumber = 1;
-          if (params.offset !== 0 && params.limit !== 0) {
-            pageNumber = (params.offset / params.limit) + 1;
+          if (doSearch){
+            doSearch = false;
+          }else{
+            if (params.offset !== 0 && params.limit !== 0) {
+              pageNumber = (params.offset / params.limit) + 1;
+            }
           }
           var param = {
             name: searchData,
