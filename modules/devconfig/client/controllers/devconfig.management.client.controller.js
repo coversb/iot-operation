@@ -5,9 +5,11 @@
     .module('devconfig.management')
     .controller('DevconfigManagementController', DevconfigManagementController);
 
-  DevconfigManagementController.$inject = ['$scope', '$state', '$window', '$http', 'Authentication', 'Notification', 'DevconfigManagementService', 'devconfigApcResolve'];
+  DevconfigManagementController.$inject = ['$scope', '$state', '$window', '$http', 'Authentication', 'Notification', 'DevconfigManagementService',
+    'devconfigApcResolve', 'devconfigSerResolve'];
 
-  function DevconfigManagementController($scope, $state, $window, $http, Authentication, Notification, DevconfigManagementService, devconfigApc) {
+  function DevconfigManagementController($scope, $state, $window, $http, Authentication, Notification, DevconfigManagementService,
+                                         devconfigApc, devconfigSer) {
 
     var vm = this;
 
@@ -32,7 +34,7 @@
 
     function configTypeChange() {
       console.log('loadConfigList' + DevconfigManagementService.apiMap.get(vm.configType));
-      $('#configTable').bootstrapTable('refresh', { url: DevconfigManagementService.apiMap.get(vm.configType) });
+      $('#configTable').bootstrapTable('refresh', {url: DevconfigManagementService.apiMap.get(vm.configType)});
     }
 
     $('#versionUpdateDialog').on('shown.bs.modal', function () {
@@ -93,6 +95,12 @@
             align: 'center'
           },
           {
+            field: 'notes',
+            title: '备注',
+            valign: 'middle',
+            align: 'center'
+          },
+          {
             field: 'user.displayName',
             title: '创建者',
             valign: 'middle',
@@ -116,7 +124,6 @@
             },
             events: window.operateEvents = {
               'click #configSingleEdit': function (e, value, row) {
-                $('#modalTitle').text('修改配置');
                 configModalShow(row);
               },
               'click #configSingleDel': function (e, value, row) {
@@ -132,12 +139,10 @@
 
     /* toolbar */
     function searchConfig() {
-      $('#configTable').bootstrapTable('refresh', { url: DevconfigManagementService.apiMap.get(vm.configType) });
+      $('#configTable').bootstrapTable('refresh', {url: DevconfigManagementService.apiMap.get(vm.configType)});
     }
 
     $('#btnAddConfig').click(function () {
-      $('#modalTitle').text('新增配置');
-
       configModalShow();
     });
 
@@ -145,6 +150,10 @@
       switch (vm.configType) {
         case 'APC': {
           apcModalShow(param);
+          break;
+        }
+        case 'SER': {
+          serModalShow(param);
           break;
         }
         default:
@@ -171,6 +180,7 @@
           backupDNS3: backupDNS[0],
           backupDNS4: backupDNS[0]
         };
+        $('#apcModalTitle').text('[修改] 入网配置(Access Point Configuration)');
       } else {
         vm.apcModal = {
           name: '',
@@ -186,6 +196,7 @@
           backupDNS3: '114',
           backupDNS4: '114'
         };
+        $('#apcModalTitle').text('[新增] 入网配置(Access Point Configuration)');
       }
 
       $('#apcModalName').val(vm.apcModal.name);
@@ -202,6 +213,52 @@
       $('#apcModalBackupDNS4').val(vm.apcModal.backupDNS4);
 
       $('#apcModal').modal('show');
+    }
+
+    function serModalShow(param) {
+      if (param !== undefined) {
+        vm.serModal = {
+          _id: param._id,
+          name: param.name,
+          notes: param.notes,
+          mode: param.mode,
+          mainServer: param.mainServer,
+          mainPort: param.mainPort,
+          backupServer: param.backupServer,
+          backupPort: param.backupPort,
+          sms: param.sms,
+          hbpInterval: param.hbpInterval,
+          maxRandomTime: param.maxRandomTime
+        };
+        $('#serModalTitle').text('[修改] 服务器连接配置(Server Configuration)');
+      } else {
+        vm.serModal = {
+          name: '',
+          notes: '',
+          mode: '2',
+          mainServer: '',
+          mainPort: '',
+          backupServer: '',
+          backupPort: '',
+          sms: '13888888888',
+          hbpInterval: '5',
+          maxRandomTime: '0'
+        };
+        $('#serModalTitle').text('[新增] 服务器连接配置(Server Configuration)');
+      }
+
+      $('#serModalName').val(vm.serModal.name);
+      $('#serModalNotes').val(vm.serModal.notes);
+      $('#serModalMode').val(vm.serModal.mode);
+      $('#serModalMainServer').val(vm.serModal.mainServer);
+      $('#serModalMainPort').val(vm.serModal.mainPort);
+      $('#serModalBackupServer').val(vm.serModal.backupServer);
+      $('#serModalBackupPort').val(vm.serModal.backupPort);
+      $('#serModalSMSGateway').val(vm.serModal.sms);
+      $('#serModalHbpInterval').val(vm.serModal.hbpInterval);
+      $('#serModalMaxRandomTime').val(vm.serModal.maxRandomTime);
+
+      $('#serModal').modal('show');
     }
 
     // 批量删除
@@ -237,19 +294,35 @@
             .catch(errorCallback);
           break;
         }
+        case 'SER':{
+          devconfigSer._id = vm.serModal._id;
+          devconfigSer.name = vm.serModal.name;
+          devconfigSer.notes = vm.serModal.notes;
+          devconfigSer.mode = vm.serModal.mode;
+          devconfigSer.mainServer = vm.serModal.mainServer;
+          devconfigSer.mainPort = vm.serModal.mainPort;
+          devconfigSer.backupServer = vm.serModal.backupServer;
+          devconfigSer.backupPort = vm.serModal.backupPort;
+          devconfigSer.sms = vm.serModal.sms;
+          devconfigSer.hbpInterval = vm.serModal.hbpInterval;
+          devconfigSer.maxRandomTime = vm.serModal.maxRandomTime;
+          devconfigSer.createOrUpdate()
+            .then(successCallback)
+            .catch(errorCallback);
+        }
         default:
           break;
       }
 
 
       function successCallback(res) {
-        Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> 版本信息保存成功!' });
+        Notification.success({message: '<i class="glyphicon glyphicon-ok"></i> 版本信息保存成功!'});
         $('#' + modalName).modal('hide');
-        $('#configTable').bootstrapTable('refresh', { url: DevconfigManagementService.apiMap.get(vm.configType) });
+        $('#configTable').bootstrapTable('refresh', {url: DevconfigManagementService.apiMap.get(vm.configType)});
       }
 
       function errorCallback(res) {
-        Notification.error({ message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> 版本信息保存失败!' });
+        Notification.error({message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> 版本信息保存失败!'});
       }
     }
 
@@ -263,17 +336,24 @@
             .catch(errorCallback);
           break;
         }
+        case 'SER': {
+          devconfigSer._id = id;
+          devconfigSer.deleteSingle()
+            .then(successCallback)
+            .catch(errorCallback);
+          break;
+        }
         default:
           break;
       }
 
       function successCallback(res) {
-        Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> 版本信息删除成功!' });
-        $('#configTable').bootstrapTable('refresh', { url: DevconfigManagementService.apiMap.get(vm.configType) });
+        Notification.success({message: '<i class="glyphicon glyphicon-ok"></i> 版本信息删除成功!'});
+        $('#configTable').bootstrapTable('refresh', {url: DevconfigManagementService.apiMap.get(vm.configType)});
       }
 
       function errorCallback(res) {
-        Notification.error({ message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> 版本信息删除失败!' });
+        Notification.error({message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> 版本信息删除失败!'});
       }
     }
 

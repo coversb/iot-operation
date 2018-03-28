@@ -67,9 +67,8 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
               &times;
             </button>
-            <h4 class="modal-title" id="modalTitle"></h4>
-            <h4 class="modal-title">
-              入网配置(Access Point Configuration) [0x01 0x01]
+            <h4 class="modal-title" id="apcModalTitle">
+              入网配置(Access Point Configuration)
             </h4>
           </div>
           <div class="modal-body">
@@ -152,114 +151,81 @@
       </div><!-- /.modal -->
     </div>
 
-    <!-- Version Detail Modal -->
-    <div class="modal fade" id="versionUpdateDialog" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <!-- SER Modal -->
+    <div class="modal fade" id="serModal" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog">
-        <form class="modal-content" ng-submit="vm.versionUpdate()">
+        <form class="modal-content" ng-submit="vm.configUpdate('serModal')">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
               &times;
             </button>
-            <h4 class="modal-title" id="fotaModalTitle">
+            <h4 class="modal-title" id="serModalTitle">
+              服务器连接配置(Server Configuration)
             </h4>
           </div>
           <div class="modal-body">
             <div>
               <div>
-                <label for="fotaBinName">版本名称</label>
-                <input class="form-control" id="fotaBinName" name="fotaBinName" type="text"
+                <label for="serModalName">配置名称</label>
+                <input class="form-control" id="serModalName" name="serModalName" type="text"
                        required="required"
-                       ng-model="vm.version.name"/>
-                <!-- button class="btn btn-primary btn-file" ngf-select="" ng-model="vm.fotaBin" accept="*">上传固件</button-->
+                       ng-model="vm.serModal.name"/>
               </div>
               <div>
-                <label for="fotaBinURL">固件URL</label>
-                <input class="form-control" id="fotaBinURL" name="fotaBinURL" type="text"
+                <label for="serModalNotes">备注</label>
+                <textarea class="form-control" rows="3" id="serModalNotes" name="serModalNotes"
+                          ng-model="vm.serModal.notes"></textarea>
+              </div>
+              <div>
+                <label for="serModalMode">Report Mode</label>
+                <input class="form-control" id="serModalMode" name="serModalMode" type="text"
                        required="required"
-                       ng-model="vm.version.url"/>
-                <!-- button class="btn btn-primary btn-file" ngf-select="" ng-model="vm.fotaBin" accept="*">上传固件</button-->
+                       ng-model="vm.serModal.mode"/>
               </div>
               <div>
-                <label for="fotaBinMD5">MD5</label>
-                <input class="form-control" id="fotaBinMD5" name="fotaBinMD5" type="text"
+                <label for="serModalMainServer">Main Server Domain Name</label>
+                <input class="form-control" id="serModalMainServer" name="serModalMainServer" type="text"
                        required="required"
-                       ng-model="vm.version.md5"/>
+                       ng-model="vm.serModal.mainServer"/>
               </div>
               <div>
-                <label for="fotaBinDevType">硬件类型</label>
-                <select class="select form-control" id="fotaBinDevType" name="fotaBinDevType"
-                        required="required"
-                        ng-model="vm.version.devType">
-                  <option value="STM32F103">STM32F103</option>
-                  <option value="STM32F427">STM32F427</option>
-                </select>
-              </div>
-              <div>
-                <label for="fotaBinVerNo">固件版本号</label>
-                <input class="form-control" id="fotaBinVerNo" name="fotaBinVerNo" type="text"
+                <label for="serModalMainPort">Main Server Port</label>
+                <input class="form-control" id="serModalMainPort" name="serModalMainPort" type="text"
                        required="required"
-                       ng-model="vm.version.verNo"/>
+                       ng-model="vm.serModal.mainPort"/>
               </div>
               <div>
-                <label for="fotaRetryTimes">升级重试次数</label>
-                <input class="form-control" id="fotaRetryTimes" name="fotaRetryTimes" type="text"
+                <label for="serModalBackupServer">Backup Server Domain Name</label>
+                <input class="form-control" id="serModalBackupServer" name="serModalBackupServer" type="text"
                        required="required"
-                       ng-model="vm.version.retry"/>
+                       ng-model="vm.serModal.backupServer"/>
               </div>
               <div>
-                <label for="fotaTimeout">升级超时</label>
-                <input class="form-control" id="fotaTimeout" name="fotaTimeout" type="text"
-                       placeholder="单次升级超时，单位为分钟"
+                <label for="serModalBackupPort">Backup Server Port</label>
+                <input class="form-control" id="serModalBackupPort" name="serModalBackupPort" type="text"
                        required="required"
-                       ng-model="vm.version.timeout"/>
+                       ng-model="vm.serModal.backupPort"/>
               </div>
               <div>
-                <label for="fotaProtocol">升级协议</label>
-                <select class="select form-control" id="fotaProtocol" name="fotaProtocol"
-                        required="required"
-                        ng-model="vm.version.protocol">
-                  <option value="0">FTP</option>
-                </select>
-              </div>
-              <div>
-                <label for="fotaPort">服务器端口号</label>
-                <input class="form-control" id="fotaPort" name="fotaPort" type="text"
+                <label for="serModalSMSGateway">SMS Gateway</label>
+                <input class="form-control" id="serModalSMSGateway" name="serModalSMSGateway" type="text"
                        required="required"
-                       ng-model="vm.version.port"/>
+                       ng-model="vm.serModal.sms"/>
               </div>
               <div>
-                <label for="fotaUserName">服务器用户名</label>
-                <input class="form-control" id="fotaUserName" name="fotaUserName" type="text"
+                <label for="serModalHbpInterval">Heartbeat Interval</label>
+                <input class="form-control" id="serModalHbpInterval" name="serModalHbpInterval" type="text"
                        required="required"
-                       ng-model="vm.version.userName"/>
+                       ng-model="vm.serModal.hbpInterval"/>
               </div>
               <div>
-                <label for="fotaPassword">服务器密码</label>
-                <input class="form-control" id="fotaPassword" name="fotaPassword" type="text"
+                <label for="serModalMaxRandomTime">Max Random Time</label>
+                <input class="form-control" id="serModalMaxRandomTime" name="serModalMaxRandomTime" type="text"
                        required="required"
-                       ng-model="vm.version.password"/>
-              </div>
-              <div>
-                <label for="fotaKEY">KEY</label>
-                <input class="form-control" id="fotaKEY" name="fotaKEY" type="text"
-                       required="required"
-                       ng-model="vm.version.key"/>
-              </div>
-              <div>
-                <label for="fotaDwnAddr">下载地址</label>
-                <input class="form-control" id="fotaDwnAddr" name="fotaDwnAddr" type="text"
-                       required="required"
-                       ng-model="vm.version.dwnAddr"/>
-              </div>
-              <div>
-                <label for="fotaBootAddr">启动地址</label>
-                <input class="form-control" id="fotaBootAddr" name="fotaBootAddr" type="text"
-                       required="required"
-                       ng-model="vm.version.bootAddr"/>
+                       ng-model="vm.serModal.maxRandomTime"/>
               </div>
             </div>
           </div>
-
           <div class="modal-footer">
             <button type="submit" class="btn btn-success">
               保存
@@ -271,5 +237,7 @@
         </form><!-- /.modal-content -->
       </div><!-- /.modal -->
     </div>
+
+
   </div>
 </section>

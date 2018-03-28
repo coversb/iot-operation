@@ -23,16 +23,23 @@
           roles: ['admin', '开发/测试']
         },
         resolve: {
-          devconfigApcResolve: getDevconfigApc
+          devconfigApcResolve: getDevconfigApc,
+          devconfigSerResolve: getDevconfigSer
         }
       });
   }
 
   getDevconfigApc.$inject = ['$stateParams', 'DevconfigManagementService'];
-
   function getDevconfigApc($stateParams, DevconfigManagementService) {
     return DevconfigManagementService.apcCommand.get({
       apcId: $stateParams.apcId
+    }).$promise;
+  }
+
+  getDevconfigSer.$inject = ['$stateParams', 'DevconfigManagementService'];
+  function getDevconfigSer($stateParams, DevconfigManagementService) {
+    return DevconfigManagementService.serCommand.get({
+      serId: $stateParams.serId
     }).$promise;
   }
 

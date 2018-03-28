@@ -32,26 +32,43 @@
         update: {
           method: 'PUT'
         }
+      }),
+      serCommand: $resource('/api/devconfig/ser/:serId', {
+        serId: '@_id'
+      }, {
+        update: {
+          method: 'PUT'
+        }
       })
     };
 
-    angular.extend(DevconfigManagement.apcCommand.prototype, {
+    angular.extend(DevconfigManagement.serCommand.prototype, {
       createOrUpdate: function () {
-        var apcCommand = this;
-        return createOrUpdate(apcCommand);
+        var cmd = this;
+        return createOrUpdate(cmd);
       },
       deleteSingle: function () {
-        var apcCommand = this;
-        return deleteSingle(apcCommand);
+        var cmd = this;
+        return deleteSingle(cmd);
+      }
+    });
+
+    angular.extend(DevconfigManagement.apcCommand.prototype, {
+      createOrUpdate: function () {
+        var cmd = this;
+        return createOrUpdate(cmd);
+      },
+      deleteSingle: function () {
+        var cmd = this;
+        return deleteSingle(cmd);
       }
     });
 
     return DevconfigManagement;
 
-    /* APC begin */
-    function deleteSingle(apc) {
-      if (apc._id) {
-        return apc.$remove(onSuccess, onError);
+    function deleteSingle(cmd) {
+      if (cmd._id) {
+        return cmd.$remove(onSuccess, onError);
       }
       // Handle successful response
       function onSuccess(version) {
@@ -64,15 +81,14 @@
         handleError(error);
       }
     }
-    function createOrUpdate(apc) {
-      if (apc._id) {
-        console.log(apc);
-        return apc.$update(onSuccess, onError);
+    function createOrUpdate(cmd) {
+      if (cmd._id) {
+        return cmd.$update(onSuccess, onError);
       } else {
-        return apc.$save(onSuccess, onError);
+        return cmd.$save(onSuccess, onError);
       }
       // Handle successful response
-      function onSuccess(apc) {
+      function onSuccess(cmd) {
         // Any required internal processing from inside the service, goes here.
       }
       // Handle error response
@@ -82,7 +98,6 @@
         handleError(error);
       }
     }
-
     /* APC end */
 
     function handleError(error) {

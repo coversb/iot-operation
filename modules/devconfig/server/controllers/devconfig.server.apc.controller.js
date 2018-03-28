@@ -45,7 +45,7 @@ exports.read = function (req, res) {
  */
 exports.update = function (req, res) {
   var apcCommand = req.apcCommand;
-  console.log(req.body);
+
   apcCommand.name = req.body.name;
   apcCommand.apn = req.body.apn;
   apcCommand.userName = req.body.userName;
