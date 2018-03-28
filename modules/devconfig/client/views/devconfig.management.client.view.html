@@ -1,0 +1,275 @@
+<!-- The chat view -->
+<section class="container">
+  <div class="page-header">
+    <h1>配置管理</h1>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div>
+        <label for="configType">配置类型</label>
+        <select class="select form-control" id="configType" name="configType"
+                ng-change="vm.configTypeChange()"
+                ng-model="vm.configType">
+          <option value="APC">入网配置</option>
+          <option value="SER">服务器连接配置</option>
+          <option value="CFG">全局配置</option>
+          <option value="TMA">时间调整</option>
+          <option value="DOG">协议看门狗</option>
+          <option value="ACO">空调控制</option>
+          <option value="SEC">安全配置</option>
+          <option value="OMC">输出模式配置</option>
+          <option value="DOA">门禁告警</option>
+          <option value="SMA">烟雾告警</option>
+          <option value="OUO">订单下发</option>
+          <option value="OUT">OUTPUT控制</option>
+          <option value="MUO">多媒体操作命令</option>
+          <option value="RTO">实时操作命令</option>
+        </select>
+      </div>
+      <div class="panel-body">
+        <div class="panel panel-default">
+          <div class="panel-heading">查询条件</div>
+          <div class="panel-body">
+            <form id="formSearch" class="form-horizontal" ng-submit="vm.searchConfig()">
+              <div class="form-group" style="margin-top:15px">
+                <label class="control-label col-sm-1" for="searchName">配置名称</label>
+                <div class="col-sm-3">
+                  <input type="text" class="form-control" id="searchName" ng-model="vm.txtSearchName">
+                </div>
+                <div class="col-sm-4" style="text-align:left;">
+                  <button type="submit" style="margin-left:50px" class="btn btn-primary">查询</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div id="toolbar" class="btn-group">
+          <button id="btnAddConfig" type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+          </button>
+          <button id="btnDelConfig" type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+          </button>
+        </div>
+        <div class="tableMargin">
+          <table class="table table-hover table-striped" id="configTable"></table>
+          <ul class="pagination"></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- APC Modal -->
+    <div class="modal fade" id="apcModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.configUpdate('apcModal')">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h4 class="modal-title" id="modalTitle"></h4>
+            <h4 class="modal-title">
+              入网配置(Access Point Configuration) [0x01 0x01]
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label for="apcModalName">配置名称</label>
+                <input class="form-control" id="apcModalName" name="apcModalName" type="text"
+                       required="required"
+                       ng-model="vm.apcModal.name"/>
+              </div>
+              <div>
+                <label for="apcModalAPN">APN</label>
+                <input class="form-control" id="apcModalAPN" name="apcModalAPN" type="text"
+                       required="required"
+                       ng-model="vm.apcModal.apn"/>
+              </div>
+              <div>
+                <label for="apcModalAPNUserName">APN User Name</label>
+                <input class="form-control" id="apcModalAPNUserName" name="apcModalAPNUserName" type="text"
+                       required="required"
+                       ng-model="vm.apcModal.userName"/>
+              </div>
+              <div>
+                <label for="apcModalAPNPassword">APN Password</label>
+                <input class="form-control" id="apcModalAPNPassword" name="apcModalAPNPassword" type="text"
+                       required="required"
+                       ng-model="vm.apcModal.password"/>
+              </div>
+              <div>
+                <label for="apcModalMainDNS">Main DNS Server</label>
+                <div class="form-inline" id="apcModalMainDNS">
+                  <input id="apcModalMainDNS1" name="apcModalMainDNS1" type="text"
+                         required="required"
+                         ng-model="vm.apcModal.mainDNS1"/>
+                  <label>.</label>
+                  <input id="apcModalMainDNS2" name="apcModalMainDNS2" type="text"
+                         required="required"
+                         ng-model="vm.apcModal.mainDNS2"/>
+                  <label>.</label>
+                  <input id="apcModalMainDNS3" name="apcModalMainDNS3" type="text"
+                         required="required"
+                         ng-model="vm.apcModal.mainDNS3"/>
+                  <label>.</label>
+                  <input id="apcModalMainDNS4" name="apcModalMainDNS4" type="text"
+                         required="required"
+                         ng-model="vm.apcModal.mainDNS4"/>
+                </div>
+              </div>
+              <div>
+                <label for="apcModalBackupDNS">Backup DNS Server</label>
+                <div class="form-inline" id="apcModalBackupDNS">
+                  <input id="apcModalBackupDNS1" name="apcModalBackupDNS1" type="text"
+                         required="required"
+                         ng-model="vm.apcModal.backupDNS1"/>
+                  <label>.</label>
+                  <input id="apcModalBackupDNS2" name="apcModalBackupDNS2" type="text"
+                         required="required"
+                         ng-model="vm.apcModal.backupDNS2"/>
+                  <label>.</label>
+                  <input id="apcModalBackupDNS3" name="apcModalBackupDNS3" type="text"
+                         required="required"
+                         ng-model="vm.apcModal.backupDNS3"/>
+                  <label>.</label>
+                  <input id="apcModalBackupDNS4" name="apcModalBackupDNS4" type="text"
+                         required="required"
+                         ng-model="vm.apcModal.backupDNS4"/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">
+              保存
+            </button>
+            <button type="submit" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">
+              取消
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+
+    <!-- Version Detail Modal -->
+    <div class="modal fade" id="versionUpdateDialog" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.versionUpdate()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h4 class="modal-title" id="fotaModalTitle">
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label for="fotaBinName">版本名称</label>
+                <input class="form-control" id="fotaBinName" name="fotaBinName" type="text"
+                       required="required"
+                       ng-model="vm.version.name"/>
+                <!-- button class="btn btn-primary btn-file" ngf-select="" ng-model="vm.fotaBin" accept="*">上传固件</button-->
+              </div>
+              <div>
+                <label for="fotaBinURL">固件URL</label>
+                <input class="form-control" id="fotaBinURL" name="fotaBinURL" type="text"
+                       required="required"
+                       ng-model="vm.version.url"/>
+                <!-- button class="btn btn-primary btn-file" ngf-select="" ng-model="vm.fotaBin" accept="*">上传固件</button-->
+              </div>
+              <div>
+                <label for="fotaBinMD5">MD5</label>
+                <input class="form-control" id="fotaBinMD5" name="fotaBinMD5" type="text"
+                       required="required"
+                       ng-model="vm.version.md5"/>
+              </div>
+              <div>
+                <label for="fotaBinDevType">硬件类型</label>
+                <select class="select form-control" id="fotaBinDevType" name="fotaBinDevType"
+                        required="required"
+                        ng-model="vm.version.devType">
+                  <option value="STM32F103">STM32F103</option>
+                  <option value="STM32F427">STM32F427</option>
+                </select>
+              </div>
+              <div>
+                <label for="fotaBinVerNo">固件版本号</label>
+                <input class="form-control" id="fotaBinVerNo" name="fotaBinVerNo" type="text"
+                       required="required"
+                       ng-model="vm.version.verNo"/>
+              </div>
+              <div>
+                <label for="fotaRetryTimes">升级重试次数</label>
+                <input class="form-control" id="fotaRetryTimes" name="fotaRetryTimes" type="text"
+                       required="required"
+                       ng-model="vm.version.retry"/>
+              </div>
+              <div>
+                <label for="fotaTimeout">升级超时</label>
+                <input class="form-control" id="fotaTimeout" name="fotaTimeout" type="text"
+                       placeholder="单次升级超时，单位为分钟"
+                       required="required"
+                       ng-model="vm.version.timeout"/>
+              </div>
+              <div>
+                <label for="fotaProtocol">升级协议</label>
+                <select class="select form-control" id="fotaProtocol" name="fotaProtocol"
+                        required="required"
+                        ng-model="vm.version.protocol">
+                  <option value="0">FTP</option>
+                </select>
+              </div>
+              <div>
+                <label for="fotaPort">服务器端口号</label>
+                <input class="form-control" id="fotaPort" name="fotaPort" type="text"
+                       required="required"
+                       ng-model="vm.version.port"/>
+              </div>
+              <div>
+                <label for="fotaUserName">服务器用户名</label>
+                <input class="form-control" id="fotaUserName" name="fotaUserName" type="text"
+                       required="required"
+                       ng-model="vm.version.userName"/>
+              </div>
+              <div>
+                <label for="fotaPassword">服务器密码</label>
+                <input class="form-control" id="fotaPassword" name="fotaPassword" type="text"
+                       required="required"
+                       ng-model="vm.version.password"/>
+              </div>
+              <div>
+                <label for="fotaKEY">KEY</label>
+                <input class="form-control" id="fotaKEY" name="fotaKEY" type="text"
+                       required="required"
+                       ng-model="vm.version.key"/>
+              </div>
+              <div>
+                <label for="fotaDwnAddr">下载地址</label>
+                <input class="form-control" id="fotaDwnAddr" name="fotaDwnAddr" type="text"
+                       required="required"
+                       ng-model="vm.version.dwnAddr"/>
+              </div>
+              <div>
+                <label for="fotaBootAddr">启动地址</label>
+                <input class="form-control" id="fotaBootAddr" name="fotaBootAddr" type="text"
+                       required="required"
+                       ng-model="vm.version.bootAddr"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">
+              保存
+            </button>
+            <button type="submit" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">
+              取消
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+  </div>
+</section>
