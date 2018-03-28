@@ -168,6 +168,7 @@
         vm.apcModal = {
           _id: param._id,
           name: param.name,
+          notes: param.notes,
           apn: param.apn,
           userName: param.userName,
           password: param.password,
@@ -184,6 +185,7 @@
       } else {
         vm.apcModal = {
           name: '',
+          notes: '',
           apn: '',
           userName: '',
           password: '',
@@ -200,6 +202,7 @@
       }
 
       $('#apcModalName').val(vm.apcModal.name);
+      $('#apcModalNotes').val(vm.apcModal.notes);
       $('#apcModalAPN').val(vm.apcModal.apn);
       $('#apcModalAPNUserName').val(vm.apcModal.userName);
       $('#apcModalAPNPassword').val(vm.apcModal.password);
@@ -284,6 +287,7 @@
         case 'APC': {
           devconfigApc._id = vm.apcModal._id;
           devconfigApc.name = vm.apcModal.name;
+          devconfigApc.notes = vm.apcModal.notes;
           devconfigApc.apn = vm.apcModal.apn;
           devconfigApc.userName = vm.apcModal.userName;
           devconfigApc.password = vm.apcModal.password;

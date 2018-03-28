@@ -4,7 +4,7 @@
  * Module dependencies
  */
 var devconfigPolicy = require('../policies/devconfig.server.policy'),
-  devconfigApcController = require('../controllers/devconfig.server.apc.controller'),
+  APC = require('../controllers/devconfig.server.apc.controller'),
   SER = require('../controllers/devconfig.server.ser.controller');
 
 module.exports = function (app) {
@@ -12,13 +12,13 @@ module.exports = function (app) {
    * APC routers
    */
   app.route('/api/devconfig/apc').all(devconfigPolicy.isAllowed)
-    .get(devconfigApcController.list)
-    .post(devconfigApcController.create);
+    .get(APC.ApcCommand.list)
+    .post(APC.ApcCommand.create);
   app.route('/api/devconfig/apc/:apcId').all(devconfigPolicy.isAllowed)
-    .get(devconfigApcController.read)
-    .put(devconfigApcController.update)
-    .delete(devconfigApcController.delete);
-  app.param('apcId', devconfigApcController.apcCommandByID);
+    .get(APC.ApcCommand.read)
+    .put(APC.ApcCommand.update)
+    .delete(APC.ApcCommand.delete);
+  app.param('apcId', APC.ApcCommand.commandByID);
 
   /**
    * SER routers

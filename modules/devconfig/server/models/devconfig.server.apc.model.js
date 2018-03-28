@@ -19,6 +19,10 @@ var ApcCommandSchema = new Schema({
     trim: true,
     required: '命令名称不能为空'
   },
+  notes: {
+    type: String,
+    default: ''
+  },
   apn: {
     type: String,
     default: '',

@@ -80,6 +80,11 @@
                        ng-model="vm.apcModal.name"/>
               </div>
               <div>
+                <label for="apcModalNotes">备注</label>
+                <textarea class="form-control" rows="3" id="apcModalNotes" name="apcModalNotes"
+                          ng-model="vm.apcModal.notes"></textarea>
+              </div>
+              <div>
                 <label for="apcModalAPN">APN</label>
                 <input class="form-control" id="apcModalAPN" name="apcModalAPN" type="text"
                        required="required"
