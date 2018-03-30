@@ -46,6 +46,13 @@
         update: {
           method: 'PUT'
         }
+      }),
+      tmaCommand: $resource('/api/devconfig/tma/:tmaId', {
+        tmaId: '@_id'
+      }, {
+        update: {
+          method: 'PUT'
+        }
       })
     };
 
@@ -72,6 +79,17 @@
     });
 
     angular.extend(DevconfigManagement.cfgCommand.prototype, {
+      createOrUpdate: function () {
+        var cmd = this;
+        return createOrUpdate(cmd);
+      },
+      deleteSingle: function () {
+        var cmd = this;
+        return deleteSingle(cmd);
+      }
+    });
+
+    angular.extend(DevconfigManagement.tmaCommand.prototype, {
       createOrUpdate: function () {
         var cmd = this;
         return createOrUpdate(cmd);

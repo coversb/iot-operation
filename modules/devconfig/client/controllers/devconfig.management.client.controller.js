@@ -12,7 +12,8 @@
     var devConfigProviderMap = new Map([
       ['APC', DevconfigManagementService.apcCommand],
       ['SER', DevconfigManagementService.serCommand],
-      ['CFG', DevconfigManagementService.cfgCommand]
+      ['CFG', DevconfigManagementService.cfgCommand],
+      ['TMA', DevconfigManagementService.tmaCommand]
     ]);
     var devConfigMap = new Map([]);
 
@@ -24,6 +25,7 @@
     vm.configTypeChange = configTypeChange;
     vm.searchConfig = searchConfig;
     vm.configUpdate = configUpdate;
+    vm.fillDatetime = fillDatetime;
 
     init();
     configTypeChange();
@@ -182,6 +184,10 @@
             vm.modal.infInterval = '60';
             break;
           }
+          case 'TMA': {
+            vm.modal.autoAdjust = '1';
+            break;
+          }
           default:
             break;
         }
@@ -249,6 +255,13 @@
       function errorCallback(res) {
         Notification.error({message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> 配置信息删除失败!'});
       }
+    }
+
+    /**
+     * Util functions
+     */
+    function fillDatetime() {
+      return (Date.parse(new Date()) / 1000).toString(10);
     }
 
   }

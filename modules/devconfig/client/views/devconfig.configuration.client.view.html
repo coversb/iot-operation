@@ -297,5 +297,64 @@
       </div><!-- /.modal -->
     </div>
 
+    <!-- TMA Modal -->
+    <div class="modal fade" id="TMAModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.configSend()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h4 class="modal-title" id="tmaModalTitle">
+              时间调整(Time Adjust)
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label>配置名称</label>
+                <input class="form-control" type="text"
+                       readonly="readonly"
+                       ng-model="vm.modalData.name"/>
+              </div>
+              <div>
+                <label>备注</label>
+                <textarea class="form-control" rows="3"
+                          readonly="readonly"
+                          ng-model="vm.modalData.notes"></textarea>
+              </div>
+              <div>
+                <label for="tmaModalAutoAdjust">Time Adjust</label>
+                <br>
+                <label for="tmaModalAutoAdjust">自动调整本地时间</label>
+                <select class="select form-control" id="tmaModalAutoAdjust" name="tmaModalAutoAdjust"
+                        disabled="disabled"
+                        ng-model="vm.modalData.autoAdjust">
+                  <option value="0">关闭</option>
+                  <option value="1">开启</option>
+                </select>
+              </div>
+              <div>
+                <label for="tmaModalUTC">UTC Time</label>
+                <input class="form-control" id="tmaModalUTC" name="tmaModalUTC" type="text"
+                       placeholder="Unix Timestamp"
+                       readonly="readonly"
+                       ng-model="vm.modalData.utc"/>
+                <button type="button" class="btn btn-info" ng-click="vm.modalData.utc = vm.fillDatetime()">当前服务器时间</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">
+              下发
+            </button>
+            <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">
+              取消
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
   </div>
 </section>

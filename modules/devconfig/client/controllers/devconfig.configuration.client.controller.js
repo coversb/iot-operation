@@ -14,7 +14,8 @@
     var devConfigProviderMap = new Map([
       ['APC', DevconfigManagementService.apcCommand],
       ['SER', DevconfigManagementService.serCommand],
-      ['CFG', DevconfigManagementService.cfgCommand]
+      ['CFG', DevconfigManagementService.cfgCommand],
+      ['TMA', DevconfigManagementService.tmaCommand]
     ]);
     var devConfigMap = new Map([]);
 
@@ -28,6 +29,7 @@
     vm.searchByName = searchByName;
     vm.modalConfigChange = modalConfigChange;
     vm.configSend = configSend;
+    vm.fillDatetime = fillDatetime;
 
     init();
     configTypeChange();
@@ -226,7 +228,6 @@
         alert('无可用配置，请先添加');
       } else {
         vm.modalData = devConfigMap.get(vm.configType).data[0];
-
         $('#' + vm.configType + 'Modal').modal('show');
       }
     }
@@ -259,12 +260,19 @@
     }
 
     function configSend() {
-      if ($window.confirm('确定向[' + vm.selectedUID.length + ']个场馆下发[' + type + ']?')) {
+      if ($window.confirm('确定向[' + vm.selectedUID.length + ']个场馆下发[' + vm.configType + ']?')) {
         for (var idx = 0; idx < vm.selectedUID.length; idx++) {
           vm.modalData.uid = vm.selectedUID[idx];
           DevopsProt.sendCommand(vm.configType, vm.modalData, showSendRes);
         }
       }
+    }
+
+    /**
+     * Util functions
+     */
+    function fillDatetime() {
+      return (Date.parse(new Date()) / 1000).toString(10);
     }
 
   }
