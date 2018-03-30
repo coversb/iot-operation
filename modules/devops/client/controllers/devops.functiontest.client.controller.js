@@ -75,7 +75,7 @@
       DevopsProt.sendCommand('MUO', param, showSendRes);
     }
 
-    function sendMuoVolumeCommand(act){
+    function sendMuoVolumeCommand(act) {
       var param = {
         uid: vm.devUID,
         act: act,

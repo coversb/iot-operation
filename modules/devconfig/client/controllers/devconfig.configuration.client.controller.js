@@ -57,7 +57,7 @@
     function configTypeChange() {
       if (devConfigMap.get(vm.configType) === undefined) {
         devConfigProviderMap.get(vm.configType).get().$promise
-          .then(function(res){
+          .then(function (res) {
             devConfigMap.set(vm.configType, res);
             // console.log(devConfigMap);
             avaliableConfigsUpdate();
@@ -87,9 +87,9 @@
         toolbar: '#toolbar',
         queryParams: function (params) {  // 配置参数
           var pageNumber = 1;
-          if (doSearch){
+          if (doSearch) {
             doSearch = false;
-          }else{
+          } else {
             if (params.offset !== 0 && params.limit !== 0) {
               pageNumber = (params.offset / params.limit) + 1;
             }
@@ -106,7 +106,7 @@
         responseHandler: function (res) {
           // console.log(res)
           if (res.code === 1) {
-            alert('请求场馆列表失败！'+ res.code);
+            alert('请求场馆列表失败！' + res.code);
           } else if (res.code === 0) {
             return {
               'total': res.count,
@@ -235,10 +235,10 @@
     }
 
     function modalConfigChange() {
-        vm.modalData = devConfigMap.get(vm.configType).data.find(function (v) {
-          return v._id === vm.modalSelectedConfig._id;
-        });
-    };
+      vm.modalData = devConfigMap.get(vm.configType).data.find(function (v) {
+        return v._id === vm.modalSelectedConfig._id;
+      });
+    }
 
     // 批量配置下发
     $('#btnBatchConfig').click(function () {

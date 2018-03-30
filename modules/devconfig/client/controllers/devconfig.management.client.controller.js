@@ -45,7 +45,7 @@
     function configTypeChange() {
       if (devConfigMap.get(vm.configType) === undefined) {
         devConfigProviderMap.get(vm.configType).get().$promise
-          .then(function(res){
+          .then(function (res) {
             devConfigMap.set(vm.configType, res);
             // console.log(devConfigMap);
           });
@@ -152,7 +152,7 @@
 
     /* toolbar */
     function searchConfig() {
-      $('#configTable').bootstrapTable('refresh', {url: DevconfigManagementService.apiMap.get(vm.configType)});
+      $('#configTable').bootstrapTable('refresh', { url: DevconfigManagementService.apiMap.get(vm.configType) });
     }
 
     $('#btnAddConfig').click(function () {
@@ -240,13 +240,13 @@
       }
 
       function successCallback(res) {
-        Notification.success({message: '<i class="glyphicon glyphicon-ok"></i> 配置信息保存成功!'});
+        Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> 配置信息保存成功!' });
         $('#' + vm.configType + 'Modal').modal('hide');
-        $('#configTable').bootstrapTable('refresh', {url: DevconfigManagementService.apiMap.get(vm.configType)});
+        $('#configTable').bootstrapTable('refresh', { url: DevconfigManagementService.apiMap.get(vm.configType) });
       }
 
       function errorCallback(res) {
-        Notification.error({message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> 配置信息保存失败!'});
+        Notification.error({ message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> 配置信息保存失败!' });
       }
     }
 
@@ -263,12 +263,12 @@
       }
 
       function successCallback(res) {
-        Notification.success({message: '<i class="glyphicon glyphicon-ok"></i> 配置信息删除成功!'});
-        $('#configTable').bootstrapTable('refresh', {url: DevconfigManagementService.apiMap.get(vm.configType)});
+        Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> 配置信息删除成功!' });
+        $('#configTable').bootstrapTable('refresh', { url: DevconfigManagementService.apiMap.get(vm.configType) });
       }
 
       function errorCallback(res) {
-        Notification.error({message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> 配置信息删除失败!'});
+        Notification.error({ message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> 配置信息删除失败!' });
       }
     }
 

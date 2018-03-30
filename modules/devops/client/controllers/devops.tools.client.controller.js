@@ -42,9 +42,9 @@
 
     function showSendRes(data, status) {
       if (status === 200) {
-        Notification.success({message: '<i class="glyphicon glyphicon-ok"></i> 发送成功!'});
+        Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> 发送成功!' });
       } else {
-        Notification.error({message: data, title: '<i class="glyphicon glyphicon-remove"></i> 发送失败!'});
+        Notification.error({ message: data, title: '<i class="glyphicon glyphicon-remove"></i> 发送失败!' });
       }
     }
 

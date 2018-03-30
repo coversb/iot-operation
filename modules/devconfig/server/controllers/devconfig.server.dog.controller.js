@@ -3,12 +3,14 @@
 /**
  * Module dependencies
  */
-var BaseCommand = require('./devconfig.server.base.controller');
+var path = require('path'),
+  errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
+  BaseCommand = require('./devconfig.server.base.controller');
 
 /**
  * Create
  */
-function DogCommand (){
+function DogCommand() {
   BaseCommand.call(this, 'DogCommand');
 
   this.update = update;
@@ -34,19 +36,7 @@ function DogCommand (){
         res.json(cmd);
       }
     });
-  };
+  }
 }
-/*
-(function(){
-  // 创建一个没有实例方法的类
-  var Super = function(){};
-  Super.prototype = BaseCommand.prototype;
-  //将实例作为子类的原型
-  SerCommand.prototype = new Super();
-})();
-*/
 
 exports.DogCommand = new DogCommand();
-
-
-

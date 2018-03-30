@@ -3,8 +3,9 @@
 /**
  * Module dependencies
  */
-var BaseCommand = require('./devconfig.server.base.controller');
-
+var path = require('path'),
+  errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
+  BaseCommand = require('./devconfig.server.base.controller');
 
 function ApcCommand() {
   BaseCommand.call(this, 'ApcCommand');
@@ -31,8 +32,7 @@ function ApcCommand() {
         res.json(cmd);
       }
     });
-  };
+  }
 }
 
 exports.ApcCommand = new ApcCommand();
-

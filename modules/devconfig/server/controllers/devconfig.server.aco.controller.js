@@ -39,14 +39,4 @@ function AcoCommand() {
   }
 }
 
-/*
-(function(){
-  // 创建一个没有实例方法的类
-  var Super = function(){};
-  Super.prototype = BaseCommand.prototype;
-  //将实例作为子类的原型
-  SerCommand.prototype = new Super();
-})();
-*/
-
 exports.AcoCommand = new AcoCommand();

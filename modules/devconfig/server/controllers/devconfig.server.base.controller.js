@@ -34,7 +34,7 @@ function BaseCommand(name) {
         res.json(cmd);
       }
     });
-  };
+  }
 
   /**
    * Show current
@@ -48,7 +48,7 @@ function BaseCommand(name) {
     cmd.isCurrentUserOwner = !!(req.user && cmd.user && cmd.user._id.toString() === req.user._id.toString());
 
     res.json(cmd);
-  };
+  }
 
   /**
    * Update
@@ -67,7 +67,7 @@ function BaseCommand(name) {
         res.json(cmd);
       }
     });
-  };
+  }
 
   /**
    * Delete
@@ -84,7 +84,7 @@ function BaseCommand(name) {
         res.json(cmd);
       }
     });
-  };
+  }
 
   /**
    * List of versions
@@ -99,7 +99,7 @@ function BaseCommand(name) {
     Modal.find(
       {
         $and: [
-          {name: {$regex: nameReg}}
+          { name: { $regex: nameReg } }
         ]
       }
     ).exec(function (err, data) {
@@ -115,7 +115,7 @@ function BaseCommand(name) {
     Modal.find(
       {
         $and: [
-          {name: {$regex: nameReg}}
+          { name: { $regex: nameReg } }
         ]
       }
     ).skip((pageNum - 1) * pageSize).limit(pageSize).sort('-created').populate('user', 'displayName')
@@ -133,7 +133,7 @@ function BaseCommand(name) {
           res.json(ret);
         }
       });
-  };
+  }
 
   /**
    * middleware
@@ -158,8 +158,7 @@ function BaseCommand(name) {
       req.cmdData = data;
       next();
     });
-  };
-};
+  }
+}
 
 module.exports = BaseCommand;
-
