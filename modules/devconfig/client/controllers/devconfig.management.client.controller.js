@@ -5,16 +5,15 @@
     .module('devconfig.management')
     .controller('DevconfigManagementController', DevconfigManagementController);
 
-  DevconfigManagementController.$inject = ['$scope', '$state', '$window', '$http', 'Authentication', 'Notification', 'DevconfigManagementService',
-    'devconfigApcResolve', 'devconfigSerResolve'];
+  DevconfigManagementController.$inject = ['$scope', '$state', '$window', '$http', 'Authentication', 'Notification', 'DevconfigManagementService'];
 
-  function DevconfigManagementController($scope, $state, $window, $http, Authentication, Notification, DevconfigManagementService,
-                                         devconfigApc, devconfigSer) {
+  function DevconfigManagementController($scope, $state, $window, $http, Authentication, Notification, DevconfigManagementService) {
 
-    var devConfigMap = new Map([
-      ['APC', devconfigApc],
-      ['SER', devconfigSer]
+    var devConfigProviderMap = new Map([
+      ['APC', DevconfigManagementService.apcCommand],
+      ['SER', DevconfigManagementService.serCommand]
     ]);
+    var devConfigMap = new Map([]);
 
     var vm = this;
 
@@ -26,6 +25,7 @@
     vm.configUpdate = configUpdate;
 
     init();
+    configTypeChange();
 
     function init() {
       // If user is not signed in then redirect back home
@@ -38,8 +38,15 @@
     }
 
     function configTypeChange() {
-      console.log('loadConfigList' + DevconfigManagementService.apiMap.get(vm.configType));
-      $('#configTable').bootstrapTable('refresh', {url: DevconfigManagementService.apiMap.get(vm.configType)});
+      if (devConfigMap.get(vm.configType) === undefined) {
+        devConfigProviderMap.get(vm.configType).get().$promise
+          .then(function(res){
+            devConfigMap.set(vm.configType, res);
+            // console.log(devConfigMap);
+          });
+      }
+      // console.log('loadConfigList' + DevconfigManagementService.apiMap.get(vm.configType));
+      $('#configTable').bootstrapTable('refresh', { url: DevconfigManagementService.apiMap.get(vm.configType) });
     }
 
     function loadConfigList() {
@@ -189,7 +196,7 @@
         };
         $('#apcModalTitle').text('[新增] 入网配置(Access Point Configuration)');
       }
-      console.log(vm.modal);
+      // console.log(vm.modal);
 
       $('#apcModalName').val(vm.modal.name);
       $('#apcModalNotes').val(vm.modal.notes);

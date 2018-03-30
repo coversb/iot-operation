@@ -4,10 +4,7 @@
  * Module dependencies
  */
 var mongoose = require('mongoose'),
-  Schema = mongoose.Schema,
-  path = require('path'),
-  config = require(path.resolve('./config/config')),
-  chalk = require('chalk');
+  Schema = mongoose.Schema;
 
 /**
  * Server Configuration Schema

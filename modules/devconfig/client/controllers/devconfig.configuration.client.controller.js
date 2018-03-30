@@ -5,18 +5,17 @@
     .module('devconfig.configuration')
     .controller('DevconfigConfigurationController', DevconfigConfigurationController);
 
-  DevconfigConfigurationController.$inject = ['$scope', '$state', '$window', '$http', 'Authentication', 'Notification', 'DevopsSettings', 'DevopsProt',
-    'devconfigApcResolve', 'devconfigSerResolve'];
+  DevconfigConfigurationController.$inject = ['$scope', '$state', '$window', '$http', 'Authentication', 'Notification', 'DevconfigManagementService', 'DevopsSettings', 'DevopsProt'];
 
-  function DevconfigConfigurationController($scope, $state, $window, $http, Authentication, Notification, DevopsSettings, DevopsProt,
-                                         devconfigApc, devconfigSer) {
+  function DevconfigConfigurationController($scope, $state, $window, $http, Authentication, Notification, DevconfigManagementService, DevopsSettings, DevopsProt) {
     var searchData = '';
     var doSearch = false;
 
-    var devConfigMap = new Map([
-      ['APC', devconfigApc],
-      ['SER', devconfigSer]
+    var devConfigProviderMap = new Map([
+      ['APC', DevconfigManagementService.apcCommand],
+      ['SER', DevconfigManagementService.serCommand]
     ]);
+    var devConfigMap = new Map([]);
 
     var vm = this;
 
@@ -42,10 +41,23 @@
       loadBoxList();
     }
 
-    function configTypeChange() {
+    function avaliableConfigsUpdate() {
       vm.avaliableConfigs = devConfigMap.get(vm.configType).data;
       if (vm.avaliableConfigs.length !== 0) {
         vm.modalSelectedConfig = vm.modalData = vm.avaliableConfigs[0];
+      }
+    }
+
+    function configTypeChange() {
+      if (devConfigMap.get(vm.configType) === undefined) {
+        devConfigProviderMap.get(vm.configType).get().$promise
+          .then(function(res){
+            devConfigMap.set(vm.configType, res);
+            // console.log(devConfigMap);
+            avaliableConfigsUpdate();
+          });
+      } else {
+        avaliableConfigsUpdate();
       }
     }
 
