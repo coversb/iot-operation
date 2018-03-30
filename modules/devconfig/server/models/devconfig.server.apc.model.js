@@ -29,27 +29,27 @@ var ApcCommandSchema = new Schema({
     trim: true,
     required: '接入点名称不能为空'
   },
-  userName: {
+  apnUserName: {
     type: String,
     default: '',
     trim: true,
     required: '接入点用户名不能为空'
   },
-  password: {
+  apnPassword: {
     type: String,
     default: '',
     trim: true,
     required: '接入点密码不能为空'
   },
   mainDNS: {
-    type: String,
-    default: '',
+    type: [],
+    default: [0, 0, 0, 0],
     trim: true,
     required: '主DNS不能为空'
   },
   backupDNS: {
-    type: String,
-    default: '',
+    type: [],
+    default: [0, 0, 0, 0],
     trim: true,
     required: '备用DNS不能为空'
   },

@@ -14,6 +14,19 @@
         url: '/devconfig',
         template: '<ui-view></ui-view>'
       })
+      .state('devconfig.configuration', {
+        url: '/configuration',
+        templateUrl: '/modules/devconfig/client/views/devconfig.configuration.client.view.html',
+        controller: 'DevconfigConfigurationController',
+        controllerAs: 'vm',
+        data: {
+          roles: ['admin', '开发/测试']
+        },
+        resolve: {
+          devconfigApcResolve: getDevconfigApc,
+          devconfigSerResolve: getDevconfigSer
+        }
+      })
       .state('devconfig.management', {
         url: '/management',
         templateUrl: '/modules/devconfig/client/views/devconfig.management.client.view.html',

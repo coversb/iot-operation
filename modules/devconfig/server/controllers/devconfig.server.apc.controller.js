@@ -17,8 +17,8 @@ function ApcCommand() {
     cmd.name = req.body.name;
     cmd.notes = req.body.notes;
     cmd.apn = req.body.apn;
-    cmd.userName = req.body.userName;
-    cmd.password = req.body.password;
+    cmd.userName = req.body.apnUserName;
+    cmd.password = req.body.apnPassword;
     cmd.mainDNS = req.body.mainDNS;
     cmd.backupDNS = req.body.backupDNS;
 

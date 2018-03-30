@@ -1,7 +1,7 @@
 <!-- The chat view -->
 <section class="container">
   <div class="page-header">
-    <h1>配置管理</h1>
+    <h1>配置下发</h1>
   </div>
 
   <div class="container-fluid">
@@ -29,31 +29,21 @@
       </div>
       <div class="panel-body">
         <div class="panel panel-default">
-          <div class="panel-heading">查询条件</div>
-          <div class="panel-body">
-            <form id="formSearch" class="form-horizontal" ng-submit="vm.searchConfig()">
-              <div class="form-group" style="margin-top:15px">
-                <label class="control-label col-sm-1" for="searchName">配置名称</label>
-                <div class="col-sm-3">
-                  <input type="text" class="form-control" id="searchName" ng-model="vm.txtSearchName">
-                </div>
-                <div class="col-sm-4" style="text-align:left;">
-                  <button type="submit" style="margin-left:50px" class="btn btn-primary">查询</button>
-                </div>
-              </div>
-            </form>
-          </div>
+          <div class="input-group">
+            <input class="form-control" type="text" name="searchData" id="searchData" placeholder="请输入盒子名称"
+                   ng-model="vm.searchData"/>
+            <span class="input-group-btn">
+          <button class="btn btn-default" ng-click="vm.searchByName()">搜索</button>
+        </span>
+          </div><!-- /input-group -->
         </div>
         <div id="toolbar" class="btn-group">
-          <button id="btnAddConfig" type="button" class="btn btn-default">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
-          </button>
-          <button id="btnDelConfig" type="button" class="btn btn-default">
-            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+          <button id="btnBatchConfig" type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>批量下发
           </button>
         </div>
         <div class="tableMargin">
-          <table class="table table-hover table-striped" id="configTable"></table>
+          <table class="table table-hover table-striped" id="boxTable"></table>
           <ul class="pagination"></ul>
         </div>
       </div>
@@ -62,91 +52,99 @@
     <!-- APC Modal -->
     <div class="modal fade" id="apcModal" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog">
-        <form class="modal-content" ng-submit="vm.configUpdate('apcModal')">
+        <form class="modal-content" ng-submit="vm.configSend('APC')">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
               &times;
             </button>
-            <h4 class="modal-title" id="apcModalTitle">
-              入网配置(Access Point Configuration)
-            </h4>
+            <div>
+              <h4 class="modal-title" id="apcModalTitle">
+                入网配置(Access Point Configuration)
+              </h4>
+              <select class="select form-control" id="apcModalConfig" name="apcModalConfig"
+                      ng-model="vm.modalSelectedConfig"
+                      ng-options="option.name for option in vm.avaliableConfigs track by option._id"
+                      ng-change="vm.modalConfigChange('APC', vm.modalSelectedConfig)">
+              </select>
+            </div>
           </div>
           <div class="modal-body">
             <div>
               <div>
                 <label for="apcModalName">配置名称</label>
                 <input class="form-control" id="apcModalName" name="apcModalName" type="text"
-                       required="required"
-                       ng-model="vm.modal.name"/>
+                       readonly="readonly"
+                       ng-model="vm.modalData.name"/>
               </div>
               <div>
                 <label for="apcModalNotes">备注</label>
                 <textarea class="form-control" rows="3" id="apcModalNotes" name="apcModalNotes"
-                          ng-model="vm.modal.notes"></textarea>
+                          readonly="readonly"
+                          ng-model="vm.modalData.notes"></textarea>
               </div>
               <div>
                 <label for="apcModalAPN">APN</label>
                 <input class="form-control" id="apcModalAPN" name="apcModalAPN" type="text"
-                       required="required"
-                       ng-model="vm.modal.apn"/>
+                       readonly="readonly"
+                       ng-model="vm.modalData.apn"/>
               </div>
               <div>
                 <label for="apcModalAPNUserName">APN User Name</label>
                 <input class="form-control" id="apcModalAPNUserName" name="apcModalAPNUserName" type="text"
-                       required="required"
-                       ng-model="vm.modal.apnUserName"/>
+                       readonly="readonly"
+                       ng-model="vm.modalData.apnUserName"/>
               </div>
               <div>
                 <label for="apcModalAPNPassword">APN Password</label>
                 <input class="form-control" id="apcModalAPNPassword" name="apcModalAPNPassword" type="text"
-                       required="required"
-                       ng-model="vm.modal.apnPassword"/>
+                       readonly="readonly"
+                       ng-model="vm.modalData.apnPassword"/>
               </div>
               <div>
                 <label for="apcModalMainDNS">Main DNS Server</label>
                 <div class="form-inline" id="apcModalMainDNS">
                   <input id="apcModalMainDNS1" name="apcModalMainDNS1" type="number"
-                         required="required"
-                         ng-model="vm.modal.mainDNS[0]"/>
+                         readonly="readonly"
+                         ng-model="vm.modalData.mainDNS[0]"/>
                   <label>.</label>
                   <input id="apcModalMainDNS2" name="apcModalMainDNS2" type="number"
-                         required="required"
-                         ng-model="vm.modal.mainDNS[1]"/>
+                         readonly="readonly"
+                         ng-model="vm.modalData.mainDNS[1]"/>
                   <label>.</label>
                   <input id="apcModalMainDNS3" name="apcModalMainDNS3" type="number"
-                         required="required"
-                         ng-model="vm.modal.mainDNS[2]"/>
+                         readonly="readonly"
+                         ng-model="vm.modalData.mainDNS[2]"/>
                   <label>.</label>
                   <input id="apcModalMainDNS4" name="apcModalMainDNS4" type="number"
-                         required="required"
-                         ng-model="vm.modal.mainDNS[3]"/>
+                         readonly="readonly"
+                         ng-model="vm.modalData.mainDNS[3]"/>
                 </div>
               </div>
               <div>
                 <label for="apcModalBackupDNS">Backup DNS Server</label>
                 <div class="form-inline" id="apcModalBackupDNS">
                   <input id="apcModalBackupDNS1" name="apcModalBackupDNS1" type="number"
-                         required="required"
-                         ng-model="vm.modal.backupDNS[0]"/>
+                         readonly="readonly"
+                         ng-model="vm.modalData.backupDNS[0]"/>
                   <label>.</label>
                   <input id="apcModalBackupDNS2" name="apcModalBackupDNS2" type="number"
-                         required="required"
-                         ng-model="vm.modal.backupDNS[1]"/>
+                         readonly="readonly"
+                         ng-model="vm.modalData.backupDNS[1]"/>
                   <label>.</label>
                   <input id="apcModalBackupDNS3" name="apcModalBackupDNS3" type="number"
-                         required="required"
-                         ng-model="vm.modal.backupDNS[2]"/>
+                         readonly="readonly"
+                         ng-model="vm.modalData.backupDNS[2]"/>
                   <label>.</label>
                   <input id="apcModalBackupDNS4" name="apcModalBackupDNS4" type="number"
-                         required="required"
-                         ng-model="vm.modal.backupDNS[3]"/>
+                         readonly="readonly"
+                         ng-model="vm.modalData.backupDNS[3]"/>
                 </div>
               </div>
             </div>
           </div>
           <div class="modal-footer">
             <button type="submit" class="btn btn-success">
-              保存
+              下发
             </button>
             <button type="submit" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">
               取消
@@ -159,81 +157,89 @@
     <!-- SER Modal -->
     <div class="modal fade" id="serModal" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog">
-        <form class="modal-content" ng-submit="vm.configUpdate('serModal')">
+        <form class="modal-content" ng-submit="vm.configSend('SER')">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
               &times;
             </button>
-            <h4 class="modal-title" id="serModalTitle">
-              服务器连接配置(Server Configuration)
-            </h4>
+            <div>
+              <h4 class="modal-title" id="serModalTitle">
+                服务器连接配置(Server Configuration)
+              </h4>
+              <select class="select form-control" id="serModalConfig" name="serModalConfig"
+                      ng-model="vm.modalSelectedConfig"
+                      ng-options="option.name for option in vm.avaliableConfigs track by option._id"
+                      ng-change="vm.modalConfigChange('SER', vm.modalSelectedConfig)">
+              </select>
+            </div>
           </div>
           <div class="modal-body">
             <div>
               <div>
                 <label for="serModalName">配置名称</label>
                 <input class="form-control" id="serModalName" name="serModalName" type="text"
-                       required="required"
-                       ng-model="vm.modal.name"/>
+                       readonly="readonly"
+                       ng-model="vm.modalData.name"/>
               </div>
               <div>
                 <label for="serModalNotes">备注</label>
                 <textarea class="form-control" rows="3" id="serModalNotes" name="serModalNotes"
-                          ng-model="vm.modal.notes"></textarea>
+                          readonly="readonly"
+                          ng-model="vm.modalData.notes"></textarea>
               </div>
               <div>
                 <label for="serModalMode">Report Mode</label>
                 <input class="form-control" id="serModalMode" name="serModalMode" type="text"
-                       required="required"
-                       ng-model="vm.modal.mode"/>
+                       readonly="readonly"
+                       ng-model="vm.modalData.mode"/>
               </div>
               <div>
                 <label for="serModalMainServer">Main Server Domain Name</label>
                 <input class="form-control" id="serModalMainServer" name="serModalMainServer" type="text"
-                       required="required"
-                       ng-model="vm.modal.mainServer"/>
+                       readonly="readonly"
+                       ng-model="vm.modalData.mainServer"/>
               </div>
               <div>
                 <label for="serModalMainPort">Main Server Port</label>
                 <input class="form-control" id="serModalMainPort" name="serModalMainPort" type="text"
-                       required="required"
-                       ng-model="vm.modal.mainPort"/>
+                       readonly="readonly"
+                       ng-model="vm.modalData.mainPort"/>
               </div>
               <div>
                 <label for="serModalBackupServer">Backup Server Domain Name</label>
                 <input class="form-control" id="serModalBackupServer" name="serModalBackupServer" type="text"
-                       required="required"
-                       ng-model="vm.modal.backupServer"/>
+                       readonly="readonly"
+                       ng-model="vm.modalData.backupServer"/>
               </div>
               <div>
                 <label for="serModalBackupPort">Backup Server Port</label>
                 <input class="form-control" id="serModalBackupPort" name="serModalBackupPort" type="text"
-                       required="required"
-                       ng-model="vm.modal.backupPort"/>
+                       readonly="readonly"
+                       ng-model="vm.modalData.backupPort"/>
               </div>
               <div>
                 <label for="serModalSMSGateway">SMS Gateway</label>
                 <input class="form-control" id="serModalSMSGateway" name="serModalSMSGateway" type="text"
-                       required="required"
-                       ng-model="vm.modal.sms"/>
+                       readonly="readonly"
+                       ng-model="vm.modalData.sms"/>
               </div>
               <div>
                 <label for="serModalHbpInterval">Heartbeat Interval</label>
                 <input class="form-control" id="serModalHbpInterval" name="serModalHbpInterval" type="text"
-                       required="required"
-                       ng-model="vm.modal.hbpInterval"/>
+                       readonly="readonly"
+                       ng-model="vm.modalData.hbpInterval"/>
               </div>
               <div>
                 <label for="serModalMaxRandomTime">Max Random Time</label>
                 <input class="form-control" id="serModalMaxRandomTime" name="serModalMaxRandomTime" type="text"
-                       required="required"
-                       ng-model="vm.modal.maxRandomTime"/>
+                       readonly="readonly"
+                       ng-model="vm.modalData.maxRandomTime"/>
               </div>
             </div>
           </div>
           <div class="modal-footer">
             <button type="submit" class="btn btn-success">
-              保存
+              下发
             </button>
             <button type="submit" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">
               取消
