@@ -324,7 +324,7 @@
       // 最后一次用户输入密码的时间
       vm.selectedBox.detail.doorPasswordUpdateDate = convertTimestampToDatetime(vm.selectedBox.detail.doorPasswordUpdateDate);
       // 设备箱状态更新时间
-      vm.selectedBox.detail.deviceDoorStatusUpdateDate = convertTimestampToDatetime(vm.selectedBox.detail.deviceDoorStatusUpdateDate);
+      // vm.selectedBox.detail.deviceDoorStatusUpdateDate = convertTimestampToDatetime(vm.selectedBox.detail.deviceDoorStatusUpdateDate);
       // 空调模式、温度、风量控制更新时间
       vm.selectedBox.detail.airConditionControlUpdateDate = convertTimestampToDatetime(vm.selectedBox.detail.airConditionControlUpdateDate);
       // 最近一次空调开关状态指令下发时间
