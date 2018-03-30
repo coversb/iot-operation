@@ -13,7 +13,8 @@
 
     var devConfigProviderMap = new Map([
       ['APC', DevconfigManagementService.apcCommand],
-      ['SER', DevconfigManagementService.serCommand]
+      ['SER', DevconfigManagementService.serCommand],
+      ['CFG', DevconfigManagementService.cfgCommand]
     ]);
     var devConfigMap = new Map([]);
 
@@ -42,6 +43,7 @@
     }
 
     function avaliableConfigsUpdate() {
+      vm.modalSelectedConfig = undefined;
       vm.avaliableConfigs = devConfigMap.get(vm.configType).data;
       if (vm.avaliableConfigs.length !== 0) {
         vm.modalSelectedConfig = vm.modalData = vm.avaliableConfigs[0];
@@ -219,45 +221,20 @@
       vm.searchData = searchData = '';
     }
 
-    function apcModalShow() {
-      if (devConfigMap.get('APC').count === 0) {
-        alert('无可用入网配置，请先添加');
-      } else {
-        vm.modalData = devConfigMap.get('APC').data[0];
-        $('#apcModalTitle').text('[下发] 入网配置(Access Point Configuration)');
-        $('#apcModal').modal('show');
-      }
-    }
-
-    function serModalShow() {
-      if (devConfigMap.get('SER').count === 0) {
-        alert('无可用服务器连接配置，请先添加');
-      } else {
-        vm.modalData = devConfigMap.get('SER').data[0];
-        $('#serModalTitle').text('[下发] 服务器连接配置(Server Configuration)');
-        $('#serModal').modal('show');
-      }
-    }
-
     function configModalShow() {
-      switch (vm.configType) {
-        case 'APC': {
-          apcModalShow();
-          break;
-        }
-        case 'SER': {
-          serModalShow();
-          break;
-        }
-        default:
-          break;
+      if (devConfigMap.get(vm.configType).count === 0) {
+        alert('无可用配置，请先添加');
+      } else {
+        vm.modalData = devConfigMap.get(vm.configType).data[0];
+
+        $('#' + vm.configType + 'Modal').modal('show');
       }
     }
 
-    function modalConfigChange(type, selectedConfig) {
-      vm.modalData = devConfigMap.get(type).data.find(function (v) {
-        return v._id === selectedConfig._id;
-      });
+    function modalConfigChange() {
+        vm.modalData = devConfigMap.get(vm.configType).data.find(function (v) {
+          return v._id === vm.modalSelectedConfig._id;
+        });
     };
 
     // 批量配置下发
@@ -281,11 +258,11 @@
       }
     }
 
-    function configSend(type) {
+    function configSend() {
       if ($window.confirm('确定向[' + vm.selectedUID.length + ']个场馆下发[' + type + ']?')) {
         for (var idx = 0; idx < vm.selectedUID.length; idx++) {
           vm.modalData.uid = vm.selectedUID[idx];
-          DevopsProt.sendCommand(type, vm.modalData, showSendRes);
+          DevopsProt.sendCommand(vm.configType, vm.modalData, showSendRes);
         }
       }
     }

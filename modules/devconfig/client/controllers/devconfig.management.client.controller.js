@@ -11,7 +11,8 @@
 
     var devConfigProviderMap = new Map([
       ['APC', DevconfigManagementService.apcCommand],
-      ['SER', DevconfigManagementService.serCommand]
+      ['SER', DevconfigManagementService.serCommand],
+      ['CFG', DevconfigManagementService.cfgCommand]
     ]);
     var devConfigMap = new Map([]);
 
@@ -155,112 +156,39 @@
     });
 
     function configModalShow(param) {
-      switch (vm.configType) {
-        case 'APC': {
-          apcModalShow(param);
-          break;
-        }
-        case 'SER': {
-          serModalShow(param);
-          break;
-        }
-        default:
-          break;
-      }
-    }
-
-    function apcModalShow(param) {
       if (param !== undefined) {
-        vm.modal = {
-          _id: param._id,
-          name: param.name,
-          notes: param.notes,
-          apn: param.apn,
-          apnUserName: param.apnUserName,
-          apnPassword: param.apnPassword,
-          mainDNS: param.mainDNS,
-          backupDNS: param.backupDNS
-        };
-        $('#apcModalTitle').text('[修改] 入网配置(Access Point Configuration)');
+        vm.modal = param;
       } else {
         vm.modal = {
           _id: undefined,
-          created: undefined,
-          name: '',
-          notes: '',
-          apn: '',
-          apnUserName: '',
-          apnPassword: '',
-          mainDNS: [114, 114, 114, 114],
-          backupDNS: [114, 114, 114, 114]
+          created: undefined
         };
-        $('#apcModalTitle').text('[新增] 入网配置(Access Point Configuration)');
-      }
-      // console.log(vm.modal);
 
-      $('#apcModalName').val(vm.modal.name);
-      $('#apcModalNotes').val(vm.modal.notes);
-      $('#apcModalAPN').val(vm.modal.apn);
-      $('#apcModalAPNUserName').val(vm.modal.apnUserName);
-      $('#apcModalAPNPassword').val(vm.modal.apnPassword);
-      $('#apcModalMainDNS1').val(vm.modal.mainDNS[0]);
-      $('#apcModalMainDNS2').val(vm.modal.mainDNS[1]);
-      $('#apcModalMainDNS3').val(vm.modal.mainDNS[2]);
-      $('#apcModalMainDNS4').val(vm.modal.mainDNS[3]);
-      $('#apcModalBackupDNS1').val(vm.modal.backupDNS[0]);
-      $('#apcModalBackupDNS2').val(vm.modal.backupDNS[1]);
-      $('#apcModalBackupDNS3').val(vm.modal.backupDNS[2]);
-      $('#apcModalBackupDNS4').val(vm.modal.backupDNS[3]);
-
-      $('#apcModal').modal('show');
-    }
-
-    function serModalShow(param) {
-      if (param !== undefined) {
-        vm.modal = {
-          _id: param._id,
-          name: param.name,
-          notes: param.notes,
-          mode: param.mode,
-          mainServer: param.mainServer,
-          mainPort: param.mainPort,
-          backupServer: param.backupServer,
-          backupPort: param.backupPort,
-          sms: param.sms,
-          hbpInterval: param.hbpInterval,
-          maxRandomTime: param.maxRandomTime
-        };
-        $('#serModalTitle').text('[修改] 服务器连接配置(Server Configuration)');
-      } else {
-        vm.modal = {
-          _id: undefined,
-          created: undefined,
-          name: '',
-          notes: '',
-          mode: '2',
-          mainServer: '',
-          mainPort: '',
-          backupServer: '',
-          backupPort: '',
-          sms: '13888888888',
-          hbpInterval: '5',
-          maxRandomTime: '0'
-        };
-        $('#serModalTitle').text('[新增] 服务器连接配置(Server Configuration)');
+        // init some default value
+        switch (vm.configType) {
+          case 'APC': {
+            vm.modal.mainDNS = [114, 114, 114, 114];
+            vm.modal.backupDNS = [114, 114, 114, 114];
+            break;
+          }
+          case 'SER': {
+            vm.modal.mode = '2';
+            vm.modal.sms = '13888888888';
+            vm.modal.hbpInterval = '5';
+            vm.modal.maxRandomTime = '0';
+            break;
+          }
+          case 'CFG': {
+            vm.modal.infInterval = '60';
+            break;
+          }
+          default:
+            break;
+        }
       }
 
-      $('#serModalName').val(vm.modal.name);
-      $('#serModalNotes').val(vm.modal.notes);
-      $('#serModalMode').val(vm.modal.mode);
-      $('#serModalMainServer').val(vm.modal.mainServer);
-      $('#serModalMainPort').val(vm.modal.mainPort);
-      $('#serModalBackupServer').val(vm.modal.backupServer);
-      $('#serModalBackupPort').val(vm.modal.backupPort);
-      $('#serModalSMSGateway').val(vm.modal.sms);
-      $('#serModalHbpInterval').val(vm.modal.hbpInterval);
-      $('#serModalMaxRandomTime').val(vm.modal.maxRandomTime);
-
-      $('#serModal').modal('show');
+      $scope.$apply();
+      $('#' + vm.configType + 'Modal').modal('show');
     }
 
     // 批量删除
@@ -279,7 +207,7 @@
     });
 
     // Create a new config, or update the current instance
-    function configUpdate(modalName) {
+    function configUpdate() {
       var cfg = devConfigMap.get(vm.configType);
       if (cfg === undefined) {
         alert('未知类型' + vm.configType);
@@ -292,7 +220,7 @@
 
       function successCallback(res) {
         Notification.success({message: '<i class="glyphicon glyphicon-ok"></i> 配置信息保存成功!'});
-        $('#' + modalName).modal('hide');
+        $('#' + vm.configType + 'Modal').modal('hide');
         $('#configTable').bootstrapTable('refresh', {url: DevconfigManagementService.apiMap.get(vm.configType)});
       }
 

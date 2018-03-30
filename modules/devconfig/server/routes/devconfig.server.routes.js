@@ -5,7 +5,8 @@
  */
 var devconfigPolicy = require('../policies/devconfig.server.policy'),
   APC = require('../controllers/devconfig.server.apc.controller'),
-  SER = require('../controllers/devconfig.server.ser.controller');
+  SER = require('../controllers/devconfig.server.ser.controller'),
+  CFG = require('../controllers/devconfig.server.cfg.controller');
 
 module.exports = function (app) {
   /**
@@ -23,7 +24,6 @@ module.exports = function (app) {
   /**
    * SER routers
    */
-  // console.log(SER);
   app.route('/api/devconfig/ser').all(devconfigPolicy.isAllowed)
     .get(SER.SerCommand.list)
     .post(SER.SerCommand.create);
@@ -32,4 +32,16 @@ module.exports = function (app) {
     .put(SER.SerCommand.update)
     .delete(SER.SerCommand.delete);
   app.param('serId', SER.SerCommand.commandByID);
+
+  /**
+   * CFG routers
+   */
+  app.route('/api/devconfig/cfg').all(devconfigPolicy.isAllowed)
+    .get(CFG.CfgCommand.list)
+    .post(CFG.CfgCommand.create);
+  app.route('/api/devconfig/cfg/:cfgId').all(devconfigPolicy.isAllowed)
+    .get(CFG.CfgCommand.read)
+    .put(CFG.CfgCommand.update)
+    .delete(CFG.CfgCommand.delete);
+  app.param('cfgId', CFG.CfgCommand.commandByID);
 };

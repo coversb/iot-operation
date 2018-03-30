@@ -39,8 +39,26 @@
         update: {
           method: 'PUT'
         }
+      }),
+      cfgCommand: $resource('/api/devconfig/cfg/:cfgId', {
+        cfgId: '@_id'
+      }, {
+        update: {
+          method: 'PUT'
+        }
       })
     };
+
+    angular.extend(DevconfigManagement.apcCommand.prototype, {
+      createOrUpdate: function () {
+        var cmd = this;
+        return createOrUpdate(cmd);
+      },
+      deleteSingle: function () {
+        var cmd = this;
+        return deleteSingle(cmd);
+      }
+    });
 
     angular.extend(DevconfigManagement.serCommand.prototype, {
       createOrUpdate: function () {
@@ -53,7 +71,7 @@
       }
     });
 
-    angular.extend(DevconfigManagement.apcCommand.prototype, {
+    angular.extend(DevconfigManagement.cfgCommand.prototype, {
       createOrUpdate: function () {
         var cmd = this;
         return createOrUpdate(cmd);

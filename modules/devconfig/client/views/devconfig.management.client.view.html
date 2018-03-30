@@ -60,9 +60,9 @@
     </div>
 
     <!-- APC Modal -->
-    <div class="modal fade" id="apcModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="APCModal" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog">
-        <form class="modal-content" ng-submit="vm.configUpdate('apcModal')">
+        <form class="modal-content" ng-submit="vm.configUpdate()">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
               &times;
@@ -157,9 +157,9 @@
     </div>
 
     <!-- SER Modal -->
-    <div class="modal fade" id="serModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="SERModal" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog">
-        <form class="modal-content" ng-submit="vm.configUpdate('serModal')">
+        <form class="modal-content" ng-submit="vm.configUpdate()">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
               &times;
@@ -243,6 +243,58 @@
       </div><!-- /.modal -->
     </div>
 
+    <!-- CFG Modal -->
+    <div class="modal fade" id="CFGModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.configUpdate()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h4 class="modal-title" id="cfgModalTitle">
+              全局配置(Configuration) [0x01 0x03]
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label for="cfgModalName">配置名称</label>
+                <input class="form-control" id="cfgModalName" name="cfgModalName" type="text"
+                       required="required"
+                       ng-model="vm.modal.name"/>
+              </div>
+              <div>
+                <label for="cfgModalNotes">备注</label>
+                <textarea class="form-control" rows="3" id="cfgModalNotes" name="cfgModalNotes"
+                          ng-model="vm.modal.notes"></textarea>
+              </div>
+              <div>
+                <label for="cfgModalEventMask">Event Mask</label>
+                <input class="form-control" id="cfgModalEventMask" name="cfgModalEventMask" type="text"
+                       placeholder="请输入HEX格式(0x0000 - 0xFFFF)"
+                       required="required"
+                       ng-model="vm.modal.mask"/>
+              </div>
+              <div>
+                <label for="cfgModalInfInterval">Info Report Interval</label>
+                <input class="form-control" id="cfgModalInfInterval" name="cfgModalInfInterval" type="text"
+                       required="required"
+                       ng-model="vm.modal.infInterval"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">
+              保存
+            </button>
+            <button type="submit" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">
+              取消
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
 
   </div>
 </section>
