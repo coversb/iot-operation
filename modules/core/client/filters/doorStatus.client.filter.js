@@ -7,9 +7,9 @@
   function doorStatus() {
     return function (code) {
       var deviceDoorStatus = ["开", "关"];
-      if (!Number.isInteger(code) || code > 1) {
-        code = 0;
-      }
+      // if (!Number.isInteger(code) || code > 1) {
+      //   code = 0;
+      // }
 
       return deviceDoorStatus[code];
     };
