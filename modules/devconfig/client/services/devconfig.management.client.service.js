@@ -67,6 +67,13 @@
         update: {
           method: 'PUT'
         }
+      }),
+      omcCommand: $resource('/api/devconfig/omc/:omcId', {
+        omcId: '@_id'
+      }, {
+        update: {
+          method: 'PUT'
+        }
       })
     };
 
@@ -126,6 +133,17 @@
     });
 
     angular.extend(DevconfigManagement.acoCommand.prototype, {
+      createOrUpdate: function () {
+        var cmd = this;
+        return createOrUpdate(cmd);
+      },
+      deleteSingle: function () {
+        var cmd = this;
+        return deleteSingle(cmd);
+      }
+    });
+
+    angular.extend(DevconfigManagement.omcCommand.prototype, {
       createOrUpdate: function () {
         var cmd = this;
         return createOrUpdate(cmd);

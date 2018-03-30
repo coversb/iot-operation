@@ -17,7 +17,7 @@
           <option value="TMA">时间调整</option>
           <option value="DOG">协议看门狗</option>
           <option value="ACO">空调控制</option>
-          <option value="SEC">安全配置</option>
+          <!--option value="SEC">安全配置</option-->
           <option value="OMC">输出模式配置</option>
           <option value="DOA">门禁告警</option>
           <option value="SMA">烟雾告警</option>
@@ -556,6 +556,122 @@
         </form><!-- /.modal-content -->
       </div><!-- /.modal -->
     </div>
+
+    <!-- OMC Modal -->
+    <div class="modal fade" id="OMCModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.configSend()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <div>
+              <h4 class="modal-title">
+                输出模式配置(Output Mode Configuration)
+              </h4>
+              <select class="select form-control" id="omcModalConfig" name="omcModalConfig"
+                      ng-model="vm.modalSelectedConfig"
+                      ng-options="option.name for option in vm.avaliableConfigs track by option._id"
+                      ng-change="vm.modalConfigChange()">
+              </select>
+            </div>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label>配置名称</label>
+                <input class="form-control" type="text"
+                       readonly="readonly"
+                       ng-model="vm.modalData.name"/>
+              </div>
+              <div>
+                <label>备注</label>
+                <textarea class="form-control" rows="3"
+                          readonly="readonly"
+                          ng-model="vm.modalData.notes"></textarea>
+              </div>
+              <div>
+                <label for="omcModalIdleOutput">Idle Output</label>
+                <input class="form-control" id="omcModalIdleOutput" name="omcModalIdleOutput" type="text"
+                       readonly="readonly"
+                       placeholder="无订单时输出状态，请输入HEX格式(0x00000000 - 0xFFFFFFFF)"
+                       ng-model="vm.modalData.idleOutput"/>
+              </div>
+              <div>
+                <label for="omcModalInserviceOutput">In-service Output</label>
+                <input class="form-control" id="omcModalInserviceOutput" name="omcModalInserviceOutput" type="text"
+                       readonly="readonly"
+                       placeholder="有订单时输出状态，请输入HEX格式(0x00000000 - 0xFFFFFFFF)"
+                       ng-model="vm.modalData.inserviceOutput"/>
+              </div>
+              <div>
+                <label for="omcModalMode">Mode</label>
+                <select class="select form-control" id="omcModalMode" name="omcModalMode"
+                        disabled="disabled"
+                        ng-model="vm.modalData.mode">
+                  <option value="0">特定时段输出模式关</option>
+                  <option value="1">特定时段输出模式开</option>
+                  <option value="2">特定时段输出模式开，输出模式切换时上报报文</option>
+                </select>
+              </div>
+              <div>
+                <label for="omcModalValidTime">Valid Time</label>
+                <br>
+                <label for="omcModalValidTimeBeginHour">起始时刻小时</label>
+                <input class="form-control" id="omcModalValidTimeBeginHour" name="omcModalValidTimeBeginHour"
+                       type="text"
+                       readonly="readonly"
+                       placeholder="请输入起始时刻小时(0 - 23)"
+                       ng-model="vm.modalData.beginHour"/>
+                <label for="omcModalValidTimeBeginMinute">起始时刻分钟</label>
+                <input class="form-control" id="omcModalValidTimeBeginMinute" name="omcModalValidTimeBeginMinute"
+                       type="text"
+                       readonly="readonly"
+                       placeholder="请输入起始时刻分钟(0 - 59)"
+                       ng-model="vm.modalData.beginMinute"/>
+                <label for="omcModalValidTimeEndHour">结束时刻小时</label>
+                <input class="form-control" id="omcModalValidTimeEndHour" name="omcModalValidTimeEndHour" type="text"
+                       readonly="readonly"
+                       placeholder="请输入结束时刻小时(0 - 23)"
+                       ng-model="vm.modalData.endHour"/>
+                <label for="omcModalValidTimeEndMinute">结束时刻分钟</label>
+                <input class="form-control" id="omcModalValidTimeEndMinute" name="omcModalValidTimeEndMinute"
+                       type="text"
+                       readonly="readonly"
+                       placeholder="请输入结束时刻分钟(0 - 59)"
+                       ng-model="vm.modalData.endMinute"/>
+              </div>
+              <div>
+                <label for="omcModalValidTimeIdleOutput">Valid Time Idle Output</label>
+                <input class="form-control" id="omcModalValidTimeIdleOutput" name="omcModalValidTimeIdleOutput"
+                       type="text"
+                       readonly="readonly"
+                       placeholder="特定时段无订单时输出状态，请输入HEX格式(0x00000000 - 0xFFFFFFFF)"
+                       ng-model="vm.modalData.validIdleOutput"/>
+              </div>
+              <div>
+                <label for="omcModalValidTimeInserviceOutput">Valid Time Idle Output</label>
+                <input class="form-control" id="omcModalValidTimeInserviceOutput"
+                       name="omcModalValidTimeInserviceOutput" type="text"
+                       readonly="readonly"
+                       placeholder="特定时段有订单时输出状态，请输入HEX格式(0x00000000 - 0xFFFFFFFF)"
+                       ng-model="vm.modalData.validInserviceOutput"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">
+              下发
+            </button>
+            <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">
+              取消
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+
 
   </div>
 </section>

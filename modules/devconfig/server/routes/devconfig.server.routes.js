@@ -9,7 +9,8 @@ var devconfigPolicy = require('../policies/devconfig.server.policy'),
   CFG = require('../controllers/devconfig.server.cfg.controller'),
   TMA = require('../controllers/devconfig.server.tma.controller'),
   DOG = require('../controllers/devconfig.server.dog.controller'),
-  ACO = require('../controllers/devconfig.server.aco.controller');
+  ACO = require('../controllers/devconfig.server.aco.controller'),
+  OMC = require('../controllers/devconfig.server.omc.controller');
 
 module.exports = function (app) {
   /**
@@ -83,5 +84,17 @@ module.exports = function (app) {
     .put(ACO.AcoCommand.update)
     .delete(ACO.AcoCommand.delete);
   app.param('acoId', ACO.AcoCommand.commandByID);
+
+  /**
+   * OMC routers
+   */
+  app.route('/api/devconfig/omc').all(devconfigPolicy.isAllowed)
+    .get(OMC.OmcCommand.list)
+    .post(OMC.OmcCommand.create);
+  app.route('/api/devconfig/omc/:omcId').all(devconfigPolicy.isAllowed)
+    .get(OMC.OmcCommand.read)
+    .put(OMC.OmcCommand.update)
+    .delete(OMC.OmcCommand.delete);
+  app.param('omcId', OMC.OmcCommand.commandByID);
 
 };
