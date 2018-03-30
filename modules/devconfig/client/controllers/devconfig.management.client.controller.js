@@ -14,7 +14,8 @@
       ['SER', DevconfigManagementService.serCommand],
       ['CFG', DevconfigManagementService.cfgCommand],
       ['TMA', DevconfigManagementService.tmaCommand],
-      ['DOG', DevconfigManagementService.dogCommand]
+      ['DOG', DevconfigManagementService.dogCommand],
+      ['ACO', DevconfigManagementService.acoCommand]
     ]);
     var devConfigMap = new Map([]);
 
@@ -192,6 +193,14 @@
           case 'DOG': {
             vm.modal.sw = '0';
             vm.modal.report = '1';
+            break;
+          }
+          case 'ACO': {
+            vm.modal.pwrMode = '1';
+            vm.modal.workMode = '2';
+            vm.modal.wind = '3';
+            vm.modal.interval = '60';
+            vm.modal.duration = '60';
             break;
           }
           default:

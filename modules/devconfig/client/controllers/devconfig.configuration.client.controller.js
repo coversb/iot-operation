@@ -16,7 +16,8 @@
       ['SER', DevconfigManagementService.serCommand],
       ['CFG', DevconfigManagementService.cfgCommand],
       ['TMA', DevconfigManagementService.tmaCommand],
-      ['DOG', DevconfigManagementService.dogCommand]
+      ['DOG', DevconfigManagementService.dogCommand],
+      ['ACO', DevconfigManagementService.acoCommand]
     ]);
     var devConfigMap = new Map([]);
 

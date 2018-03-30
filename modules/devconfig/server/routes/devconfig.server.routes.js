@@ -8,7 +8,8 @@ var devconfigPolicy = require('../policies/devconfig.server.policy'),
   SER = require('../controllers/devconfig.server.ser.controller'),
   CFG = require('../controllers/devconfig.server.cfg.controller'),
   TMA = require('../controllers/devconfig.server.tma.controller'),
-  DOG = require('../controllers/devconfig.server.dog.controller');
+  DOG = require('../controllers/devconfig.server.dog.controller'),
+  ACO = require('../controllers/devconfig.server.aco.controller');
 
 module.exports = function (app) {
   /**
@@ -70,4 +71,17 @@ module.exports = function (app) {
     .put(DOG.DogCommand.update)
     .delete(DOG.DogCommand.delete);
   app.param('dogId', DOG.DogCommand.commandByID);
+
+  /**
+   * ACO routers
+   */
+  app.route('/api/devconfig/aco').all(devconfigPolicy.isAllowed)
+    .get(ACO.AcoCommand.list)
+    .post(ACO.AcoCommand.create);
+  app.route('/api/devconfig/aco/:acoId').all(devconfigPolicy.isAllowed)
+    .get(ACO.AcoCommand.read)
+    .put(ACO.AcoCommand.update)
+    .delete(ACO.AcoCommand.delete);
+  app.param('acoId', ACO.AcoCommand.commandByID);
+
 };

@@ -437,5 +437,93 @@
       </div><!-- /.modal -->
     </div>
 
+    <!-- ACO Modal -->
+    <div class="modal fade" id="ACOModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.configUpdate()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h4 class="modal-title">
+              空调控制(Air Conditioner Operation)
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label>配置名称</label>
+                <input class="form-control" type="text"
+                       required="required"
+                       ng-model="vm.modal.name"/>
+              </div>
+              <div>
+                <label>备注</label>
+                <textarea class="form-control" rows="3"
+                          ng-model="vm.modal.notes"></textarea>
+              </div>
+              <div>
+                <label for="acoModalPwrMode">Mode</label>
+                <br>
+                <label for="acoModalPwrMode">空调开关</label>
+                <select class="select form-control" id="acoModalPwrMode" name="acoModalPwrMode"
+                        ng-model="vm.modal.pwrMode">
+                  <option value="0">空调常关</option>
+                  <option value="1">空调常开</option>
+                  <option value="2">空调自动控制模式</option>
+                </select>
+                <label for="acoModalWorkMode">模式</label>
+                <select class="select form-control" id="acoModalWorkMode" name="acoModalWorkMode"
+                        ng-model="vm.modal.workMode">
+                  <option value="0">制冷</option>
+                  <option value="1">制热</option>
+                  <option value="2">自动</option>
+                  <option value="3">抽湿</option>
+                </select>
+                <label for="acoModalWind">风力</label>
+                <select class="select form-control" id="acoModalWind" name="acoModalWind"
+                        ng-model="vm.modal.wind">
+                  <option value="0">高</option>
+                  <option value="1">中</option>
+                  <option value="2">低</option>
+                  <option value="3">自动</option>
+                </select>
+              </div>
+              <div>
+                <label for="acoModalInterval">Interval</label>
+                <input class="form-control" id="acoModalInterval" name="acoModalInterval" type="text"
+                       placeholder="自动控制模式下，空调开启间隔，单位为分钟(0 - 255)"
+                       required="required"
+                       ng-model="vm.modal.interval"/>
+              </div>
+              <div>
+                <label for="acoModalDuration">Duration</label>
+                <input class="form-control" id="acoModalDuration" name="acoModalDuration" type="text"
+                       placeholder="自动控制模式下，空调开启时长，单位为分钟(0 - 255)"
+                       required="required"
+                       ng-model="vm.modal.duration"/>
+              </div>
+              <div>
+                <label for="acoModalTemp">Temperature</label>
+                <input class="form-control" id="acoModalTemp" name="acoModalTemp" type="text"
+                       placeholder="摄氏度(0 - 255)"
+                       required="required"
+                       ng-model="vm.modal.temperature"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">
+              保存
+            </button>
+            <button type="submit" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">
+              取消
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+
   </div>
 </section>

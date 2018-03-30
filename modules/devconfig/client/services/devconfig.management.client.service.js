@@ -60,6 +60,13 @@
         update: {
           method: 'PUT'
         }
+      }),
+      acoCommand: $resource('/api/devconfig/aco/:acoId', {
+        acoId: '@_id'
+      }, {
+        update: {
+          method: 'PUT'
+        }
       })
     };
 
@@ -108,6 +115,17 @@
     });
 
     angular.extend(DevconfigManagement.dogCommand.prototype, {
+      createOrUpdate: function () {
+        var cmd = this;
+        return createOrUpdate(cmd);
+      },
+      deleteSingle: function () {
+        var cmd = this;
+        return deleteSingle(cmd);
+      }
+    });
+
+    angular.extend(DevconfigManagement.acoCommand.prototype, {
       createOrUpdate: function () {
         var cmd = this;
         return createOrUpdate(cmd);
