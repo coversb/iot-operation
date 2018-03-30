@@ -53,6 +53,13 @@
         update: {
           method: 'PUT'
         }
+      }),
+      dogCommand: $resource('/api/devconfig/dog/:dogId', {
+        dogId: '@_id'
+      }, {
+        update: {
+          method: 'PUT'
+        }
       })
     };
 
@@ -90,6 +97,17 @@
     });
 
     angular.extend(DevconfigManagement.tmaCommand.prototype, {
+      createOrUpdate: function () {
+        var cmd = this;
+        return createOrUpdate(cmd);
+      },
+      deleteSingle: function () {
+        var cmd = this;
+        return deleteSingle(cmd);
+      }
+    });
+
+    angular.extend(DevconfigManagement.dogCommand.prototype, {
       createOrUpdate: function () {
         var cmd = this;
         return createOrUpdate(cmd);

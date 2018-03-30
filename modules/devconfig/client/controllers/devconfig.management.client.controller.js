@@ -13,7 +13,8 @@
       ['APC', DevconfigManagementService.apcCommand],
       ['SER', DevconfigManagementService.serCommand],
       ['CFG', DevconfigManagementService.cfgCommand],
-      ['TMA', DevconfigManagementService.tmaCommand]
+      ['TMA', DevconfigManagementService.tmaCommand],
+      ['DOG', DevconfigManagementService.dogCommand]
     ]);
     var devConfigMap = new Map([]);
 
@@ -186,6 +187,11 @@
           }
           case 'TMA': {
             vm.modal.autoAdjust = '1';
+            break;
+          }
+          case 'DOG': {
+            vm.modal.sw = '0';
+            vm.modal.report = '1';
             break;
           }
           default:

@@ -7,7 +7,8 @@ var devconfigPolicy = require('../policies/devconfig.server.policy'),
   APC = require('../controllers/devconfig.server.apc.controller'),
   SER = require('../controllers/devconfig.server.ser.controller'),
   CFG = require('../controllers/devconfig.server.cfg.controller'),
-  TMA = require('../controllers/devconfig.server.tma.controller');
+  TMA = require('../controllers/devconfig.server.tma.controller'),
+  DOG = require('../controllers/devconfig.server.dog.controller');
 
 module.exports = function (app) {
   /**
@@ -57,4 +58,16 @@ module.exports = function (app) {
     .put(TMA.TmaCommand.update)
     .delete(TMA.TmaCommand.delete);
   app.param('tmaId', TMA.TmaCommand.commandByID);
+
+  /**
+   * DOG routers
+   */
+  app.route('/api/devconfig/dog').all(devconfigPolicy.isAllowed)
+    .get(DOG.DogCommand.list)
+    .post(DOG.DogCommand.create);
+  app.route('/api/devconfig/dog/:dogId').all(devconfigPolicy.isAllowed)
+    .get(DOG.DogCommand.read)
+    .put(DOG.DogCommand.update)
+    .delete(DOG.DogCommand.delete);
+  app.param('dogId', DOG.DogCommand.commandByID);
 };

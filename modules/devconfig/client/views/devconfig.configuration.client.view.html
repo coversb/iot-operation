@@ -259,7 +259,7 @@
             </button>
             <div>
               <h4 class="modal-title" id="cfgModalTitle">
-                全局配置(Configuration) [0x01 0x03]
+                全局配置(Configuration)
               </h4>
               <select class="select form-control" id="cfgModalConfig" name="cfgModalConfig"
                       ng-model="vm.modalSelectedConfig"
@@ -305,9 +305,16 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
               &times;
             </button>
-            <h4 class="modal-title" id="tmaModalTitle">
-              时间调整(Time Adjust)
-            </h4>
+            <div>
+              <h4 class="modal-title" id="tmaModalTitle">
+                时间调整(Time Adjust)
+              </h4>
+              <select class="select form-control" id="tmaModalConfig" name="tmaModalConfig"
+                      ng-model="vm.modalSelectedConfig"
+                      ng-options="option.name for option in vm.avaliableConfigs track by option._id"
+                      ng-change="vm.modalConfigChange()">
+              </select>
+            </div>
           </div>
           <div class="modal-body">
             <div>
@@ -340,7 +347,8 @@
                        placeholder="Unix Timestamp"
                        readonly="readonly"
                        ng-model="vm.modalData.utc"/>
-                <button type="button" class="btn btn-info" ng-click="vm.modalData.utc = vm.fillDatetime()">当前服务器时间</button>
+                <button type="button" class="btn btn-info" ng-click="vm.modalData.utc = vm.fillDatetime()">当前服务器时间
+                </button>
               </div>
             </div>
           </div>
@@ -356,5 +364,99 @@
         </form><!-- /.modal-content -->
       </div><!-- /.modal -->
     </div>
+
+    <!-- DOG Modal -->
+    <div class="modal fade" id="DOGModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.configSend()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <div>
+              <h4 class="modal-title">
+                协议看门狗(Watchdog)
+              </h4>
+              <select class="select form-control" id="dogModalConfig" name="dogModalConfig"
+                      ng-model="vm.modalSelectedConfig"
+                      ng-options="option.name for option in vm.avaliableConfigs track by option._id"
+                      ng-change="vm.modalConfigChange()">
+              </select>
+            </div>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label>配置名称</label>
+                <input class="form-control" type="text"
+                       readonly="readonly"
+                       ng-model="vm.modalData.name"/>
+              </div>
+              <div>
+                <label>备注</label>
+                <textarea class="form-control" rows="3"
+                          readonly="readonly"
+                          ng-model="vm.modalData.notes"></textarea>
+              </div>
+              <div>
+                <label for="dogModalModeSW">Mode</label>
+                <br>
+                <label for="dogModalModeSW">协议看门狗</label>
+                <select class="select form-control" id="dogModalModeSW" name="dogModalModeSW"
+                        disabled="disabled"
+                        ng-model="vm.modalData.sw">
+                  <option value="0">关闭</option>
+                  <option value="1">开启</option>
+                </select>
+                <label for="dogModalModeReport">协议看门狗报文上报</label>
+                <select class="select form-control" id="dogModalModeReport" name="dogModalModeReport"
+                        disabled="disabled"
+                        ng-model="vm.modalData.report">
+                  <option value="0">关闭</option>
+                  <option value="1">开启</option>
+                </select>
+                <label for="dogModalModeInterval">重启间隔</label>
+                <input class="form-control" id="dogModalModeInterval" name="dogModalModeInterval" type="text"
+                       placeholder="单位为天(1 - 31)"
+                       readonly="readonly"
+                       ng-model="vm.modalData.interval"/>
+              </div>
+              <div>
+                <label for="dogModalRebootTimeHour">Reboot Time</label>
+                <br>
+                <label for="dogModalRebootTimeHour">重启时刻小时</label>
+                <input class="form-control" id="dogModalRebootTimeHour" name="dogModalRebootTimeHour" type="text"
+                       placeholder="重启时刻小时(0 - 23)"
+                       readonly="readonly"
+                       ng-model="vm.modalData.rebootHour"/>
+                <label for="dogModalRebootTimeMinute">重启时刻分钟</label>
+                <input class="form-control col-md-6" id="dogModalRebootTimeMinute" name="dogModalRebootTimeMinute"
+                       type="text"
+                       placeholder="重启时刻分钟(0 - 59)"
+                       readonly="readonly"
+                       ng-model="vm.modalData.rebootMinute"/>
+              </div>
+              <div>
+                <label for="dogModalMaxRandomTime">Max Random Time</label>
+                <input class="form-control" id="dogModalMaxRandomTime" name="dogModalMaxRandomTime" type="text"
+                       placeholder="单位为秒(0 - 65535)"
+                       readonly="readonly"
+                       ng-model="vm.modalData.randomTime"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">
+              下发
+            </button>
+            <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">
+              取消
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+
   </div>
 </section>
