@@ -13,6 +13,8 @@
     var doSearch = false;
     var vm = this;
 
+    var deviceDoorStatus = ["开", "关"];
+
     vm.searchByName = searchByName;
     vm.updateBoxDetail = updateBoxDetail;
 
@@ -161,11 +163,9 @@
             valign: 'middle',
             align: 'center',
             formatter: function (value, row) {
-              var devBoxDoorStatDis = '<span style="color:green">关着</span>';
-              if (value === 'Open') {
-                devBoxDoorStatDis = '<span style="color:red">开着</span>';
-              }
-              return devBoxDoorStatDis;
+             return  $.sprintf('<span style="color:%s">%s</span>'
+               , value ? "green" : "red"
+               , deviceDoorStatus[value]);
             }
           },
           {
