@@ -13,7 +13,7 @@
     var doSearch = false;
     var vm = this;
 
-    var deviceDoorStatus = ["开", "关"];
+    vm.deviceDoorStatus = ["开", "关"];
 
     vm.searchByName = searchByName;
     vm.updateBoxDetail = updateBoxDetail;
@@ -165,7 +165,7 @@
             formatter: function (value, row) {
              return  $.sprintf('<span style="color:%s">%s</span>'
                , value ? "green" : "red"
-               , deviceDoorStatus[value]);
+               , vm.deviceDoorStatus[value]);
             }
           },
           {
@@ -429,7 +429,7 @@
       }
 
       // 设备箱状态
-      if (vm.selectedBox.detail.deviceDoorStatus === 'Close') {
+      if (vm.selectedBox.detail.deviceDoorStatus === 1) {
         setElementColor('#deviceDoor', 'green');
       } else {
         setElementColor('#deviceDoor', 'red');

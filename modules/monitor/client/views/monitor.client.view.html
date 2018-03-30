@@ -104,7 +104,7 @@
                 <li>室内PM2.5更新: <span ng-bind="vm.selectedBox.detail.pm25UpdateDate"></span></li>
               </ul>
               <ul class="col-lg-6 col-xs-12">
-                <li>设备箱状态: <span id="deviceDoor" ng-bind="vm.selectedBox.detail.deviceDoorStatus"></span></li>
+                <li>设备箱状态: <span id="deviceDoor" ng-bind="vm.deviceDoorStatus |filter: vm.selectedBox.detail.deviceDoorStatus"></span></li>
                 <li>设备箱状态更新时间: <span ng-bind="vm.selectedBox.detail.deviceDoorStatusUpdateDate"></span></li>
                 <li>最近一次开门事件触发: <span ng-bind="vm.selectedBox.detail.doorOpenMode"></span></li>
                 <li>最近一次用户输入密码: <span ng-bind="vm.selectedBox.detail.doorPassword"></span></li>
