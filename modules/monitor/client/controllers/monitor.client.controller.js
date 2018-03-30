@@ -18,6 +18,23 @@
     vm.searchByName = searchByName;
     vm.updateBoxDetail = updateBoxDetail;
 
+    // sprintf is dependency function taken from bootstrap-table.js source code
+    var sprintf = function (str) {
+      var args = arguments,
+        flag = true,
+        i = 1;
+
+      str = str.replace(/%s/g, function () {
+        var arg = args[i++];
+        if (typeof arg === 'undefined') {
+          flag = false;
+          return '';
+        }
+        return arg;
+      });
+      return flag ? str : '';
+    };
+
     init();
 
     function init() {
@@ -163,7 +180,7 @@
             valign: 'middle',
             align: 'center',
             formatter: function (value, row) {
-             return  $.sprintf('<span style="color:%s">%s</span>'
+             return sprintf('<span style="color:%s">%s</span>'
                , value ? "green" : "red"
                , vm.deviceDoorStatus[value]);
             }
