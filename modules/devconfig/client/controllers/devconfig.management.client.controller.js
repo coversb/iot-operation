@@ -22,6 +22,7 @@
     vm.fillDatetime = fillDatetime;
     vm.outModalPinChange = outModalPinChange;
     vm.outModalPinMaskChange = outModalPinMaskChange;
+    vm.muoModalActChange = muoModalActChange;
 
     init();
     configTypeChange();
@@ -202,6 +203,13 @@
             vm.modal.type = '0';
             break;
           }
+          case 'MUO': {
+            vm.modal.type = '1';
+            vm.modal.act = '0';
+            vm.modal.vol = '0';
+            vm.modal.mediaFname = '0';
+            break;
+          }
           default:
             break;
         }
@@ -294,6 +302,38 @@
         vm.modal.pin = '0';
       } else {
         $('#outModalPin').removeAttr('readOnly');
+      }
+    }
+
+    function muoModalActChange() {
+      switch (vm.modal.act) {
+        case '0':
+        case '2':
+        case '3':
+        case '11':
+        case '12': {
+          $('#muoModalVolume').attr('readOnly', 'readOnly');
+          $('#muoModalMediaFname').attr('readOnly', 'readOnly');
+          $('#muoModalMediaFname').attr('disabled', 'disabled');
+          vm.modal.vol = '0';
+          break;
+        }
+        case '1': {
+          $('#muoModalVolume').attr('readOnly', 'readOnly');
+          $('#muoModalMediaFname').removeAttr('readOnly');
+          $('#muoModalMediaFname').removeAttr('disabled');
+          vm.modal.vol = '0';
+          break;
+        }
+        case '10': {
+          $('#muoModalVolume').removeAttr('readOnly');
+          $('#muoModalMediaFname').attr('readOnly', 'readOnly');
+          $('#muoModalMediaFname').attr('disabled', 'disabled');
+          vm.modal.vol = '';
+          break;
+        }
+        default:
+          break;
       }
     }
 
