@@ -20,7 +20,8 @@
       ['ACO', DevconfigManagementService.acoCommand],
       ['OMC', DevconfigManagementService.omcCommand],
       ['DOA', DevconfigManagementService.doaCommand],
-      ['SMA', DevconfigManagementService.smaCommand]
+      ['SMA', DevconfigManagementService.smaCommand],
+      ['OUO', DevconfigManagementService.ouoCommand]
     ]);
     var devConfigMap = new Map([]);
 
@@ -276,8 +277,9 @@
     /**
      * Util functions
      */
-    function fillDatetime() {
-      return (Date.parse(new Date()) / 1000).toString(10);
+    // parameter offset 0 stand for current server timestamp
+    function fillDatetime(offset) {
+      return (Date.parse(new Date()) / 1000 + offset).toString(10);
     }
 
   }

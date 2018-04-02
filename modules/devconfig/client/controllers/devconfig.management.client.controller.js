@@ -18,7 +18,8 @@
       ['ACO', DevconfigManagementService.acoCommand],
       ['OMC', DevconfigManagementService.omcCommand],
       ['DOA', DevconfigManagementService.doaCommand],
-      ['SMA', DevconfigManagementService.smaCommand]
+      ['SMA', DevconfigManagementService.smaCommand],
+      ['OUO', DevconfigManagementService.ouoCommand]
     ]);
     var devConfigMap = new Map([]);
 
@@ -206,6 +207,11 @@
             vm.modal.duration = '60';
             break;
           }
+          case 'OUO': {
+            vm.modal.orderNum = '1';
+            vm.modal.type = '0';
+            break;
+          }
           default:
             break;
         }
@@ -278,8 +284,9 @@
     /**
      * Util functions
      */
-    function fillDatetime() {
-      return (Date.parse(new Date()) / 1000).toString(10);
+    // parameter offset 0 stand for current server timestamp
+    function fillDatetime(offset) {
+      return (Date.parse(new Date()) / 1000 + offset).toString(10);
     }
 
   }

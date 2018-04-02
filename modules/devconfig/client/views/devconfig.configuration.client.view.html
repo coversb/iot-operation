@@ -347,7 +347,7 @@
                        placeholder="Unix Timestamp"
                        readonly="readonly"
                        ng-model="vm.modalData.utc"/>
-                <button type="button" class="btn btn-info" ng-click="vm.modalData.utc = vm.fillDatetime()">当前服务器时间
+                <button type="button" class="btn btn-info" ng-click="vm.modalData.utc = vm.fillDatetime(0)">当前服务器时间
                 </button>
               </div>
             </div>
@@ -823,6 +823,115 @@
         </form><!-- /.modal-content -->
       </div><!-- /.modal -->
     </div>
+
+    <!-- OUO Modal -->
+    <div class="modal fade" id="OUOModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.configSend()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <div>
+              <h4 class="modal-title">
+                订单下发(Order Update Operation)
+              </h4>
+              <select class="select form-control" id="ouoModalConfig" name="ouoModalConfig"
+                      ng-model="vm.modalSelectedConfig"
+                      ng-options="option.name for option in vm.avaliableConfigs track by option._id"
+                      ng-change="vm.modalConfigChange()">
+              </select>
+            </div>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label>配置名称</label>
+                <input class="form-control" type="text"
+                       readonly="readonly"
+                       ng-model="vm.modalData.name"/>
+              </div>
+              <div>
+                <label>备注</label>
+                <textarea class="form-control" rows="3"
+                          readonly="readonly"
+                          ng-model="vm.modalData.notes"></textarea>
+              </div>
+              <div>
+                <label for="ouoModalOrderNum">Order Number</label>
+                <input class="form-control" id="ouoModalOrderNum" name="ouoModalOrderNum" type="text"
+                       readonly="readonly"
+                       ng-model="vm.modalData.orderNum"/>
+              </div>
+              <div>
+                <label for="ouoModalActType">Action Type</label>
+                <select class="select form-control" id="ouoModalActType" name="ouoModalActType"
+                        readonly="readonly"
+                        disabled="disabled"
+                        ng-model="vm.modalData.type">
+                  <option value="0">预约</option>
+                  <option value="1">取消预约</option>
+                  <option value="2">添加运维订单</option>
+                </select>
+              </div>
+              <div>
+                <label for="ouoModalOrderID">Order ID</label>
+                <input class="form-control" id="ouoModalOrderID" name="ouoModalOrderID" type="text"
+                       readonly="readonly"
+                       ng-model="vm.modalData.orderID"/>
+              </div>
+              <div>
+                <label for="ouoModalOrderStart">Start Datetime</label>
+                <input class="form-control" id="ouoModalOrderStart" name="ouoModalOrderStart" type="text"
+                       readonly="readonly"
+                       placeholder="Unix timestamp"
+                       ng-model="vm.modalData.orderStart"/>
+                <button type="button" class="btn btn-info" ng-click="vm.modalData.orderStart = vm.fillDatetime(0)">当前服务器时间
+                </button>
+              </div>
+              <div>
+                <label for="ouoModalOrderExpire">Expire Datetime</label>
+                <input class="form-control" id="ouoModalOrderExpire" name="ouoModalOrderExpire" type="text"
+                       readonly="readonly"
+                       placeholder="Unix timestamp"
+                       ng-model="vm.modalData.orderExpire"/>
+                <button type="button" class="btn btn-info" ng-click="vm.modalData.orderExpire = vm.fillDatetime(3600)">
+                  起始时间加1小时
+                </button>
+              </div>
+              <div>
+                <label for="ouoModalOrderPassword">Password</label>
+                <input class="form-control" id="ouoModalOrderPassword" name="ouoModalOrderPassword" type="text"
+                       readonly="readonly"
+                       ng-model="vm.modalData.orderPassword"/>
+              </div>
+              <div>
+                <label for="ouoModalOrderPersonNumber">Person Number</label>
+                <input class="form-control" id="ouoModalOrderPersonNumber" name="ouoModalOrderPersonNumber" type="text"
+                       readonly="readonly"
+                       ng-model="vm.modalData.orderPersonNumber"/>
+              </div>
+              <div>
+                <label for="ouoModalOrderPasswordVaildCount">Password Valid Count</label>
+                <input class="form-control" id="ouoModalOrderPasswordVaildCount" name="ouoModalOrderPasswordVaildCount"
+                       type="text"
+                       readonly="readonly"
+                       ng-model="vm.modalData.orderPasswordValidConut"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">
+              下发
+            </button>
+            <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">
+              取消
+            </button>
+          </div>
+        </form>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
 
 
   </div>

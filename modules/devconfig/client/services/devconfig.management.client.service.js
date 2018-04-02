@@ -88,6 +88,13 @@
         update: {
           method: 'PUT'
         }
+      }),
+      ouoCommand: $resource('/api/devconfig/ouo/:ouoId', {
+        ouoId: '@_id'
+      }, {
+        update: {
+          method: 'PUT'
+        }
       })
     };
 
@@ -180,6 +187,17 @@
     });
 
     angular.extend(DevconfigManagement.smaCommand.prototype, {
+      createOrUpdate: function () {
+        var cmd = this;
+        return createOrUpdate(cmd);
+      },
+      deleteSingle: function () {
+        var cmd = this;
+        return deleteSingle(cmd);
+      }
+    });
+
+    angular.extend(DevconfigManagement.ouoCommand.prototype, {
       createOrUpdate: function () {
         var cmd = this;
         return createOrUpdate(cmd);
