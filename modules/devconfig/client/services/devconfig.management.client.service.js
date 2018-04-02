@@ -27,20 +27,20 @@
       ]),
 
       cmdManagerMap: new Map([
-        ['APC', $resource('/api/devconfig/apc/:apcId', {apcId: '@_id'}, {update: {method: 'PUT'}})],
-        ['SER', $resource('/api/devconfig/ser/:serId', {serId: '@_id'}, {update: {method: 'PUT'}})],
-        ['CFG', $resource('/api/devconfig/cfg/:cfgId', {cfgId: '@_id'}, {update: {method: 'PUT'}})],
-        ['TMA', $resource('/api/devconfig/tma/:tmaId', {tmaId: '@_id'}, {update: {method: 'PUT'}})],
-        ['DOG', $resource('/api/devconfig/dog/:dogId', {dogId: '@_id'}, {update: {method: 'PUT'}})],
-        ['ACO', $resource('/api/devconfig/aco/:acoId', {acoId: '@_id'}, {update: {method: 'PUT'}})],
-        ['SEC', $resource('/api/devconfig/sec/:secId', {secId: '@_id'}, {update: {method: 'PUT'}})],
-        ['OMC', $resource('/api/devconfig/omc/:omcId', {omcId: '@_id'}, {update: {method: 'PUT'}})],
-        ['DOA', $resource('/api/devconfig/doa/:doaId', {doaId: '@_id'}, {update: {method: 'PUT'}})],
-        ['SMA', $resource('/api/devconfig/sma/:smaId', {smaId: '@_id'}, {update: {method: 'PUT'}})],
-        ['OUO', $resource('/api/devconfig/ouo/:ouoId', {ouoId: '@_id'}, {update: {method: 'PUT'}})],
-        ['OUT', $resource('/api/devconfig/out/:outId', {outId: '@_id'}, {update: {method: 'PUT'}})],
-        ['MUO', $resource('/api/devconfig/muo/:muoId', {muoId: '@_id'}, {update: {method: 'PUT'}})],
-        ['RTO', $resource('/api/devconfig/rto/:rtoId', {rtoId: '@_id'}, {update: {method: 'PUT'}})]
+        ['APC', $resource('/api/devconfig/apc/:apcId', { apcId: '@_id' }, { update: { method: 'PUT' } })],
+        ['SER', $resource('/api/devconfig/ser/:serId', { serId: '@_id' }, { update: { method: 'PUT' } })],
+        ['CFG', $resource('/api/devconfig/cfg/:cfgId', { cfgId: '@_id' }, { update: { method: 'PUT' } })],
+        ['TMA', $resource('/api/devconfig/tma/:tmaId', { tmaId: '@_id' }, { update: { method: 'PUT' } })],
+        ['DOG', $resource('/api/devconfig/dog/:dogId', { dogId: '@_id' }, { update: { method: 'PUT' } })],
+        ['ACO', $resource('/api/devconfig/aco/:acoId', { acoId: '@_id' }, { update: { method: 'PUT' } })],
+        ['SEC', $resource('/api/devconfig/sec/:secId', { secId: '@_id' }, { update: { method: 'PUT' } })],
+        ['OMC', $resource('/api/devconfig/omc/:omcId', { omcId: '@_id' }, { update: { method: 'PUT' } })],
+        ['DOA', $resource('/api/devconfig/doa/:doaId', { doaId: '@_id' }, { update: { method: 'PUT' } })],
+        ['SMA', $resource('/api/devconfig/sma/:smaId', { smaId: '@_id' }, { update: { method: 'PUT' } })],
+        ['OUO', $resource('/api/devconfig/ouo/:ouoId', { ouoId: '@_id' }, { update: { method: 'PUT' } })],
+        ['OUT', $resource('/api/devconfig/out/:outId', { outId: '@_id' }, { update: { method: 'PUT' } })],
+        ['MUO', $resource('/api/devconfig/muo/:muoId', { muoId: '@_id' }, { update: { method: 'PUT' } })],
+        ['RTO', $resource('/api/devconfig/rto/:rtoId', { rtoId: '@_id' }, { update: { method: 'PUT' } })]
       ])
     };
 

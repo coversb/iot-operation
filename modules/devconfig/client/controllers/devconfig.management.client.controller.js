@@ -118,7 +118,11 @@
             field: 'created',
             title: '创建时间',
             valign: 'middle',
-            align: 'center'
+            align: 'center',
+            formatter: function (value, row) {
+              var date = new Date(value);
+              return convertTimestampToDatetime(Date.parse(date) / 1000);
+            }
           },
           {
             title: '操作',
@@ -282,6 +286,29 @@
     /**
      * Util functions
      */
+    function convertTimestampToDatetime(UnixTime) {
+      var b = UnixTime;
+      if (b !== 0 && b !== null && b !== undefined && b !== '') {
+        b = (b * 1000).toString();
+        var a = b.replace('/Date(', '').replace(')/', '');
+        var date = new Date(parseInt(a, 10));
+        var y = date.getFullYear();
+        var m = date.getMonth() + 1;
+        m = m < 10 ? ('0' + m) : m;
+        var d = date.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        var h = date.getHours();
+        h = h < 10 ? ('0' + h) : h;
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+        minute = minute < 10 ? ('0' + minute) : minute;
+        second = second < 10 ? ('0' + second) : second;
+        return y + '/' + m + '/' + d + ' ' + h + ':' + minute + ':' + second;
+      } else {
+        return 0;
+      }
+    }
+
     // parameter offset 0 stand for current server timestamp
     function fillDatetime(offset) {
       return (Date.parse(new Date()) / 1000 + offset).toString(10);
