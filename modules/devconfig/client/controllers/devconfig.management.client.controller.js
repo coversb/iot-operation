@@ -9,19 +9,6 @@
 
   function DevconfigManagementController($scope, $state, $window, $http, Authentication, Notification, DevconfigManagementService) {
 
-    var devConfigProviderMap = new Map([
-      ['APC', DevconfigManagementService.apcCommand],
-      ['SER', DevconfigManagementService.serCommand],
-      ['CFG', DevconfigManagementService.cfgCommand],
-      ['TMA', DevconfigManagementService.tmaCommand],
-      ['DOG', DevconfigManagementService.dogCommand],
-      ['ACO', DevconfigManagementService.acoCommand],
-      ['OMC', DevconfigManagementService.omcCommand],
-      ['DOA', DevconfigManagementService.doaCommand],
-      ['SMA', DevconfigManagementService.smaCommand],
-      ['OUO', DevconfigManagementService.ouoCommand],
-      ['OUT', DevconfigManagementService.outCommand]
-    ]);
     var devConfigMap = new Map([]);
 
     var vm = this;
@@ -51,7 +38,7 @@
 
     function configTypeChange() {
       if (devConfigMap.get(vm.configType) === undefined) {
-        devConfigProviderMap.get(vm.configType).get().$promise
+        DevconfigManagementService.cmdManagerMap.get(vm.configType).get().$promise
           .then(function (res) {
             devConfigMap.set(vm.configType, res);
             // console.log(devConfigMap);

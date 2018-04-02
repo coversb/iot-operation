@@ -26,203 +26,36 @@
         ['RTO', '/api/devconfig/rto']
       ]),
 
-      apcCommand: $resource('/api/devconfig/apc/:apcId', {
-        apcId: '@_id'
-      }, {
-        update: {
-          method: 'PUT'
-        }
-      }),
-      serCommand: $resource('/api/devconfig/ser/:serId', {
-        serId: '@_id'
-      }, {
-        update: {
-          method: 'PUT'
-        }
-      }),
-      cfgCommand: $resource('/api/devconfig/cfg/:cfgId', {
-        cfgId: '@_id'
-      }, {
-        update: {
-          method: 'PUT'
-        }
-      }),
-      tmaCommand: $resource('/api/devconfig/tma/:tmaId', {
-        tmaId: '@_id'
-      }, {
-        update: {
-          method: 'PUT'
-        }
-      }),
-      dogCommand: $resource('/api/devconfig/dog/:dogId', {
-        dogId: '@_id'
-      }, {
-        update: {
-          method: 'PUT'
-        }
-      }),
-      acoCommand: $resource('/api/devconfig/aco/:acoId', {
-        acoId: '@_id'
-      }, {
-        update: {
-          method: 'PUT'
-        }
-      }),
-      omcCommand: $resource('/api/devconfig/omc/:omcId', {
-        omcId: '@_id'
-      }, {
-        update: {
-          method: 'PUT'
-        }
-      }),
-      doaCommand: $resource('/api/devconfig/doa/:doaId', {
-        doaId: '@_id'
-      }, {
-        update: {
-          method: 'PUT'
-        }
-      }),
-      smaCommand: $resource('/api/devconfig/sma/:smaId', {
-        smaId: '@_id'
-      }, {
-        update: {
-          method: 'PUT'
-        }
-      }),
-      ouoCommand: $resource('/api/devconfig/ouo/:ouoId', {
-        ouoId: '@_id'
-      }, {
-        update: {
-          method: 'PUT'
-        }
-      }),
-      outCommand: $resource('/api/devconfig/out/:outId', {
-        outId: '@_id'
-      }, {
-        update: {
-          method: 'PUT'
-        }
-      })
+      cmdManagerMap: new Map([
+        ['APC', $resource('/api/devconfig/apc/:apcId', {apcId: '@_id'}, {update: {method: 'PUT'}})],
+        ['SER', $resource('/api/devconfig/ser/:serId', {serId: '@_id'}, {update: {method: 'PUT'}})],
+        ['CFG', $resource('/api/devconfig/cfg/:cfgId', {cfgId: '@_id'}, {update: {method: 'PUT'}})],
+        ['TMA', $resource('/api/devconfig/tma/:tmaId', {tmaId: '@_id'}, {update: {method: 'PUT'}})],
+        ['DOG', $resource('/api/devconfig/dog/:dogId', {dogId: '@_id'}, {update: {method: 'PUT'}})],
+        ['ACO', $resource('/api/devconfig/aco/:acoId', {acoId: '@_id'}, {update: {method: 'PUT'}})],
+        ['SEC', $resource('/api/devconfig/sec/:secId', {secId: '@_id'}, {update: {method: 'PUT'}})],
+        ['OMC', $resource('/api/devconfig/omc/:omcId', {omcId: '@_id'}, {update: {method: 'PUT'}})],
+        ['DOA', $resource('/api/devconfig/doa/:doaId', {doaId: '@_id'}, {update: {method: 'PUT'}})],
+        ['SMA', $resource('/api/devconfig/sma/:smaId', {smaId: '@_id'}, {update: {method: 'PUT'}})],
+        ['OUO', $resource('/api/devconfig/ouo/:ouoId', {ouoId: '@_id'}, {update: {method: 'PUT'}})],
+        ['OUT', $resource('/api/devconfig/out/:outId', {outId: '@_id'}, {update: {method: 'PUT'}})],
+        ['MUO', $resource('/api/devconfig/muo/:muoId', {muoId: '@_id'}, {update: {method: 'PUT'}})],
+        ['RTO', $resource('/api/devconfig/rto/:rtoId', {rtoId: '@_id'}, {update: {method: 'PUT'}})]
+      ])
     };
 
-    angular.extend(DevconfigManagement.apcCommand.prototype, {
-      createOrUpdate: function () {
-        var cmd = this;
-        return createOrUpdate(cmd);
-      },
-      deleteSingle: function () {
-        var cmd = this;
-        return deleteSingle(cmd);
-      }
-    });
-
-    angular.extend(DevconfigManagement.serCommand.prototype, {
-      createOrUpdate: function () {
-        var cmd = this;
-        return createOrUpdate(cmd);
-      },
-      deleteSingle: function () {
-        var cmd = this;
-        return deleteSingle(cmd);
-      }
-    });
-
-    angular.extend(DevconfigManagement.cfgCommand.prototype, {
-      createOrUpdate: function () {
-        var cmd = this;
-        return createOrUpdate(cmd);
-      },
-      deleteSingle: function () {
-        var cmd = this;
-        return deleteSingle(cmd);
-      }
-    });
-
-    angular.extend(DevconfigManagement.tmaCommand.prototype, {
-      createOrUpdate: function () {
-        var cmd = this;
-        return createOrUpdate(cmd);
-      },
-      deleteSingle: function () {
-        var cmd = this;
-        return deleteSingle(cmd);
-      }
-    });
-
-    angular.extend(DevconfigManagement.dogCommand.prototype, {
-      createOrUpdate: function () {
-        var cmd = this;
-        return createOrUpdate(cmd);
-      },
-      deleteSingle: function () {
-        var cmd = this;
-        return deleteSingle(cmd);
-      }
-    });
-
-    angular.extend(DevconfigManagement.acoCommand.prototype, {
-      createOrUpdate: function () {
-        var cmd = this;
-        return createOrUpdate(cmd);
-      },
-      deleteSingle: function () {
-        var cmd = this;
-        return deleteSingle(cmd);
-      }
-    });
-
-    angular.extend(DevconfigManagement.omcCommand.prototype, {
-      createOrUpdate: function () {
-        var cmd = this;
-        return createOrUpdate(cmd);
-      },
-      deleteSingle: function () {
-        var cmd = this;
-        return deleteSingle(cmd);
-      }
-    });
-
-    angular.extend(DevconfigManagement.doaCommand.prototype, {
-      createOrUpdate: function () {
-        var cmd = this;
-        return createOrUpdate(cmd);
-      },
-      deleteSingle: function () {
-        var cmd = this;
-        return deleteSingle(cmd);
-      }
-    });
-
-    angular.extend(DevconfigManagement.smaCommand.prototype, {
-      createOrUpdate: function () {
-        var cmd = this;
-        return createOrUpdate(cmd);
-      },
-      deleteSingle: function () {
-        var cmd = this;
-        return deleteSingle(cmd);
-      }
-    });
-
-    angular.extend(DevconfigManagement.ouoCommand.prototype, {
-      createOrUpdate: function () {
-        var cmd = this;
-        return createOrUpdate(cmd);
-      },
-      deleteSingle: function () {
-        var cmd = this;
-        return deleteSingle(cmd);
-      }
-    });
-
-    angular.extend(DevconfigManagement.outCommand.prototype, {
-      createOrUpdate: function () {
-        var cmd = this;
-        return createOrUpdate(cmd);
-      },
-      deleteSingle: function () {
-        var cmd = this;
-        return deleteSingle(cmd);
+    DevconfigManagement.cmdManagerMap.forEach(function (value, key, map) {
+      if (value !== null) {
+        angular.extend(value.prototype, {
+          createOrUpdate: function () {
+            var cmd = this;
+            return createOrUpdate(cmd);
+          },
+          deleteSingle: function () {
+            var cmd = this;
+            return deleteSingle(cmd);
+          }
+        });
       }
     });
 
@@ -265,8 +98,6 @@
         handleError(error);
       }
     }
-
-    /* APC end */
 
     function handleError(error) {
       // Log error
