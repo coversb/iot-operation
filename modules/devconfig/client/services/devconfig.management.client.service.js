@@ -74,6 +74,13 @@
         update: {
           method: 'PUT'
         }
+      }),
+      doaCommand: $resource('/api/devconfig/doa/:doaId', {
+        doaId: '@_id'
+      }, {
+        update: {
+          method: 'PUT'
+        }
       })
     };
 
@@ -144,6 +151,17 @@
     });
 
     angular.extend(DevconfigManagement.omcCommand.prototype, {
+      createOrUpdate: function () {
+        var cmd = this;
+        return createOrUpdate(cmd);
+      },
+      deleteSingle: function () {
+        var cmd = this;
+        return deleteSingle(cmd);
+      }
+    });
+
+    angular.extend(DevconfigManagement.doaCommand.prototype, {
       createOrUpdate: function () {
         var cmd = this;
         return createOrUpdate(cmd);

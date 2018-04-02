@@ -631,6 +631,74 @@
       </div><!-- /.modal -->
     </div>
 
+    <!-- DOA Modal -->
+    <div class="modal fade" id="DOAModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.configUpdate()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h4 class="modal-title">
+              门禁告警(Door Alarm)
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label>配置名称</label>
+                <input class="form-control" type="text"
+                       required="required"
+                       ng-model="vm.modal.name"/>
+              </div>
+              <div>
+                <label>备注</label>
+                <textarea class="form-control" rows="3"
+                          ng-model="vm.modal.notes"></textarea>
+              </div>
+              <div>
+                <label for="doaModalMode">Mode</label>
+                <input class="form-control" id="doaModalMode" name="doaModalMode" type="text"
+                       required="required"
+                       placeholder="(0 - 2)"
+                       ng-model="vm.modal.mode"/>
+              </div>
+              <div>
+                <label for="doaModalTriggerType">Trigger Type</label>
+                <input class="form-control" id="doaModalTriggerType" name="doaModalTriggerType" type="text"
+                       required="required"
+                       placeholder="门禁告警触发类型，(0 - 255)"
+                       ng-model="vm.modal.type"/>
+              </div>
+              <div>
+                <label for="doaModalDuration">Duration</label>
+                <input class="form-control" id="doaModalDuration" name="doaModalDuration" type="text"
+                       required="required"
+                       placeholder="门禁告警触发防误报时长，单位分钟(0 - 255)"
+                       ng-model="vm.modal.duration"/>
+              </div>
+              <div>
+                <label for="doaModalInterval">Interval</label>
+                <input class="form-control" id="doaModalInterval" name="doaModalInterval" type="text"
+                       required="required"
+                       placeholder="模式为2时，处于触发状态，告警报文上报间隔，单位为秒(0 - 255)"
+                       ng-model="vm.modal.interval"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">
+              保存
+            </button>
+            <button type="submit" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">
+              取消
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+
 
   </div>
 </section>

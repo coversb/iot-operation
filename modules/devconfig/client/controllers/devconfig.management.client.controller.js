@@ -16,7 +16,8 @@
       ['TMA', DevconfigManagementService.tmaCommand],
       ['DOG', DevconfigManagementService.dogCommand],
       ['ACO', DevconfigManagementService.acoCommand],
-      ['OMC', DevconfigManagementService.omcCommand]
+      ['OMC', DevconfigManagementService.omcCommand],
+      ['DOA', DevconfigManagementService.doaCommand]
     ]);
     var devConfigMap = new Map([]);
 

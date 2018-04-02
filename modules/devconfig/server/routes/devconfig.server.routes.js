@@ -10,7 +10,8 @@ var devconfigPolicy = require('../policies/devconfig.server.policy'),
   TMA = require('../controllers/devconfig.server.tma.controller'),
   DOG = require('../controllers/devconfig.server.dog.controller'),
   ACO = require('../controllers/devconfig.server.aco.controller'),
-  OMC = require('../controllers/devconfig.server.omc.controller');
+  OMC = require('../controllers/devconfig.server.omc.controller'),
+  DOA = require('../controllers/devconfig.server.doa.controller');
 
 module.exports = function (app) {
   /**
@@ -96,5 +97,17 @@ module.exports = function (app) {
     .put(OMC.OmcCommand.update)
     .delete(OMC.OmcCommand.delete);
   app.param('omcId', OMC.OmcCommand.commandByID);
+
+  /**
+   * DOA routers
+   */
+  app.route('/api/devconfig/doa').all(devconfigPolicy.isAllowed)
+    .get(DOA.DoaCommand.list)
+    .post(DOA.DoaCommand.create);
+  app.route('/api/devconfig/doa/:doaId').all(devconfigPolicy.isAllowed)
+    .get(DOA.DoaCommand.read)
+    .put(DOA.DoaCommand.update)
+    .delete(DOA.DoaCommand.delete);
+  app.param('doaId', DOA.DoaCommand.commandByID);
 
 };
