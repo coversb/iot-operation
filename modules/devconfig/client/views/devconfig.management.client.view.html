@@ -820,7 +820,8 @@
                        required="required"
                        placeholder="Unix timestamp"
                        ng-model="vm.modal.orderStart"/>
-                <button type="button" class="btn btn-info" ng-click="vm.modal.orderStart = vm.fillDatetime(0)">当前服务器时间</button>
+                <button type="button" class="btn btn-info" ng-click="vm.modal.orderStart = vm.fillDatetime(0)">当前服务器时间
+                </button>
               </div>
               <div>
                 <label for="ouoModalOrderExpire">Expire Datetime</label>
@@ -828,7 +829,9 @@
                        required="required"
                        placeholder="Unix timestamp"
                        ng-model="vm.modal.orderExpire"/>
-                <button type="button" class="btn btn-info" ng-click="vm.modal.orderExpire = vm.fillDatetime(3600)">起始时间加1小时</button>
+                <button type="button" class="btn btn-info" ng-click="vm.modal.orderExpire = vm.fillDatetime(3600)">
+                  起始时间加1小时
+                </button>
               </div>
               <div>
                 <label for="ouoModalOrderPassword">Password</label>
@@ -863,6 +866,69 @@
         </form>
       </div><!-- /.modal-content -->
     </div><!-- /.modal -->
+
+    <!-- OUT Modal -->
+    <div class="modal fade" id="OUTModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.configUpdate()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h4 class="modal-title">
+              终端OUTPUT控制(Output Operation)
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label>配置名称</label>
+                <input class="form-control" type="text"
+                       required="required"
+                       ng-model="vm.modal.name"/>
+              </div>
+              <div>
+                <label>备注</label>
+                <textarea class="form-control" rows="3"
+                          ng-model="vm.modal.notes"></textarea>
+              </div>
+              <div>
+                <label for="outModalPin">Output Pin Number</label>
+                <input class="form-control" id="outModalPin" name="outModalPin" type="text"
+                       required="required"
+                       placeholder="(0 - 255)"
+                       ng-change="vm.outModalPinChange()"
+                       ng-model="vm.modal.pin"/>
+              </div>
+              <div>
+                <label for="ouoModalPinState">Output Pin State</label>
+                <select class="select form-control" id="ouoModalPinState" name="ouoModalPinState"
+                        ng-model="vm.modal.pinValue">
+                  <option value="0">关闭</option>
+                  <option value="1">开启</option>
+                </select>
+              </div>
+              <div>
+                <label for="outModalPinMask">Output Pin Control Mask</label>
+                <input class="form-control" id="outModalPinMask" name="outModalPinMask" type="text"
+                       required="required"
+                       placeholder="请输入HEX格式(0x00000000 - 0xFFFFFFFF)"
+                       ng-change="vm.outModalPinMaskChange()"
+                       ng-model="vm.modal.pinMask"/>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">
+              保存
+            </button>
+            <button type="submit" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">
+              取消
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
 
 
   </div>

@@ -21,7 +21,8 @@
       ['OMC', DevconfigManagementService.omcCommand],
       ['DOA', DevconfigManagementService.doaCommand],
       ['SMA', DevconfigManagementService.smaCommand],
-      ['OUO', DevconfigManagementService.ouoCommand]
+      ['OUO', DevconfigManagementService.ouoCommand],
+      ['OUT', DevconfigManagementService.outCommand]
     ]);
     var devConfigMap = new Map([]);
 

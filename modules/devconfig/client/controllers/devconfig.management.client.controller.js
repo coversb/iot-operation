@@ -19,7 +19,8 @@
       ['OMC', DevconfigManagementService.omcCommand],
       ['DOA', DevconfigManagementService.doaCommand],
       ['SMA', DevconfigManagementService.smaCommand],
-      ['OUO', DevconfigManagementService.ouoCommand]
+      ['OUO', DevconfigManagementService.ouoCommand],
+      ['OUT', DevconfigManagementService.outCommand]
     ]);
     var devConfigMap = new Map([]);
 
@@ -32,6 +33,8 @@
     vm.searchConfig = searchConfig;
     vm.configUpdate = configUpdate;
     vm.fillDatetime = fillDatetime;
+    vm.outModalPinChange = outModalPinChange;
+    vm.outModalPinMaskChange = outModalPinMaskChange;
 
     init();
     configTypeChange();
@@ -287,6 +290,24 @@
     // parameter offset 0 stand for current server timestamp
     function fillDatetime(offset) {
       return (Date.parse(new Date()) / 1000 + offset).toString(10);
+    }
+
+    function outModalPinChange() {
+      if (vm.modal.pin !== '0' && vm.modal.pin !== undefined) {
+        $('#outModalPinMask').attr('readOnly', 'readOnly');
+        vm.modal.pinMask = '00000000';
+      } else {
+        $('#outModalPinMask').removeAttr('readOnly');
+      }
+    }
+
+    function outModalPinMaskChange() {
+      if (vm.modal.pinMask !== '' && vm.modal.pinMask !== undefined) {
+        $('#outModalPin').attr('readOnly', 'readOnly');
+        vm.modal.pin = '0';
+      } else {
+        $('#outModalPin').removeAttr('readOnly');
+      }
     }
 
   }

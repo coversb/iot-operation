@@ -95,6 +95,13 @@
         update: {
           method: 'PUT'
         }
+      }),
+      outCommand: $resource('/api/devconfig/out/:outId', {
+        outId: '@_id'
+      }, {
+        update: {
+          method: 'PUT'
+        }
       })
     };
 
@@ -208,16 +215,29 @@
       }
     });
 
+    angular.extend(DevconfigManagement.outCommand.prototype, {
+      createOrUpdate: function () {
+        var cmd = this;
+        return createOrUpdate(cmd);
+      },
+      deleteSingle: function () {
+        var cmd = this;
+        return deleteSingle(cmd);
+      }
+    });
+
     return DevconfigManagement;
 
     function deleteSingle(cmd) {
       if (cmd._id) {
         return cmd.$remove(onSuccess, onError);
       }
+
       // Handle successful response
       function onSuccess(version) {
         // Any required internal processing from inside the service, goes here.
       }
+
       // Handle error response
       function onError(errorResponse) {
         var error = errorResponse.data;
@@ -225,16 +245,19 @@
         handleError(error);
       }
     }
+
     function createOrUpdate(cmd) {
       if (cmd._id) {
         return cmd.$update(onSuccess, onError);
       } else {
         return cmd.$save(onSuccess, onError);
       }
+
       // Handle successful response
       function onSuccess(cmd) {
         // Any required internal processing from inside the service, goes here.
       }
+
       // Handle error response
       function onError(errorResponse) {
         var error = errorResponse.data;
@@ -242,6 +265,7 @@
         handleError(error);
       }
     }
+
     /* APC end */
 
     function handleError(error) {

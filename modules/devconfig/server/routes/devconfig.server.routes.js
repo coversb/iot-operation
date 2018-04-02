@@ -13,7 +13,8 @@ var devconfigPolicy = require('../policies/devconfig.server.policy'),
   OMC = require('../controllers/devconfig.server.omc.controller'),
   DOA = require('../controllers/devconfig.server.doa.controller'),
   SMA = require('../controllers/devconfig.server.sma.controller'),
-  OUO = require('../controllers/devconfig.server.ouo.controller');
+  OUO = require('../controllers/devconfig.server.ouo.controller'),
+  OUT = require('../controllers/devconfig.server.out.controller');
 
 module.exports = function (app) {
   /**
@@ -135,5 +136,17 @@ module.exports = function (app) {
     .put(OUO.OuoCommand.update)
     .delete(OUO.OuoCommand.delete);
   app.param('ouoId', OUO.OuoCommand.commandByID);
+
+  /**
+   * OUT routers
+   */
+  app.route('/api/devconfig/out').all(devconfigPolicy.isAllowed)
+    .get(OUT.OutCommand.list)
+    .post(OUT.OutCommand.create);
+  app.route('/api/devconfig/out/:outId').all(devconfigPolicy.isAllowed)
+    .get(OUT.OutCommand.read)
+    .put(OUT.OutCommand.update)
+    .delete(OUT.OutCommand.delete);
+  app.param('outId', OUT.OutCommand.commandByID);
 
 };
