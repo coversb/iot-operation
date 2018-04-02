@@ -15,7 +15,8 @@ var devconfigPolicy = require('../policies/devconfig.server.policy'),
   SMA = require('../controllers/devconfig.server.sma.controller'),
   OUO = require('../controllers/devconfig.server.ouo.controller'),
   OUT = require('../controllers/devconfig.server.out.controller'),
-  MUO = require('../controllers/devconfig.server.muo.controller');
+  MUO = require('../controllers/devconfig.server.muo.controller'),
+  RTO = require('../controllers/devconfig.server.rto.controller');
 
 module.exports = function (app) {
   /**
@@ -161,5 +162,17 @@ module.exports = function (app) {
     .put(MUO.MuoCommand.update)
     .delete(MUO.MuoCommand.delete);
   app.param('muoId', MUO.MuoCommand.commandByID);
+
+  /**
+   * RTO routers
+   */
+  app.route('/api/devconfig/rto').all(devconfigPolicy.isAllowed)
+    .get(RTO.RtoCommand.list)
+    .post(RTO.RtoCommand.create);
+  app.route('/api/devconfig/rto/:rtoId').all(devconfigPolicy.isAllowed)
+    .get(RTO.RtoCommand.read)
+    .put(RTO.RtoCommand.update)
+    .delete(RTO.RtoCommand.delete);
+  app.param('rtoId', RTO.RtoCommand.commandByID);
 
 };
