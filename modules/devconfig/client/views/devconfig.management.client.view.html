@@ -699,6 +699,73 @@
       </div><!-- /.modal -->
     </div>
 
+    <!-- SMA Modal -->
+    <div class="modal fade" id="SMAModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.configUpdate()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h4 class="modal-title">
+              烟雾告警(Smoke Alarm)
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label>配置名称</label>
+                <input class="form-control" type="text"
+                       required="required"
+                       ng-model="vm.modal.name"/>
+              </div>
+              <div>
+                <label>备注</label>
+                <textarea class="form-control" rows="3"
+                          ng-model="vm.modal.notes"></textarea>
+              </div>
+              <div>
+                <label for="smaModalMode">Mode</label>
+                <input class="form-control" id="smaModalMode" name="smaModalMode" type="text"
+                       required="required"
+                       placeholder="(0 - 2)"
+                       ng-model="vm.modal.mode"/>
+              </div>
+              <div>
+                <label for="smaModalThreshold">Threshold</label>
+                <input class="form-control" id="smaModalThreshold" name="smaModalThreshold" type="text"
+                       required="required"
+                       placeholder="烟雾告警触发阈值，(0 - 255)"
+                       ng-model="vm.modal.threshold"/>
+              </div>
+              <div>
+                <label for="smaModalDuration">Duration</label>
+                <input class="form-control" id="smaModalDuration" name="smaModalDuration" type="text"
+                       required="required"
+                       placeholder="烟雾告警触发防误报时长，单位分钟(0 - 255)"
+                       ng-model="vm.modal.duration"/>
+              </div>
+              <div>
+                <label for="smaModalInterval">Interval</label>
+                <input class="form-control" id="smaModalInterval" name="smaModalInterval" type="text"
+                       required="required"
+                       placeholder="模式为2时，处于触发状态，告警报文上报间隔，单位为秒(0 - 255)"
+                       ng-model="vm.modal.interval"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">
+              保存
+            </button>
+            <button type="submit" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">
+              取消
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
 
   </div>
 </section>

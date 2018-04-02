@@ -11,7 +11,8 @@ var devconfigPolicy = require('../policies/devconfig.server.policy'),
   DOG = require('../controllers/devconfig.server.dog.controller'),
   ACO = require('../controllers/devconfig.server.aco.controller'),
   OMC = require('../controllers/devconfig.server.omc.controller'),
-  DOA = require('../controllers/devconfig.server.doa.controller');
+  DOA = require('../controllers/devconfig.server.doa.controller'),
+  SMA = require('../controllers/devconfig.server.sma.controller');
 
 module.exports = function (app) {
   /**
@@ -109,5 +110,17 @@ module.exports = function (app) {
     .put(DOA.DoaCommand.update)
     .delete(DOA.DoaCommand.delete);
   app.param('doaId', DOA.DoaCommand.commandByID);
+
+  /**
+   * SMA routers
+   */
+  app.route('/api/devconfig/sma').all(devconfigPolicy.isAllowed)
+    .get(SMA.SmaCommand.list)
+    .post(SMA.SmaCommand.create);
+  app.route('/api/devconfig/sma/:smaId').all(devconfigPolicy.isAllowed)
+    .get(SMA.SmaCommand.read)
+    .put(SMA.SmaCommand.update)
+    .delete(SMA.SmaCommand.delete);
+  app.param('smaId', SMA.SmaCommand.commandByID);
 
 };

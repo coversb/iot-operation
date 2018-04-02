@@ -19,7 +19,8 @@
       ['DOG', DevconfigManagementService.dogCommand],
       ['ACO', DevconfigManagementService.acoCommand],
       ['OMC', DevconfigManagementService.omcCommand],
-      ['DOA', DevconfigManagementService.doaCommand]
+      ['DOA', DevconfigManagementService.doaCommand],
+      ['SMA', DevconfigManagementService.smaCommand]
     ]);
     var devConfigMap = new Map([]);
 

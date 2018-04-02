@@ -81,6 +81,13 @@
         update: {
           method: 'PUT'
         }
+      }),
+      smaCommand: $resource('/api/devconfig/sma/:smaId', {
+        smaId: '@_id'
+      }, {
+        update: {
+          method: 'PUT'
+        }
       })
     };
 
@@ -162,6 +169,17 @@
     });
 
     angular.extend(DevconfigManagement.doaCommand.prototype, {
+      createOrUpdate: function () {
+        var cmd = this;
+        return createOrUpdate(cmd);
+      },
+      deleteSingle: function () {
+        var cmd = this;
+        return deleteSingle(cmd);
+      }
+    });
+
+    angular.extend(DevconfigManagement.smaCommand.prototype, {
       createOrUpdate: function () {
         var cmd = this;
         return createOrUpdate(cmd);
