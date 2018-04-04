@@ -5,17 +5,16 @@
     .module('devops.tasks')
     .controller('DevopsTasksController', DevopsTasksController);
 
-  DevopsTasksController.$inject = ['$scope', '$state', 'Authentication', 'DevopsProt', 'DevopsTasks', 'Notification'];
+  DevopsTasksController.$inject = ['$http', '$scope', '$state', 'Authentication', 'DevopsSettings', 'DevopsProt', 'DevopsTasks', 'Notification'];
 
-  function DevopsTasksController($scope, $state, Authentication, DevopsProt, DevopsTasks, Notification) {
+  function DevopsTasksController($http, $scope, $state, Authentication, DevopsSettings, DevopsProt, DevopsTasks, Notification) {
 
     var vm = this;
 
     $scope.cronExpression = '0 0 * * *';
 
     $scope.cronOptions = {
-      options: {
-      }
+      options: {}
     };
 
     var actMap = new Map([
@@ -27,6 +26,8 @@
       ['close', 0],
       ['open', 1]
     ]);
+
+    vm.uniqueIds = [];
 
     vm.sendDevAirConCommand = sendDevAirConCommand;
     vm.sendDevRTOCommand = sendDevRTOCommand;
@@ -40,6 +41,8 @@
       if (!Authentication.user) {
         $state.go('home');
       }
+
+      getUniqueIds();
 
       // set default value for air conditioner control command
       vm.devAirConPwrMode = '1';  // 空调供电常开
@@ -64,10 +67,10 @@
         jobSchedule: "",
         jobRepeatEvery: $scope.cronExpression,
         jobData: {
-          devAirConPwrMode:  vm.devAirConPwrMode, // 空调供电常开
+          devAirConPwrMode: vm.devAirConPwrMode, // 空调供电常开
           devAirConWorkMode: vm.devAirConWorkMode, // 空调工作模式自动
           devAirConWindMode: vm.devAirConWindMode, // 空调风量自动
-          devAirConTemperature:vm.devAirConTemperature // 温度
+          devAirConTemperature: vm.devAirConTemperature // 温度
         }
       };
       DevopsTasks.addTask('/agendash/api/jobs/create', param);
@@ -87,7 +90,7 @@
     }
 
     function sendBatchDevAirConCommand() {
-      DevopsTasks.uniqueIds.forEach(function(id){
+      vm.uniqueIds.forEach(function (id) {
         var param = {
           uid: id,
           pwrMode: vm.devAirConPwrMode,
@@ -108,6 +111,31 @@
         subCmd: ctrlMap.get(ctrl).toString(10)
       };
       DevopsProt.sendCommand('RTO', param, showSendRes);
+    }
+
+    function getUniqueIds() {
+      var config = {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      };
+      var data = {
+        'pageNum': 1,
+        'pageSize': 200
+      };
+      $http.post(DevopsSettings.backboneURL + DevopsSettings.boxListAPI, data, config)
+        .success(function (data) {
+          if (Array.isArray(data.data)) {
+            vm.uniqueIds = data.data.map(function (row) {
+              return row.base.uniqueId;
+            });
+            console.dir(vm.uniqueIds);
+          }
+
+        })
+        .error(function (e, status) {
+          console.log('Error:' + e + ',' + status);
+        });
     }
   }
 }());
