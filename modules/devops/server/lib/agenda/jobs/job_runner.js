@@ -53,6 +53,8 @@ JobRunner.prototype.getBoxList = function (resCallback) {
 JobRunner.prototype.execute = function () {
   console.log(process.env.BACKBONE_URL + '/gui/sendAirconConfigCommand');
   var $this = this;
+
+  console.log("job attrs:", $this.job.attrs);
   this.getBoxList(sendAirCon);
 
   function sendAirCon(ids) {
@@ -64,12 +66,12 @@ JobRunner.prototype.execute = function () {
       param.messageType = 0x01;
       param.messageSubType = 0x06;
       param.airconCommandRequest = {
-        'airConMode': parseInt(assembleMode($this.job.attrs.devAirConPwrMode
-          , $this.job.attrs.devAirConWorkMode
-          , $this.job.attrs.devAirConWindMode), 10),
+        'airConMode': parseInt(assembleMode($this.job.attrs.data.devAirConPwrMode
+          , $this.job.attrs.data.devAirConWorkMode
+          , $this.job.attrs.data.devAirConWindMode), 10),
         'airConInterval': parseInt('60', 10),
         'airConDuration': parseInt('60', 10),
-        'airConTemperature': parseInt($this.job.attrs.devAirConTemperature, 10)
+        'airConTemperature': parseInt($this.job.attrs.data.devAirConTemperature , 10)
       };
 
       var options = {
@@ -83,7 +85,7 @@ JobRunner.prototype.execute = function () {
       };
 
       var callback = function (err, res, body) {
-        console.log("setting condition:", body);
+        console.log("setting condition:", param, body);
       };
 
       function assembleMode(pwrMode, workMode, wind) {

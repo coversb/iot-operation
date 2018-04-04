@@ -4,8 +4,10 @@ const jobone = require('./jobs/airCron');
 
 module.exports.init = function init(agenda) {
 
+  jobone.init(agenda);
+
   agenda.on('ready', function () {
-    jobone.init(agenda);
+
     agenda.start();
   });
 
