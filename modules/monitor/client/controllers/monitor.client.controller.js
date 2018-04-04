@@ -309,7 +309,7 @@
       }
 
       // 门禁状态
-      if (vm.selectedBox.detail.doorStatus === '门关着') {
+      if (vm.selectedBox.detail.doorStatus === 0) {
         setElementColor('#door', 'green');
       } else {
         setElementColor('#door', 'red');
