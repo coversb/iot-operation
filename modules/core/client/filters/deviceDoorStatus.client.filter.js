@@ -2,11 +2,11 @@
   'use strict';
 
   angular.module('core')
-    .filter('doorStatus', doorStatus);
+    .filter('deviceDoorStatus', deviceDoorStatus);
 
-  function doorStatus() {
+  function deviceDoorStatus() {
     return function (code) {
-      var deviceDoorStatus = ["关", "开"];
+      var deviceDoorStatus = ["开", "关"];
 
       return deviceDoorStatus[code];
     };

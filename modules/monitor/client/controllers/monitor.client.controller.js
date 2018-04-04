@@ -167,11 +167,9 @@
             valign: 'middle',
             align: 'center',
             formatter: function (value, row) {
-              var doorStatDis = '<span style="color:green">门关着</span>';
-              if (value === '门开着') {
-                doorStatDis = '<span style="color:red">' + value + '</span>';
-              }
-              return doorStatDis;
+              return sprintf('<span style="color:%s">%s</span>'
+                , value ? "red" : "green"
+                , $filter('doorStatus')(value));
             }
           },
           {
@@ -183,7 +181,7 @@
 
              return sprintf('<span style="color:%s">%s</span>'
                , value ? "green" : "red"
-               , $filter('doorStatus')(value));
+               , $filter('deviceDoorStatus')(value));
             }
           },
           {

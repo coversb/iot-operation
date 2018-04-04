@@ -83,7 +83,7 @@
                 <li>最近一次烟雾报警结束: <span ng-bind="vm.selectedBox.detail.smokeAlarmTimeEndDate | unixTime"></span></li>
               </ul>
               <ul class="col-lg-6 col-xs-12">
-                <li>门禁状态: <span id="door" ng-bind="vm.selectedBox.detail.doorStatus"></span></li>
+                <li>门禁状态: <span id="door" ng-bind="vm.selectedBox.detail.doorStatus | doorStatus"></span></li>
                 <li>最近门禁报警开始: <span ng-bind="vm.selectedBox.detail.doorAlarmStartDate | unixTime"></span></li>
                 <li>最近门禁报警结束: <span ng-bind="vm.selectedBox.detail.doorAlarmTimeEndDate | unixTime"></span></li>
               </ul>
@@ -104,7 +104,7 @@
                 <li>室内PM2.5更新: <span ng-bind="vm.selectedBox.detail.pm25UpdateDate | unixTime"></span></li>
               </ul>
               <ul class="col-lg-6 col-xs-12">
-                <li>设备箱状态: <span id="deviceDoor" ng-bind="vm.selectedBox.detail.deviceDoorStatus | doorStatus"></span>
+                <li>设备箱状态: <span id="deviceDoor" ng-bind="vm.selectedBox.detail.deviceDoorStatus | deviceDoorStatus"></span>
                 </li>
                 <li>设备箱状态更新时间: <span ng-bind="vm.selectedBox.detail.deviceDoorStatusUpdateDate | unixTime"></span></li>
                 <li>最近一次开门事件触发: <span ng-bind="vm.selectedBox.detail.doorOpenMode"></span></li>
