@@ -330,6 +330,39 @@
   };
   /* OMC command end */
 
+  /* ACW command begin */
+  var ACW = {
+    assemble: function (param) {
+      var res = '';
+
+      res = assembleMessageType(res, '0109');
+      res += convertDecStrToHexStr(param.mode, 2);
+      res += convertDecStrToHexStr(parseInt(param.pwronEventMask.trim(), 16).toString(10), 2);
+      res += convertDecStrToHexStr(parseInt(param.pwroffEventMask.trim(), 16).toString(10), 2);
+      res += convertDecStrToHexStr(param.duration, 2);
+      res += this.assembleValidTime(param.beginHour, param.beginMinute, param.endHour, param.endMinute);
+
+      return res;
+    },
+    send: function (httpSendRequest, api, param, cb) {
+      var cmdObj = {};
+      cmdObj.uniqueId = param.uid;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0x08;
+      // httpSendRequest(api, cmdObj, cb);
+    },
+    assembleValidTime: function (beginHour, bgeinMinute, endHour, endMinute) {
+      var validTime = '00000000000'
+        + assemblePadZero(Number(endMinute).toString(2), 6)
+        + assemblePadZero(Number(endHour).toString(2), 5)
+        + assemblePadZero(Number(bgeinMinute).toString(2), 6)
+        + assemblePadZero(Number(beginHour).toString(2), 5);
+
+      return assemblePadZero(parseInt(validTime, 2).toString(16), 8);
+    }
+  };
+  /* ACW command end */
+
   /* DOA command begin */
   var DOA = {
     assemble: function (param) {
@@ -598,6 +631,10 @@
         content = OMC.assemble(param);
         break;
       }
+      case 'ACW': {
+        content = ACW.assemble(param);
+        break;
+      }
       case 'DOA': {
         content = DOA.assemble(param);
         break;
@@ -719,6 +756,10 @@
       }
       case 'OMC': {
         res = OMC.send(this.httpSendRequest, this.settings.omcConAPI, param, cb);
+        break;
+      }
+      case 'ACW': {
+        res = ACW.send(this.httpSendRequest, '', param, cb);
         break;
       }
       case 'DOA': {

@@ -114,6 +114,22 @@
     vm.omcGenData = omcGenData;
     vm.omcSendCmd = omcSendCmd;
 
+    /* acw modal init */
+    vm.acwModal = {
+      mode: '0',
+      pwronEventMask: '',
+      pwroffEventMask: '',
+      duration: '',
+      beginHour: '',
+      beginMinute: '',
+      endHour: '',
+      endMinute: '',
+      uid: '0000000000600000',
+      genData: ''
+    };
+    vm.acwGenData = acwGenData;
+    vm.acwSendCmd = acwSendCmd;
+
     /* doa modal init */
     vm.doaModal = {
       mode: '1',
@@ -308,6 +324,15 @@
 
     function omcSendCmd() {
       DevopsProt.sendCommand('OMC', vm.omcModal, showSendRes);
+    }
+
+    /* air conditioner working configuration */
+    function acwGenData() {
+      vm.acwModal.genData = DevopsProt.getCommand('ACW', vm.acwModal);
+    }
+
+    function acwSendCmd() {
+      DevopsProt.sendCommand('ACW', vm.acwModal, showSendRes);
     }
 
     /* door alarm */

@@ -21,6 +21,7 @@
         <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#acoModal">空调控制</button>
         <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#secModal">安全配置</button>
         <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#omcModal">输出模式配置</button>
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#acwModal">空调运行配置</button>
         <hr>
       </div>
       <div>
@@ -653,6 +654,100 @@
 
           <div class="modal-footer">
             <button type="button" class="btn btn-info" ng-click="vm.omcGenData()">
+              生成
+            </button>
+            <button type="button submit" class="btn btn-primary">
+              发送
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+
+    <!--  Modal -->
+    <div class="modal fade" id="acwModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.acwSendCmd()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h4 class="modal-title">
+              空调运行配置(Air Conditioner Working Configuration) [0x01 0x09]
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label for="acwMode">Mode</label>
+                <input class="form-control" id="acwMode" name="acwMode" type="text"
+                       required="required"
+                       ng-model="vm.acwModal.mode"/>
+              </div>
+              <div>
+                <label for="acwPwronEventMask">Power on event mask</label>
+                <input class="form-control" id="acwPwronEventMask" name="acwPwronEventMask" type="text"
+                       required="required"
+                       placeholder="空调供电打开的触发条件，请输入HEX格式(0x00 - 0xFF)"
+                       ng-model="vm.acwModal.pwronEventMask"/>
+              </div>
+              <div>
+                <label for="acwPwroffEventMask">Power off event mask</label>
+                <input class="form-control" id="acwPwroffEventMask" name="acwPwroffEventMask" type="text"
+                       required="required"
+                       placeholder="空调供电关闭的触发条件，请输入HEX格式(0x00 - 0xFF)"
+                       ng-model="vm.acwModal.pwroffEventMask"/>
+              </div>
+              <div>
+                <label for="acwDuration">Duration</label>
+                <input class="form-control" id="acwDuration" name="acwDuration" type="text"
+                       required="required"
+                       placeholder="空调供电打开触发条件包含“订单开始”时，提前打开空调的时长，单位为分钟"
+                       ng-model="vm.acwModal.duration"/>
+              </div>
+              <div>
+                <label for="acwValidTime">Valid Time</label>
+                <br>
+                <label for="acwModalValidTimeBeginHour">起始时刻小时</label>
+                <input class="form-control" id="acwModalValidTimeBeginHour" name="acwModalValidTimeBeginHour"
+                       type="text"
+                       required="required"
+                       placeholder="请输入起始时刻小时(0 - 23)"
+                       ng-model="vm.acwModal.beginHour"/>
+                <label for="acwModalValidTimeBeginMinute">起始时刻分钟</label>
+                <input class="form-control" id="acwModalValidTimeBeginMinute" name="acwModalValidTimeBeginMinute"
+                       type="text"
+                       required="required"
+                       placeholder="请输入起始时刻分钟(0 - 59)"
+                       ng-model="vm.acwModal.beginMinute"/>
+                <label for="acwModalValidTimeEndHour">结束时刻小时</label>
+                <input class="form-control" id="acwModalValidTimeEndHour" name="acwModalValidTimeEndHour" type="text"
+                       required="required"
+                       placeholder="请输入结束时刻小时(0 - 23)"
+                       ng-model="vm.acwModal.endHour"/>
+                <label for="acwModalValidTimeEndMinute">结束时刻分钟</label>
+                <input class="form-control" id="acwModalValidTimeEndMinute" name="acwModalValidTimeEndMinute"
+                       type="text"
+                       required="required"
+                       placeholder="请输入结束时刻分钟(0 - 59)"
+                       ng-model="vm.acwModal.endMinute"/>
+              </div>
+              <div>
+                <label for="acwModalUID">UID</label>
+                <input class="form-control" id="acwModalUID" name="acwModalUID" type="text"
+                       required="required"
+                       ng-model="vm.acwModal.uid"/>
+              </div>
+              <div>
+                <label for="acwModalGenData">Generated data</label>
+                <textarea class="form-control" rows="3" id="acwModalGenData" name="acwModalGenData"
+                          ng-model="vm.acwModal.genData"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-info" ng-click="vm.acwGenData()">
               生成
             </button>
             <button type="button submit" class="btn btn-primary">
