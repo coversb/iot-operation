@@ -272,9 +272,11 @@ gulp.task('copyLocalEnvConfig', function () {
   var renameTo = 'local-development.js';
 
   // only add the copy source if our destination file doesn't already exist
+  /*
   if (!fs.existsSync('config/env/' + renameTo)) {
     sprc.push('config/env/local.example.js');
   }
+  */
 
   return gulp.src(src)
     .pipe(plugins.rename(renameTo))
