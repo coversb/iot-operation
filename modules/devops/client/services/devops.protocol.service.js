@@ -348,8 +348,15 @@
       var cmdObj = {};
       cmdObj.uniqueId = param.uid;
       cmdObj.messageType = 0x01;
-      cmdObj.messageSubType = 0x08;
-      // httpSendRequest(api, cmdObj, cb);
+      cmdObj.messageSubType = 0x09;
+      cmdObj.guiAirConditionerWorkingConfigCommandRequest = {
+        'mode': parseInt(param.mode, 10),
+        'powerOnEventMask': parseInt(param.pwronEventMask, 16),
+        'powerOffEventMask': parseInt(param.pwroffEventMask, 16),
+        'duration': parseInt(param.duration, 10),
+        'validTime': parseInt(this.assembleValidTime(param.beginHour, param.beginMinute, param.endHour, param.endMinute), 16)
+      };
+      httpSendRequest(api, cmdObj, cb);
     },
     assembleValidTime: function (beginHour, bgeinMinute, endHour, endMinute) {
       var validTime = '00000000000'
@@ -759,7 +766,7 @@
         break;
       }
       case 'ACW': {
-        res = ACW.send(this.httpSendRequest, '', param, cb);
+        res = ACW.send(this.httpSendRequest, this.settings.acwConAPI, param, cb);
         break;
       }
       case 'DOA': {

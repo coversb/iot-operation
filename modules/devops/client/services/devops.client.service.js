@@ -21,6 +21,7 @@
       dogConAPI: '/gui/sendWatchdogConfigCommand',
       acoConAPI: '/gui/sendAirconConfigCommand',
       omcConAPI: '/gui/sendOutputModeConfigCommand',
+      acwConAPI: '/gui/sendAirConditionerWorkingConfigCommand',
       doaConAPI: '/gui/sendDoorAlarmCommand',
       smaConAPI: '/gui/sendSmokeAlarmCommand',
       ouoConAPI: '/gui/sendOrderUpdateCommand',
