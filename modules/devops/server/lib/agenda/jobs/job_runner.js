@@ -5,7 +5,7 @@ var request = require('request');
 
 function JobRunner(job) {
   this.job = job;
-  this.logger = Debug('job:' + this.job.attrs._id);
+  this.logger = new Debug('job:' + this.job.attrs._id);
 }
 
 JobRunner.prototype.run = function () {
@@ -15,7 +15,7 @@ JobRunner.prototype.run = function () {
 JobRunner.prototype.log = function () {
   var self = this;
   this.logger('running');
-  this.logger("job-1 data:", this.job.attrs.data);
+  this.logger('job-1 data:', this.job.attrs.data);
   this.timeout = setTimeout(function () {
     self.log();
   }, 1000);
@@ -26,7 +26,7 @@ JobRunner.prototype.destroy = function () {
 };
 
 JobRunner.prototype.getBoxList = function (resCallback) {
-  var param = {pageNum: 1, pageSize: 200};
+  var param = { pageNum: 1, pageSize: 200 };
 
   var options = {
     url: process.env.BACKBONE_URL + '/venueStatus',
@@ -54,7 +54,7 @@ JobRunner.prototype.execute = function () {
   console.log(process.env.BACKBONE_URL + '/gui/sendAirconConfigCommand');
   var $this = this;
 
-  console.log("job attrs:", $this.job.attrs);
+  console.log('job attrs:', $this.job.attrs);
   this.getBoxList(sendAirCon);
 
   function sendAirCon(ids) {
@@ -66,12 +66,10 @@ JobRunner.prototype.execute = function () {
       param.messageType = 0x01;
       param.messageSubType = 0x06;
       param.airconCommandRequest = {
-        'airConMode': parseInt(assembleMode($this.job.attrs.data.devAirConPwrMode
-          , $this.job.attrs.data.devAirConWorkMode
-          , $this.job.attrs.data.devAirConWindMode), 10),
+        'airConMode': parseInt(assembleMode($this.job.attrs.data.devAirConPwrMode, $this.job.attrs.data.devAirConWorkMode, $this.job.attrs.data.devAirConWindMode), 10),
         'airConInterval': parseInt('60', 10),
         'airConDuration': parseInt('60', 10),
-        'airConTemperature': parseInt($this.job.attrs.data.devAirConTemperature , 10)
+        'airConTemperature': parseInt($this.job.attrs.data.devAirConTemperature, 10)
       };
 
       var options = {
@@ -85,7 +83,7 @@ JobRunner.prototype.execute = function () {
       };
 
       var callback = function (err, res, body) {
-        console.log("setting condition:", param, body);
+        console.log('setting condition:', param, body);
       };
 
       function assembleMode(pwrMode, workMode, wind) {

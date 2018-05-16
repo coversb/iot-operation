@@ -6,7 +6,7 @@
 
   function doorStatus() {
     return function (code) {
-      var deviceDoorStatus = ["关", "开"];
+      var deviceDoorStatus = ['关', '开'];
 
       return deviceDoorStatus[code];
     };

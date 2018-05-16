@@ -32,6 +32,8 @@
           roles: ['admin', '运维/客服/工程', '开发/测试']
         }
       })
+      /* Disable this feature */
+      /*
       .state('devops.tasks', {
         url: '/tasks',
         templateUrl: '/modules/devops/client/views/devops.tasks.client.view.html',
@@ -54,6 +56,7 @@
           roles: ['admin', '运维/客服/工程', '开发/测试']
         }
       })
+      */
       .state('devops.protcmd', {
         url: '/protcmd',
         templateUrl: '/modules/devops/client/views/devops.protcmd.client.view.html',

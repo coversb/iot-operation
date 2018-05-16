@@ -12,14 +12,14 @@ ftpServer.on('login', function (data, resolve, reject) {
   shell.mkdir('-p', ftpPath);
 
   if (username === 'fota' && password === 'fota') {
-    resolve({root: ftpPath})
+    resolve({ root: ftpPath });
   } else {
-    reject()
+    reject();
   }
 });
 
 ftpServer
   .listen()
   .then(function () {
-    console.log('ready')
+    console.log('ready');
   });

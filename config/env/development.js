@@ -20,7 +20,7 @@ module.exports = {
       maxsize: process.env.LOG_FILE_MAXSIZE || 10485760,
       maxFiles: process.env.LOG_FILE_MAXNUM || 5,
       json: false
-    },
+    }
   },
   app: {
     title: defaultEnvConfig.app.title + ' - Development Environment'

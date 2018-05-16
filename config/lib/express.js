@@ -257,10 +257,12 @@ module.exports.init = function (db) {
   this.initErrorRoutes(app);
 
   // Configure Socket.io
-  app = this.configureSocketIO(app, db);
+  /* Disable socket.io, don't use this feature */
+  // app = this.configureSocketIO(app, db);
 
   // app.use('/files/', bridge);
-  var ftpServer = require('./ftpServer');
+  /* Disable this ftpServer, use os installed ftp server */
+  // var ftpServer = require('./ftpServer');
 
   return app;
 };

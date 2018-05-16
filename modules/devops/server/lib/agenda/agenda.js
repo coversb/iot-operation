@@ -4,7 +4,7 @@ const Agenda = require('agenda');
 
 module.exports.get = function (config) {
   const agendaConfig = {
-    db: {address: config.db.uri.replace("angularfullstack", "agenda_test_dev")},
+    db: { address: config.db.uri.replace('angularfullstack', 'agenda_test_dev') },
     defaultConcurrency: config.db.concurrent
   };
 

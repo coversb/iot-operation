@@ -73,7 +73,7 @@
     });
   });
 
-  angular.module('angularCSS').config(function($cssProvider) {
+  angular.module('angularCSS').config(function ($cssProvider) {
 
     angular.extend($cssProvider.defaults, {
       container: 'head',

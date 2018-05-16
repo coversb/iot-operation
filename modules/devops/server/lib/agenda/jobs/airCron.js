@@ -3,12 +3,12 @@ const JobRunner = require('./job_runner');
 module.exports.init = function init(agenda) {
   agenda.define('airCon', function (job, done) {
     const jobRunner = new JobRunner(job);
-     jobRunner.run();
-    console.log("airCon data:", job.attrs.data);
+    jobRunner.run();
+    console.log('airCon data:', job.attrs.data);
     setTimeout(function () {
       jobRunner.destroy();
-      done()
-    }, 60000)
+      done();
+    }, 60000);
   });
 
 };

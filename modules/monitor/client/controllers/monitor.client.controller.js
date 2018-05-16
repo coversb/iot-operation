@@ -78,9 +78,9 @@
         showColumns: true,
         queryParams: function (params) {  // 配置参数
           var pageNumber = 1;
-          if (doSearch){
+          if (doSearch) {
             doSearch = false;
-          }else{
+          } else {
             if (params.offset !== 0 && params.limit !== 0) {
               pageNumber = (params.offset / params.limit) + 1;
             }
@@ -168,7 +168,7 @@
             align: 'center',
             formatter: function (value, row) {
               return sprintf('<span style="color:%s">%s</span>'
-                , value ? "red" : "green"
+                , value ? 'red' : 'green'
                 , $filter('doorStatus')(value));
             }
           },
@@ -179,9 +179,7 @@
             align: 'center',
             formatter: function (value, row) {
 
-             return sprintf('<span style="color:%s">%s</span>'
-               , value ? "green" : "red"
-               , $filter('deviceDoorStatus')(value));
+              return sprintf('<span style="color:%s">%s</span>', value ? 'green' : 'red', $filter('deviceDoorStatus')(value));
             }
           },
           {
