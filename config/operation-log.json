@@ -1,0 +1,10 @@
+{
+    "appenders": {
+        "console": {"type": "console"},
+        "prot": {"type": "file", "filename": "/data/logs/gui/protocol.log", "maxLogSize": "10245760", "backups": "8"}
+    },
+    "categories": {
+        "default": {"appenders": ["console", "prot"], "level": "all"},
+        "prot": {"appenders": ["console", "prot"], "level": "all"}
+    }
+}

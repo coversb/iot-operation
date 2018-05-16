@@ -12,9 +12,9 @@
   var PROTSTART = '2B5042'; // protocol starter '+PB'
   var PROTTAIL = '0D0A';
 
-  DevopsProt.$inject = ['$http', 'DevopsSettings'];
+  DevopsProt.$inject = ['$http', 'DevopsSettings', 'OperationLogService'];
 
-  function DevopsProt($http, DevopsSettings) {
+  function DevopsProt($http, DevopsSettings, OperationLogService) {
     var prot = {
       settings: DevopsSettings,
       getCommand: getCommand,
@@ -39,7 +39,8 @@
             }
           });
 
-      }
+      },
+      operationLogger: OperationLogService
     };
 
     return prot;
@@ -800,6 +801,7 @@
       default:
         break;
     }
+    this.operationLogger.trace(cmdType, param);
     return res;
   }
 
