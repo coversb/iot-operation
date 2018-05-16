@@ -13,14 +13,14 @@ module.exports = {
   log: {
     // logging with Morgan - https://github.com/expressjs/morgan
     // Can specify one of 'combined', 'common', 'dev', 'short', 'tiny'
-    format: 'dev',
+    format: process.env.LOG_FORMAT || 'short',
     fileLogger: {
-      directoryPath: process.cwd(),
-      fileName: 'app.log',
-      maxsize: 10485760,
-      maxFiles: 2,
+      directoryPath: process.env.LOG_DIR_PATH || process.cwd(),
+      fileName: process.env.LOG_FILE || 'app.log',
+      maxsize: process.env.LOG_FILE_MAXSIZE || 10485760,
+      maxFiles: process.env.LOG_FILE_MAXNUM || 5,
       json: false
-    }
+    },
   },
   app: {
     title: defaultEnvConfig.app.title + ' - Development Environment'
