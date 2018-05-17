@@ -117,6 +117,12 @@
             align: 'center'
           },
           {
+            field: 'base.venueId',
+            title: '盒子ID',
+            valign: 'middle',
+            align: 'center'
+          },
+          {
             field: 'base.name',
             title: '场馆',
             valign: 'middle',
