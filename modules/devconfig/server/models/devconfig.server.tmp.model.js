@@ -24,6 +24,10 @@ var TmpCommandSchema = new Schema({
     trim: true,
     required: '命令名称不能为空'
   },
+  notes: {
+    type: String,
+    default: ''
+  },
   temperature: {
     type: String,
     default: '',

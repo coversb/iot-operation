@@ -186,6 +186,10 @@
             vm.modal.backupDNS = [114, 114, 114, 114];
             break;
           }
+          case 'TMP': {
+            vm.modal.temperature = '25';
+            break;
+          }
           case 'SER': {
             vm.modal.mode = '2';
             vm.modal.sms = '13888888888';

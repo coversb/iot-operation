@@ -183,6 +183,12 @@
                        ng-model="vm.modalData.name"/>
               </div>
               <div>
+                <label for="tmpModalNotes">备注</label>
+                <textarea class="form-control" rows="3" id="tmpModalNotes" name="tmpModalNotes"
+                          readonly="readonly"
+                          ng-model="vm.modalData.notes"></textarea>
+              </div>
+              <div>
                 <label for="tmpModalTemperature">目标温度</label>
                 <input class="form-control" id="tmpModalTemperature" name="tmpModalTemperature" type="text"
                        readonly="readonly"
