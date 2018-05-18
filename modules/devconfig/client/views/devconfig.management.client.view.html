@@ -169,11 +169,6 @@
               <h4 class="modal-title" id="tmpModalTitle">
                 配置目标温度
               </h4>
-              <select class="select form-control" id="tmpModalConfig" name="tmpModalConfig"
-                      ng-model="vm.modalSelectedConfig"
-                      ng-options="option.name for option in vm.avaliableConfigs track by option._id"
-                      ng-change="vm.modalConfigChange()">
-              </select>
             </div>
           </div>
           <div class="modal-body">
@@ -182,7 +177,7 @@
                 <label for="tmpModalName">配置名称</label>
                 <input class="form-control" id="tmpModalName" name="tmpModalName" type="text"
                        required="required"
-                       ng-model="vm.modalData.name"/>
+                       ng-model="vm.modal.name"/>
               </div>
               <div>
                 <label for="tmpModalNotes">备注</label>
@@ -193,7 +188,7 @@
                 <label for="tmpModalTemperature">目标温度</label>
                 <input class="form-control" id="tmpModalTemperature" name="tmpModalTemperature" type="text"
                        required="required"
-                       ng-model="vm.modalData.temperature"/>
+                       ng-model="vm.modal.temperature"/>
               </div>
             </div>
           </div>
