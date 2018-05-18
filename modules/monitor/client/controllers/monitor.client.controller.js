@@ -190,7 +190,7 @@
           },
           {
             field: 'detail.airConditionStatus',
-            title: '空调模式·风量·温度',
+            title: '空调模式·风量·温度·目标温度',
             valign: 'middle',
             align: 'center',
             formatter: function (value, row) {
@@ -198,6 +198,7 @@
               var workStat = '-';
               var windStat = '-';
               var tempStat = '-';
+              var dstTemperature = '-';
               if (row.detail.airConditionStatus === 'Close') {
                 pwrStat = '关';
               } else if (row.detail.airConditionStatus === 'Open') {
@@ -229,7 +230,12 @@
               if (tempStat === 0) {
                 tempStat = '-';
               }
-              return '<span>' + workStat + ' | ' + windStat + ' | ' + tempStat + '</span>';
+              dstTemperature = row.detail.dstTemperature;
+              if (dstTemperature === 0) {
+                dstTemperature = '-';
+              }
+              return '<span>' + workStat + ' | ' + windStat + ' | '
+                + tempStat + ' | ' + dstTemperature + '</span>';
             }
           },
           {
@@ -340,12 +346,12 @@
 
       // 空调开关状态
       /* don't need color
-      if (vm.selectedBox.detail.airConditionStatus === 'Open') {
-        setElementColor('#air', 'green');
-      } else {
-        setElementColor('#air', 'red');
-      }
-      */
+       if (vm.selectedBox.detail.airConditionStatus === 'Open') {
+       setElementColor('#air', 'green');
+       } else {
+       setElementColor('#air', 'red');
+       }
+       */
     }
 
     function detailTableFormat() {
@@ -523,7 +529,7 @@
     }
 
     function setElementColor(element, setColor) {
-      $(element).css({ color: setColor });
+      $(element).css({color: setColor});
     }
 
   }

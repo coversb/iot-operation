@@ -97,6 +97,7 @@
                 <li>最近一次空调状态切换: <span ng-bind="vm.selectedBox.detail.airConditionEventUpdateDate | unixTime"></span></li>
               </ul>
               <ul class="col-lg-6 col-xs-12">
+                <li>目标温度: <span ng-bind="vm.selectedBox.detail.dstTemperature"></span></li>
                 <li>室内温度: <span ng-bind="vm.selectedBox.detail.temperature"></span></li>
                 <li>室内温度更新: <span ng-bind="vm.selectedBox.detail.temperatureUpdateDate | unixTime"></span></li>
                 <li>室内湿度: <span ng-bind="vm.selectedBox.detail.humidity"></span></li>
