@@ -5,6 +5,7 @@
  */
 var devconfigPolicy = require('../policies/devconfig.server.policy'),
   APC = require('../controllers/devconfig.server.apc.controller'),
+  TMP = require('../controllers/devconfig.server.tmp.controller'),
   SER = require('../controllers/devconfig.server.ser.controller'),
   CFG = require('../controllers/devconfig.server.cfg.controller'),
   TMA = require('../controllers/devconfig.server.tma.controller'),
@@ -30,6 +31,18 @@ module.exports = function (app) {
     .put(APC.ApcCommand.update)
     .delete(APC.ApcCommand.delete);
   app.param('apcId', APC.ApcCommand.commandByID);
+
+  /**
+   * TMP routers
+   */
+  app.route('/api/devconfig/tmp').all(devconfigPolicy.isAllowed)
+    .get(TMP.TmpCommand.list)
+    .post(TMP.TmpCommand.create);
+  app.route('/api/devconfig/tmp/:tmpId').all(devconfigPolicy.isAllowed)
+    .get(TMP.TmpCommand.read)
+    .put(TMP.TmpCommand.update)
+    .delete(TMP.TmpCommand.delete);
+  app.param('tmpId', TMP.TmpCommand.commandByID);
 
   /**
    * SER routers
