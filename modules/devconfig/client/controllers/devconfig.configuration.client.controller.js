@@ -7,6 +7,19 @@
 
   DevconfigConfigurationController.$inject = ['$scope', '$state', '$window', '$http', 'Authentication', 'Notification', 'DevconfigManagementService', 'DevopsSettings', 'DevopsProt'];
 
+  /**
+   * 配置下发
+   * @param $scope
+   * @param $state
+   * @param $window
+   * @param $http
+   * @param Authentication
+   * @param Notification
+   * @param DevconfigManagementService
+   * @param DevopsSettings
+   * @param DevopsProt
+   * @constructor
+   */
   function DevconfigConfigurationController($scope, $state, $window, $http, Authentication, Notification, DevconfigManagementService, DevopsSettings, DevopsProt) {
     var searchData = '';
     var doSearch = false;

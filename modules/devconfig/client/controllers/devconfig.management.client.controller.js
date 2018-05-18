@@ -7,6 +7,18 @@
 
   DevconfigManagementController.$inject = ['$scope', '$state', '$window', '$http', 'Authentication', 'Notification', 'DevconfigManagementService'];
 
+  /**
+   * 配置管理
+   *
+   * @param $scope
+   * @param $state
+   * @param $window
+   * @param $http
+   * @param Authentication
+   * @param Notification
+   * @param DevconfigManagementService
+   * @constructor
+   */
   function DevconfigManagementController($scope, $state, $window, $http, Authentication, Notification, DevconfigManagementService) {
 
     var devConfigMap = new Map([]);

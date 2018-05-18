@@ -11,6 +11,7 @@
     var DevconfigManagement = {
       apiMap: new Map([
         ['APC', '/api/devconfig/apc'],
+        ['TMP', '/api/devconfig/tmp'], // target temperature setting
         ['SER', '/api/devconfig/ser'],
         ['CFG', '/api/devconfig/cfg'],
         ['TMA', '/api/devconfig/tma'],
@@ -28,6 +29,7 @@
 
       cmdManagerMap: new Map([
         ['APC', $resource('/api/devconfig/apc/:apcId', { apcId: '@_id' }, { update: { method: 'PUT' } })],
+        ['TMP', $resource('/api/devconfig/tmp/:tmpId', { serId: '@_id' }, { update: { method: 'PUT' } })],
         ['SER', $resource('/api/devconfig/ser/:serId', { serId: '@_id' }, { update: { method: 'PUT' } })],
         ['CFG', $resource('/api/devconfig/cfg/:cfgId', { cfgId: '@_id' }, { update: { method: 'PUT' } })],
         ['TMA', $resource('/api/devconfig/tma/:tmaId', { tmaId: '@_id' }, { update: { method: 'PUT' } })],

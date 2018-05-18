@@ -15,6 +15,7 @@
       backboneURL: ENV_VARS.backboneUrl,
       // command API
       apcConAPI: '/gui/sendAccessPointCommand',
+      tmpConAPI: '/dstTemperature',
       serConAPI: '/gui/sendServerConfigCommand',
       cfgConAPI: '/gui/sendGlobalServerConfigCommand',
       tmaConAPI: '/gui/sendTimeAdjustConfigCommand',

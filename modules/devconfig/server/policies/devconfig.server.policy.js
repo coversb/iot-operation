@@ -17,6 +17,7 @@ exports.invokeRolesPolicies = function () {
     allows: [{
       resources: [
         '/api/devconfig/apc',
+        '/api/devconfig/tmp',
         '/api/devconfig/ser',
         '/api/devconfig/cfg',
         '/api/devconfig/tma',
@@ -35,6 +36,7 @@ exports.invokeRolesPolicies = function () {
     }, {
       resources: [
         '/api/devconfig/apc/:apcId',
+        '/api/devconfig/tmp/:tmpId',
         '/api/devconfig/ser/:serId',
         '/api/devconfig/cfg/:cfgId',
         '/api/devconfig/tma/:tmaId',
@@ -56,6 +58,7 @@ exports.invokeRolesPolicies = function () {
     allows: [{
       resources: [
         '/api/devconfig/apc',
+        '/api/devconfig/tmp',
         '/api/devconfig/ser',
         '/api/devconfig/cfg',
         '/api/devconfig/tma',
@@ -74,6 +77,7 @@ exports.invokeRolesPolicies = function () {
     }, {
       resources: [
         '/api/devconfig/apc/:apcId',
+        '/api/devconfig/tmp/:tmpId',
         '/api/devconfig/ser/:serId',
         '/api/devconfig/cfg/:cfgId',
         '/api/devconfig/tma/:tmaId',
