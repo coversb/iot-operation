@@ -93,6 +93,17 @@
   };
   /* APC command end */
 
+  /* TMP command begin */
+  var TMP = {
+    send: function (httpSendRequest, api, param, cb) {
+      var cmdObj = {};
+      cmdObj.uniqueId = param.uid;
+      cmdObj.temperature = parseInt(param.mode.temperature.trim(), 20);
+      httpSendRequest(api, cmdObj, cb);
+    }
+  };
+  /* TMP command end */
+
   /* SER command begin */
   var SER = {
     assemble: function (param) {
@@ -736,6 +747,10 @@
     switch (cmdType) {
       case 'APC': {
         res = APC.send(this.httpSendRequest, this.settings.apcConAPI, param, cb);
+        break;
+      }
+      case 'TMP': {
+        res = TMP.send(this.httpSendRequest, this.settings.tmpConAPI, param, cb);
         break;
       }
       case 'SER': {
