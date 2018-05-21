@@ -98,7 +98,7 @@
     send: function (httpSendRequest, api, param, cb) {
       var cmdObj = {};
       cmdObj.uniqueId = param.uid;
-      cmdObj.temperature = parseInt(param.temperature.trim(), 20);
+      cmdObj.temperature = parseInt(param.temperature.trim(), 10);
       httpSendRequest(api, cmdObj, cb);
     }
   };
