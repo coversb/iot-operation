@@ -17,6 +17,7 @@ function TmpCommand() {
     var cmd = req.cmdData;
 
     cmd.name = req.body.name;
+    cmd.notes = req.body.notes;
     cmd.temperature = req.body.temperature;
 
     cmd.save(function (err) {
