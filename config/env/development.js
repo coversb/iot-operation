@@ -58,8 +58,12 @@ module.exports = {
     sandbox: true
   },
   mailer: {
+    host: process.env.BACKBONE_URL || '',
     from: process.env.MAILER_FROM || 'MAILER_FROM',
     options: {
+      host: process.env.MAILER_SERVICE_HOST || '',
+      port: process.env.MAILER_SERVICE_PORT || 465,
+      secure: true,
       service: process.env.MAILER_SERVICE_PROVIDER || 'MAILER_SERVICE_PROVIDER',
       auth: {
         user: process.env.MAILER_EMAIL_ID || 'MAILER_EMAIL_ID',

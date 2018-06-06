@@ -67,7 +67,8 @@ exports.forgot = function (req, res, next) {
       if (config.secure && config.secure.ssl === true) {
         httpTransport = 'https://';
       }
-      var baseUrl = httpTransport + req.headers.host || config.domain;
+      var baseUrl = config.mailer.host.replace(/iot/, 'gui') || config.domain || httpTransport + req.headers.host;
+      console.log(baseUrl);
       res.render(path.resolve('modules/users/server/templates/reset-password-email'), {
         name: user.displayName,
         appName: config.app.title,
@@ -90,6 +91,7 @@ exports.forgot = function (req, res, next) {
             message: '密码重置邮件已发送至邮箱，请根据邮件提示重置密码'
           });
         } else {
+          console.log(err);
           return res.status(400).send({
             message: '邮件发送失败'
           });
