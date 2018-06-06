@@ -190,7 +190,7 @@
           },
           {
             field: 'detail.airConditionStatus',
-            title: '空调模式·风量·温度·目标温度',
+            title: '空调(模式·风量·温度)',
             valign: 'middle',
             align: 'center',
             formatter: function (value, row) {
@@ -236,6 +236,21 @@
               }
               return '<span>' + workStat + ' | ' + windStat + ' | '
                 + tempStat + ' | ' + dstTemperature + '</span>';
+            }
+          },
+          {
+            field: 'detail.dstTemperature',
+            title: '目标温度',
+            valign: 'middle',
+            align: 'center'
+          },
+          {
+            field: 'detail.temperature',
+            title: '实时(温度·湿度)',
+            valign: 'middle',
+            align: 'center',
+            formatter: function (value, row) {
+              return '<span>' + row.detail.temperature + ' | ' + row.detail.humidity + '</span>';
             }
           },
           {
