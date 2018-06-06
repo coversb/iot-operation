@@ -230,12 +230,8 @@
               if (tempStat === 0) {
                 tempStat = '-';
               }
-              dstTemperature = row.detail.dstTemperature;
-              if (dstTemperature === 0) {
-                dstTemperature = '-';
-              }
               return '<span>' + workStat + ' | ' + windStat + ' | '
-                + tempStat + ' | ' + dstTemperature + '</span>';
+                + tempStat + '</span>';
             }
           },
           {
