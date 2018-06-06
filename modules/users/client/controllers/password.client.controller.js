@@ -53,13 +53,13 @@
     function onRequestPasswordResetSuccess(response) {
       // Show user success message and clear form
       vm.credentials = null;
-      Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Password reset email sent successfully!' });
+      Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> 密码重置邮件发送成功!' });
     }
 
     function onRequestPasswordResetError(response) {
       // Show user error message and clear form
       vm.credentials = null;
-      Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Failed to send password reset email!', delay: 4000 });
+      Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> 密码重置邮件发送失败!', delay: 4000 });
     }
 
     function onResetPasswordSuccess(response) {
@@ -68,13 +68,13 @@
 
       // Attach user profile
       Authentication.user = response;
-      Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Password reset successful!' });
+      Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> 密码重置成功!' });
       // And redirect to the index page
       $location.path('/password/reset/success');
     }
 
     function onResetPasswordError(response) {
-      Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Password reset failed!', delay: 4000 });
+      Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> 密码重置失败!', delay: 4000 });
     }
   }
 }());

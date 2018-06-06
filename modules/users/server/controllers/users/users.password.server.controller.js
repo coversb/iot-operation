@@ -81,17 +81,17 @@ exports.forgot = function (req, res, next) {
       var mailOptions = {
         to: user.email,
         from: config.mailer.from,
-        subject: 'Password Reset',
+        subject: 'PARKBOX IOT管理平台---重置密码',
         html: emailHTML
       };
       smtpTransport.sendMail(mailOptions, function (err) {
         if (!err) {
           res.send({
-            message: 'An email has been sent to the provided email with further instructions.'
+            message: '密码重置邮件已发送至邮箱，请根据邮件提示重置密码'
           });
         } else {
           return res.status(400).send({
-            message: 'Failure sending email'
+            message: '邮件发送失败'
           });
         }
 
@@ -191,7 +191,7 @@ exports.reset = function (req, res, next) {
       var mailOptions = {
         to: user.email,
         from: config.mailer.from,
-        subject: 'Your password has been changed',
+        subject: 'PARKBOX IOT管理平台---密码重置成功',
         html: emailHTML
       };
 
