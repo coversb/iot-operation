@@ -82,7 +82,7 @@ exports.forgot = function (req, res, next) {
       var mailOptions = {
         to: user.email,
         from: config.mailer.from,
-        subject: 'PARKBOX IOT管理平台---重置密码',
+        subject: 'PARKBOX IOT管理平台',
         html: emailHTML
       };
       smtpTransport.sendMail(mailOptions, function (err) {
