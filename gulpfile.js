@@ -176,8 +176,8 @@ gulp.task('uglify', function () {
   del(['public/dist/*']);
 
   return gulp.src(assets)
-    .pipe(plugins.ngAnnotate({add: true}))
-    .pipe(plugins.babel({presets: ['es2016']})) // transpile ES2015 to ES5 using ES2015 preset
+    .pipe(plugins.ngAnnotate({ add: true }))
+    .pipe(plugins.babel({ presets: ['es2016'] })) // transpile ES2015 to ES5 using ES2015 preset
     .pipe(plugins.uglify({
       mangle: false
     }).on('error', function (err) {
@@ -218,7 +218,7 @@ gulp.task('imagemin', function () {
   return gulp.src(defaultAssets.client.img)
     .pipe(plugins.imagemin({
       progressive: true,
-      svgoPlugins: [{removeViewBox: false}],
+      svgoPlugins: [{ removeViewBox: false }],
       use: [pngquant()]
     }))
     .pipe(gulp.dest('public/dist/img'));
@@ -355,7 +355,7 @@ gulp.task('mocha:coverage', ['pre-test', 'mocha'], function () {
 
   return gulp.src(testSuites)
     .pipe(plugins.istanbul.writeReports({
-      reportOpts: {dir: './coverage/server'}
+      reportOpts: { dir: './coverage/server' }
     }));
 });
 
@@ -386,7 +386,7 @@ gulp.task('karma:coverage', function (done) {
     coverageReporter: {
       dir: 'coverage/client',
       reporters: [
-        {type: 'lcov', subdir: '.'}
+        { type: 'lcov', subdir: '.' }
         // printing summary to console currently weirdly causes gulp to hang so disabled for now
         // https://github.com/karma-runner/karma-coverage/issues/209
         // { type: 'text-summary' }

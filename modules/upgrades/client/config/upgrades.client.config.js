@@ -14,7 +14,7 @@
       state: 'upgrades',
       type: 'dropdown',
       roles: ['admin', '开发/测试'],
-      position: 2
+      position: 3
     });
 
     // Add the dropdown list item

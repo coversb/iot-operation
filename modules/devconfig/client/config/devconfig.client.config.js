@@ -14,7 +14,7 @@
       state: 'devconfig',
       type: 'dropdown',
       roles: ['admin', '开发/测试'],
-      position: 3
+      position: 4
     });
 
     // Add the dropdown list item
