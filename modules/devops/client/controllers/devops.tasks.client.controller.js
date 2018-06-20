@@ -46,7 +46,7 @@
 
       // set default value for air conditioner control command
       vm.devAirConPwrMode = '1';  // 空调供电常开
-      vm.devAirConWorkMode = '2'; // 空调工作模式自动
+      vm.devAirConWorkMode = '2'; // 空调工作模式送风
       vm.devAirConWindMode = '3'; // 空调风量自动
       vm.devAirConTemperature = '20'; // 温度
       vm.devUID = '0000000000600000'; // UID
@@ -68,7 +68,7 @@
         jobRepeatEvery: $scope.cronExpression,
         jobData: {
           devAirConPwrMode: vm.devAirConPwrMode, // 空调供电常开
-          devAirConWorkMode: vm.devAirConWorkMode, // 空调工作模式自动
+          devAirConWorkMode: vm.devAirConWorkMode, // 空调工作模式送风
           devAirConWindMode: vm.devAirConWindMode, // 空调风量自动
           devAirConTemperature: vm.devAirConTemperature // 温度
         }

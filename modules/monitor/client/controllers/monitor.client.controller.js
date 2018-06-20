@@ -212,7 +212,8 @@
               } else if (row.detail.airConditionMode === 'Warm') {
                 workStat = '制热';
               } else if (row.detail.airConditionMode === 'Auto') {
-                workStat = '自动';
+                // Auto stand for wind in IOT protocol V1.23, better to modified this value to wind
+                workStat = '送风';
               } else if (row.detail.airConditionMode === 'Dehumidify') {
                 workStat = '抽湿';
               }
