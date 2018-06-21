@@ -90,10 +90,10 @@
               </ul>
               <ul class="col-lg-6 col-xs-12">
                 <li>空调状态更新: <span ng-bind="vm.selectedBox.detail.airConditionControlUpdateDate | unixTime"></span></li>
-                <li>空调开关状态: <span id="air" ng-bind="vm.selectedBox.detail.airConditionStatus"></span></li>
-                <li>空调模式: <span ng-bind="vm.selectedBox.detail.airConditionMode"></span></li>
+                <li>空调开关状态: <span id="air" ng-bind="vm.selectedBoxDis.pwrStat"></span></li>
+                <li>空调模式: <span ng-bind="vm.selectedBoxDis.workStat"></span></li>
                 <li>空调温度: <span ng-bind="vm.selectedBox.detail.airConditionTemperature"></span></li>
-                <li>风量模式: <span ng-bind="vm.selectedBox.detail.airConditionWind"></span></li>
+                <li>风量模式: <span ng-bind="vm.selectedBoxDis.windStat"></span></li>
                 <li>最近一次空调状态切换: <span ng-bind="vm.selectedBox.detail.airConditionEventUpdateDate | unixTime"></span></li>
               </ul>
               <ul class="col-lg-6 col-xs-12">

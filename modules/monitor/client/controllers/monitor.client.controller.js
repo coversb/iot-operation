@@ -369,8 +369,40 @@
     function detailTableFormat() {
       vm.selectedBoxDis = [];
 
+      detailAirconditionerStateFormat();
       detailInputStateFormat();
       detailOutputStateFormat();
+    }
+
+    function detailAirconditionerStateFormat() {
+      if (vm.selectedBox.detail.airConditionStatus === 'Close') {
+        vm.selectedBoxDis.pwrStat = '关';
+      } else if (vm.selectedBox.detail.airConditionStatus === 'Open') {
+        vm.selectedBoxDis.pwrStat = '开';
+      } else if (vm.selectedBox.detail.airConditionStatus === 'Interval') {
+        vm.selectedBoxDis.pwrStat = '间隔开';
+      }
+
+      if (vm.selectedBox.detail.airConditionMode === 'Cold') {
+        vm.selectedBoxDis.workStat = '制冷';
+      } else if (vm.selectedBox.detail.airConditionMode === 'Warm') {
+        vm.selectedBoxDis.workStat = '制热';
+      } else if (vm.selectedBox.detail.airConditionMode === 'Auto') {
+        // Auto stand for wind in IOT protocol V1.23, better to modified this value to wind
+        vm.selectedBoxDis.workStat = '送风';
+      } else if (vm.selectedBox.detail.airConditionMode === 'Dehumidify') {
+        vm.selectedBoxDis.workStat = '抽湿';
+      }
+
+      if (vm.selectedBox.detail.airConditionWind === 'High') {
+        vm.selectedBoxDis.windStat = '高风';
+      } else if (vm.selectedBox.detail.airConditionWind === 'Medium') {
+        vm.selectedBoxDis.windStat = '中风';
+      } else if (vm.selectedBox.detail.airConditionWind === 'Low') {
+        vm.selectedBoxDis.windStat = '低风';
+      } else if (vm.selectedBox.detail.airConditionWind === 'Auto') {
+        vm.selectedBoxDis.windStat = '自动风';
+      }
     }
 
     function detailInputStateFormat() {
