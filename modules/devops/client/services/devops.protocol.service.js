@@ -99,6 +99,7 @@
       var cmdObj = {};
       cmdObj.uniqueId = param.uid;
       cmdObj.temperature = parseInt(param.temperature.trim(), 10);
+      cmdObj.dstSwitch = parseInt(param.switch.trim(), 10);
       httpSendRequest(api, cmdObj, cb);
     }
   };
