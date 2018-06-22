@@ -33,6 +33,12 @@ var TmpCommandSchema = new Schema({
     default: '',
     trim: true,
     required: '空调目标温度不能为空'
+  },
+  switch: {
+    type: Number,
+    default: 0,
+    trim: true,
+    required: '空调目标温度开关不能为空'
   }
 });
 

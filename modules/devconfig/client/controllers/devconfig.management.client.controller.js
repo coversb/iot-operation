@@ -188,6 +188,7 @@
           }
           case 'TMP': {
             vm.modal.temperature = '25';
+            vm.modal.switch = 0;
             break;
           }
           case 'SER': {

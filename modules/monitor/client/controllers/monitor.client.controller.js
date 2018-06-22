@@ -237,9 +237,16 @@
           },
           {
             field: 'detail.dstTemperature',
-            title: '目标温度',
+            title: '目标温度·开关',
             valign: 'middle',
-            align: 'center'
+            align: 'center',
+            formatter: function (value, row) {
+              var tmpSwitch = '关';
+              if (row.detail.dstSwitch === 1) {
+                tmpSwitch = '开';
+              }
+              return '<span>' + row.detail.dstTemperature + ' | ' + tmpSwitch + '</span>';
+            }
           },
           {
             field: 'detail.temperature',
