@@ -19,7 +19,7 @@ function TmpCommand() {
     cmd.name = req.body.name;
     cmd.notes = req.body.notes;
     cmd.temperature = req.body.temperature;
-    cmd.swtich = req.body.switch;
+    cmd.switch = req.body.switch;
 
     cmd.save(function (err) {
       if (err) {
