@@ -245,7 +245,11 @@
               if (row.detail.dstSwitch === 1) {
                 tmpSwitch = '开';
               }
-              return '<span>' + row.detail.dstTemperature + ' | ' + tmpSwitch + '</span>';
+              var dstTempDis = '-';
+              if (row.detail.dstTemperature !== undefined) {
+                dstTempDis = row.detail.dstTemperature;
+              }
+              return '<span>' + dstTempDis + ' | ' + tmpSwitch + '</span>';
             }
           },
           {
@@ -254,7 +258,17 @@
             valign: 'middle',
             align: 'center',
             formatter: function (value, row) {
-              return '<span>' + row.detail.temperature + ' | ' + row.detail.humidity + '</span>';
+              var tempDis = '-';
+              if (row.detail.temperature !== 0) // default value need optimize
+              {
+                tempDis = row.detail.temperature;
+              }
+              var humiDis = '-';
+              if (row.detail.humidity !== 0) // default value need optimize
+              {
+                humiDis = row.detail.humidity;
+              }
+              return '<span>' + tempDis + ' | ' + humiDis + '</span>';
             }
           },
           {
