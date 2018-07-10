@@ -531,7 +531,23 @@
           <div class="modal-body">
             <div>
               <div>
-                <h2>Not Implemented Now</h2>
+                <label for="secModalType">密钥类型</label>
+                <select class="select form-control" id="secModalType" name="secModalType"
+                        ng-model="vm.secModal.type">
+                  <option value="1">离线密码密钥</option>
+                  <option value="2">运维密码密钥</option>
+                  <option value="3">通讯密钥</option>
+                  <option value="F1">离线密码密钥(不加密)</option>
+                  <option value="F2">运维密码密钥(不加密)</option>
+                  <option value="F3">通讯密钥(不加密)</option>
+                </select>
+              </div>
+              <div>
+                <label for="secModalKey">Key</label>
+                <input class="form-control" id="secModalKey" name="secModalKey" type="text"
+                       placeholder="请输入不超过32字节的密钥"
+                       required="required"
+                       ng-model="vm.secModal.key"/>
               </div>
               <div>
                 <label for="secModalUID">UID</label>

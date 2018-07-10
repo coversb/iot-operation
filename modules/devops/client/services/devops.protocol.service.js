@@ -12,6 +12,9 @@
   var PROTSTART = '2B5042'; // protocol starter '+PB'
   var PROTTAIL = '0D0A';
 
+  var SECKEY_HEADER = 'DEADBEEF';
+  var SECKEY_TAIL = 'BEEFDEAD';
+
   DevopsProt.$inject = ['$http', 'DevopsSettings', 'OperationLogService'];
 
   function DevopsProt($http, DevopsSettings, OperationLogService) {
@@ -288,15 +291,33 @@
   /* SEC command begin */
   var SEC = {
     assemble: function (param) {
-      console.log('SEC NOT IMPLEMENT');
+      var isEncrypt = (param.type.indexOf('F') <= -1);
       var res = '';
 
       res = assembleMessageType(res, '0107');
+      res += convertDecStrToHexStr(parseInt(param.type.trim(), 16).toString(10), 2);
+      res += this.assembleKey(param.key, isEncrypt);
 
       return res;
     },
     send: function (httpSendRequest, api, param, cb) {
-      console.log('SEC NOT IMPLEMENT');
+      alert('SEC NOT IMPLEMENT');
+    },
+    assembleKey: function (key, isEncrypt) {
+      var keyData = '';
+
+      keyData += SECKEY_HEADER;
+      keyData += assembleAppendZero(convertStrToHexStr(key.trim()), 32*2);
+      keyData += SECKEY_TAIL;
+      keyData += calculateCRC16(keyData);
+
+      if (isEncrypt === true) {
+        // do encrypt
+      } else {
+        keyData = assembleAppendZero(keyData, 48*2);
+      }
+
+      return keyData;
     }
   };
   /* SEC command end */
@@ -719,27 +740,6 @@
       var crcSrc = data.substr(36, data.length - 36);
       return calculateCRC16(crcSrc) + PROTTAIL;
     }
-
-    function calculateCRC16(data) {
-      var bytes = [];
-
-      var idx;
-      // convert hex byte string to byte array
-      for (idx = 0; idx < data.length; idx += 2) {
-        bytes.push(parseInt(data.substr(idx, 2), 16));
-      }
-
-      var crc = 0x1D0F;
-      for (idx = 0; idx < bytes.length; idx++) {
-        crc = ((crc >>> 8) | (crc << 8)) & 0xffff;
-        crc ^= (bytes[idx] & 0xff); // byte to int, trunc sign
-        crc ^= ((crc & 0xff) >> 4);
-        crc ^= (crc << 12) & 0xffff;
-        crc ^= ((crc & 0xFF) << 5) & 0xffff;
-      }
-
-      return assemblePadZero(crc.toString(16), 4);
-    }
   }
 
   function sendCommand(cmdType, param, cb) {
@@ -841,6 +841,33 @@
   function assemblePadZero(str, n) {
     var temp = '00000000000000000000000000000000' + str;
     return temp.substr(temp.length - n);
+  }
+
+  // append '0' after string
+  function assembleAppendZero(str, n) {
+    var temp = str + '0000000000000000000000000000000000000000000000000000000000000000';
+    return temp.substr(0, n);
+  }
+
+  function calculateCRC16(data) {
+    var bytes = [];
+
+    var idx;
+    // convert hex byte string to byte array
+    for (idx = 0; idx < data.length; idx += 2) {
+      bytes.push(parseInt(data.substr(idx, 2), 16));
+    }
+
+    var crc = 0x1D0F;
+    for (idx = 0; idx < bytes.length; idx++) {
+      crc = ((crc >>> 8) | (crc << 8)) & 0xffff;
+      crc ^= (bytes[idx] & 0xff); // byte to int, trunc sign
+      crc ^= ((crc & 0xff) >> 4);
+      crc ^= (crc << 12) & 0xffff;
+      crc ^= ((crc & 0xFF) << 5) & 0xffff;
+    }
+
+    return assemblePadZero(crc.toString(16), 4);
   }
 
 }());

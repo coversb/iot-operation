@@ -91,6 +91,7 @@
 
     /* sec modal init */
     vm.secModal = {
+      type: 'F3',
       uid: '0000000000600000',
       genData: ''
     };
