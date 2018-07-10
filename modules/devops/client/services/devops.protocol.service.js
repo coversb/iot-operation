@@ -7,7 +7,7 @@
     .module('devops.prot.services')
     .factory('DevopsProt', DevopsProt);
 
-  var PROTVER = '0114'; // protocol version V1.20
+  var PROTVER = '0118'; // protocol version V1.24
   var PROTDEVTYPE = '01'; // device type
   var PROTSTART = '2B5042'; // protocol starter '+PB'
   var PROTTAIL = '0D0A';
@@ -304,6 +304,9 @@
       alert('SEC NOT IMPLEMENT');
     },
     assembleKey: function (key, isEncrypt) {
+      if (key === undefined) {
+        key = '';
+      }
       var keyData = '';
 
       keyData += SECKEY_HEADER;
