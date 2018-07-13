@@ -49,6 +49,34 @@
     return prot;
   }
 
+  /* TV_VOL command begin */
+  var TV_VOL = {
+    send: function (httpSendRequest, api, param, cb) {
+      var tvVolumeUpdate = [];
+      for (var idx = 0; idx < param.uid.length; idx++) {
+        var tvVolumeItem = {
+          fvenueId: param.uid[idx],
+          fvolume: parseInt(param.volume.trim(), 10)
+        };
+        tvVolumeUpdate[idx] = tvVolumeItem;
+      }
+      httpSendRequest(api, tvVolumeUpdate, cb);
+    }
+  };
+  /* TMP command end */
+
+  /* TMP command begin */
+  var TMP = {
+    send: function (httpSendRequest, api, param, cb) {
+      var cmdObj = {};
+      cmdObj.uniqueId = param.uid;
+      cmdObj.temperature = parseInt(param.temperature.trim(), 10);
+      cmdObj.dstSwitch = param.switch;
+      httpSendRequest(api, cmdObj, cb);
+    }
+  };
+  /* TMP command end */
+
   /* APC command begin */
   var APC = {
     assemble: function (param) {
@@ -95,18 +123,6 @@
     }
   };
   /* APC command end */
-
-  /* TMP command begin */
-  var TMP = {
-    send: function (httpSendRequest, api, param, cb) {
-      var cmdObj = {};
-      cmdObj.uniqueId = param.uid;
-      cmdObj.temperature = parseInt(param.temperature.trim(), 10);
-      cmdObj.dstSwitch = param.switch;
-      httpSendRequest(api, cmdObj, cb);
-    }
-  };
-  /* TMP command end */
 
   /* SER command begin */
   var SER = {
@@ -310,14 +326,14 @@
       var keyData = '';
 
       keyData += SECKEY_HEADER;
-      keyData += assembleAppendZero(convertStrToHexStr(key.trim()), 32*2);
+      keyData += assembleAppendZero(convertStrToHexStr(key.trim()), 32 * 2);
       keyData += SECKEY_TAIL;
       keyData += calculateCRC16(keyData);
 
       if (isEncrypt === true) {
         // do encrypt
       } else {
-        keyData = assembleAppendZero(keyData, 48*2);
+        keyData = assembleAppendZero(keyData, 48 * 2);
       }
 
       return keyData;
@@ -749,12 +765,16 @@
     var res = false;
 
     switch (cmdType) {
-      case 'APC': {
-        res = APC.send(this.httpSendRequest, this.settings.apcConAPI, param, cb);
+      case 'TV_VOL': {
+        res = TV_VOL.send(this.httpSendRequest, this.settings.tvVolUpdateAPI, param, cb);
         break;
       }
       case 'TMP': {
         res = TMP.send(this.httpSendRequest, this.settings.tmpConAPI, param, cb);
+        break;
+      }
+      case 'APC': {
+        res = APC.send(this.httpSendRequest, this.settings.apcConAPI, param, cb);
         break;
       }
       case 'SER': {

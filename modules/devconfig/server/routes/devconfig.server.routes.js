@@ -4,6 +4,7 @@
  * Module dependencies
  */
 var devconfigPolicy = require('../policies/devconfig.server.policy'),
+  TV_VOL = require('../controllers/devconfig.server.tvVolume.controller'),
   APC = require('../controllers/devconfig.server.apc.controller'),
   TMP = require('../controllers/devconfig.server.tmp.controller'),
   SER = require('../controllers/devconfig.server.ser.controller'),
@@ -20,6 +21,18 @@ var devconfigPolicy = require('../policies/devconfig.server.policy'),
   RTO = require('../controllers/devconfig.server.rto.controller');
 
 module.exports = function (app) {
+  /**
+   * TV volume routers
+   */
+  app.route('/api/devconfig/tvVolume').all(devconfigPolicy.isAllowed)
+    .get(TV_VOL.TvVolume.list)
+    .post(TV_VOL.TvVolume.create);
+  app.route('/api/devconfig/tvVolume/:tvVolumeId').all(devconfigPolicy.isAllowed)
+    .get(TV_VOL.TvVolume.read)
+    .put(TV_VOL.TvVolume.update)
+    .delete(TV_VOL.TvVolume.delete);
+  app.param('tvVolumeId', TV_VOL.TvVolume.commandByID);
+
   /**
    * APC routers
    */

@@ -11,8 +11,9 @@
         <select class="select form-control" id="configType" name="configType"
                 ng-change="vm.configTypeChange()"
                 ng-model="vm.configType">
-          <option value="APC">入网配置</option>
+          <option value="TV_VOL">电视音量</option>
           <option value="TMP">配置目标温度</option>
+          <option value="APC">入网配置</option>
           <option value="SER">服务器连接配置</option>
           <option value="CFG">全局配置</option>
           <option value="TMA">时间调整</option>
@@ -58,6 +59,106 @@
           <ul class="pagination"></ul>
         </div>
       </div>
+    </div>
+
+    <!-- TV_VOL Modal -->
+    <div class="modal fade" id="TV_VOLModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.configUpdate()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <div>
+              <h4 class="modal-title" id="tvVolModalTitle">
+                电视音量
+              </h4>
+            </div>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label for="tvVolModalName">配置名称</label>
+                <input class="form-control" id="tvVolModalName" name="tvVolModalName" type="text"
+                       required="required"
+                       ng-model="vm.modal.name"/>
+              </div>
+              <div>
+                <label for="tvVolModalNotes">备注</label>
+                <textarea class="form-control" rows="3" id="tvVolModalNotes" name="tvVolModalNotes"
+                          ng-model="vm.modal.notes"></textarea>
+              </div>
+              <div>
+                <label for="tvVolModalVol">音量(百分比0-100)</label>
+                <input class="form-control" id="tvVolModalVol" name="tvVolModalVol" type="text"
+                       required="required"
+                       ng-model="vm.modal.volume"/>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">
+              保存
+            </button>
+            <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">
+              取消
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+
+    <!-- TMP Modal -->
+    <div class="modal fade" id="TMPModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.configUpdate()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <div>
+              <h4 class="modal-title" id="tmpModalTitle">
+                配置目标温度
+              </h4>
+            </div>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label for="tmpModalName">配置名称</label>
+                <input class="form-control" id="tmpModalName" name="tmpModalName" type="text"
+                       required="required"
+                       ng-model="vm.modal.name"/>
+              </div>
+              <div>
+                <label for="tmpModalNotes">备注</label>
+                <textarea class="form-control" rows="3" id="tmpModalNotes" name="tmpModalNotes"
+                          ng-model="vm.modal.notes"></textarea>
+              </div>
+              <div>
+                <label for="tmpModalTemperature">目标温度</label>
+                <input class="form-control" id="tmpModalTemperature" name="tmpModalTemperature" type="text"
+                       required="required"
+                       ng-model="vm.modal.temperature"/>
+              </div>
+              <div>
+                <label for="tmpModalSwitch">目标温度开关</label>
+                <input class="form-control" id="tmpModalSwitch" name="tmpModalSwitch" type="text"
+                       required="required"
+                       ng-model="vm.modal.switch"/>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">
+              保存
+            </button>
+            <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">
+              取消
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
     </div>
 
     <!-- APC Modal -->
@@ -150,59 +251,6 @@
               保存
             </button>
             <button type="submit" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">
-              取消
-            </button>
-          </div>
-        </form><!-- /.modal-content -->
-      </div><!-- /.modal -->
-    </div>
-
-    <!-- TMP Modal -->
-    <div class="modal fade" id="TMPModal" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog">
-        <form class="modal-content" ng-submit="vm.configUpdate()">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-              &times;
-            </button>
-            <div>
-              <h4 class="modal-title" id="tmpModalTitle">
-                配置目标温度
-              </h4>
-            </div>
-          </div>
-          <div class="modal-body">
-            <div>
-              <div>
-                <label for="tmpModalName">配置名称</label>
-                <input class="form-control" id="tmpModalName" name="tmpModalName" type="text"
-                       required="required"
-                       ng-model="vm.modal.name"/>
-              </div>
-              <div>
-                <label for="tmpModalNotes">备注</label>
-                <textarea class="form-control" rows="3" id="tmpModalNotes" name="tmpModalNotes"
-                          ng-model="vm.modal.notes"></textarea>
-              </div>
-              <div>
-                <label for="tmpModalTemperature">目标温度</label>
-                <input class="form-control" id="tmpModalTemperature" name="tmpModalTemperature" type="text"
-                       required="required"
-                       ng-model="vm.modal.temperature"/>
-              </div>
-              <div>
-                <label for="tmpModalSwitch">目标温度开关</label>
-                <input class="form-control" id="tmpModalSwitch" name="tmpModalSwitch" type="text"
-                       required="required"
-                       ng-model="vm.modal.switch"/>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-success">
-              保存
-            </button>
-            <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">
               取消
             </button>
           </div>

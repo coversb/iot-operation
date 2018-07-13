@@ -30,7 +30,8 @@
 
     vm.searchData = '';
     vm.selectedUID = [];
-    vm.configType = 'APC';
+    vm.configType = 'TV_VOL';
+    vm.lastConfigType = 'TV_VOL';
 
     vm.configTypeChange = configTypeChange;
     vm.searchByName = searchByName;
@@ -48,7 +49,7 @@
       }
       // switch bootstrap-table'locales to zh-CN
       $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['zh-CN']);
-      loadBoxList();
+      updateBoxTable();
     }
 
     function avaliableConfigsUpdate() {
@@ -57,6 +58,21 @@
       if (vm.avaliableConfigs.length !== 0) {
         vm.modalSelectedConfig = vm.modalData = vm.avaliableConfigs[0];
       }
+      updateBoxTable();
+    }
+
+    function updateBoxTable() {
+      if (vm.configType !== vm.lastConfigType) {
+        if (vm.configType === 'TV_VOL' || vm.lastConfigType === 'TV_VOL') {
+          $("#boxTable").bootstrapTable('destroy');
+        }
+      }
+      if (vm.configType === 'TV_VOL') {
+        loadTvVolumeList();
+      } else {
+        loadBoxList();
+      }
+      vm.lastConfigType = vm.configType;
     }
 
     function configTypeChange() {
@@ -70,6 +86,115 @@
       } else {
         avaliableConfigsUpdate();
       }
+    }
+
+    function loadTvVolumeList() {
+      $('#boxTable').bootstrapTable({
+        method: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+        url: DevopsSettings.backboneURL + DevopsSettings.tvVolListAPI,
+        striped: true,
+        pagination: true, // 是否显示分页
+        pageList: [10, 20], // 可供选择的每页的行数（*）
+        singleSelect: false,
+        pageSize: 10, // 每页的记录行数
+        pageNumber: 1,  // 初始化加载第一页，默认第一页,并记录
+        sidePagination: 'server', // 服务端请求
+        cache: false,
+        showToggle: true,
+        showRefresh: true,
+        showColumns: true,
+        toolbar: '#toolbar',
+        queryParams: function (params) {  // 配置参数
+          var pageNumber = 1;
+          if (doSearch) {
+            doSearch = false;
+          } else {
+            if (params.offset !== 0 && params.limit !== 0) {
+              pageNumber = (params.offset / params.limit) + 1;
+            }
+          }
+          var param = {
+            name: searchData,
+            offset: pageNumber,  // 页码
+            limit: params.limit  // 页面大小
+          };
+          searchData = '';
+          vm.searchData = '';
+          return param;
+        },
+        responseHandler: function (res) {
+          // console.log(res);
+          if (res.code === 1) {
+            alert('请求场馆列表失败！' + res.code);
+          } else if (res.code === 0) {
+            return {
+              'total': res.total,
+              'rows': res.data
+            };
+          }
+        },
+        onClickRow: function (row, $element) {
+        },
+        // table headers
+        columns: [
+          {
+            checkbox: true
+          },
+          {
+            field: 'fvenueId',
+            title: '场馆ID',
+            valign: 'middle',
+            align: 'center'
+          },
+          {
+            field: 'fvenueName',
+            title: '场馆',
+            valign: 'middle',
+            align: 'center'
+          },
+          {
+            field: 'fstate',
+            title: '运行状态',
+            valign: 'middle',
+            align: 'center',
+            formatter: function (value, row) {
+              var statDis = '<span style="color:red">' + '未运行' + '</span>';
+              if (value === 1) {
+                statDis = '<span style="color:green">' + '运行中' + '</span>';
+              }
+              return statDis;
+            }
+          },
+          {
+            field: 'fvolume',
+            title: '电视音量',
+            valign: 'middle',
+            align: 'center',
+            formatter: function (value, row) {
+              return '<span>' + value + ' % </span>';
+            }
+          },
+          {
+            title: '操作',
+            field: '_id',
+            align: 'center',
+            formatter: function (value, row) {
+              return [
+                '<a href="#" mce_href="#" id="configSingle">配置下发</a>'
+              ];
+            },
+            events: window.operateEvents = {
+              'click #configSingle': function (e, value, row) {
+                vm.selectedUID = [];
+                vm.selectedUID[0] = row.fvenueId;
+                configModalShow();
+              }
+            }
+          }
+        ]
+      });
     }
 
     function loadBoxList() {
@@ -190,6 +315,7 @@
             },
             events: window.operateEvents = {
               'click #configSingle': function (e, value, row) {
+                vm.selectedUID = [];
                 vm.selectedUID[0] = row.base.uniqueId;
                 configModalShow();
               }
@@ -247,9 +373,20 @@
 
     // 批量配置下发
     $('#btnBatchConfig').click(function () {
-      vm.selectedUID = $('#boxTable').bootstrapTable('getAllSelections').map(function (row) {
-        return row.base.uniqueId;
-      });
+      switch (vm.configType) {
+        case 'TV_VOL': {
+          vm.selectedUID = $('#boxTable').bootstrapTable('getAllSelections').map(function (row) {
+            return row.fvenueId;
+          });
+          break;
+        }
+        default: {
+          vm.selectedUID = $('#boxTable').bootstrapTable('getAllSelections').map(function (row) {
+            return row.base.uniqueId;
+          });
+          break;
+        }
+      }
 
       if (vm.selectedUID.length === 0) {
         alert('请选择需要下发配置的场馆');
@@ -259,18 +396,46 @@
     });
 
     function showSendRes(data, status) {
-      if (status === 200) {
-        Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> 发送成功!' });
-      } else {
-        Notification.error({ message: data, title: '<i class="glyphicon glyphicon-remove"></i> 发送失败!' });
+      switch (vm.configType) {
+        case 'TV_VOL': {
+          if (status === 200) {
+            if (data.code === 0) {
+              Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> 发送成功!' });
+              $('#boxTable').bootstrapTable('refresh', {});
+            } else {
+              Notification.error({ message: '<i class="glyphicon glyphicon-remove"></i>' + data.message });
+            }
+          } else {
+            Notification.error({ message: data, title: '<i class="glyphicon glyphicon-remove"></i> 发送失败!' });
+          }
+          break;
+        }
+        default: {
+          if (status === 200) {
+            Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> 发送成功!' });
+          } else {
+            Notification.error({ message: data, title: '<i class="glyphicon glyphicon-remove"></i> 发送失败!' });
+          }
+          break;
+        }
       }
     }
 
     function configSend() {
       if ($window.confirm('确定向[' + vm.selectedUID.length + ']个场馆下发[' + vm.configType + ']?')) {
-        for (var idx = 0; idx < vm.selectedUID.length; idx++) {
-          vm.modalData.uid = vm.selectedUID[idx];
-          DevopsProt.sendCommand(vm.configType, vm.modalData, showSendRes);
+        switch (vm.configType) {
+          case 'TV_VOL': {
+            vm.modalData.uid = vm.selectedUID;
+            DevopsProt.sendCommand(vm.configType, vm.modalData, showSendRes);
+            break;
+          }
+          default: {
+            for (var idx = 0; idx < vm.selectedUID.length; idx++) {
+              vm.modalData.uid = vm.selectedUID[idx];
+              DevopsProt.sendCommand(vm.configType, vm.modalData, showSendRes);
+            }
+            break;
+          }
         }
       }
     }

@@ -16,8 +16,9 @@ exports.invokeRolesPolicies = function () {
     roles: ['admin', '开发/测试'],
     allows: [{
       resources: [
-        '/api/devconfig/apc',
+        '/api/devconfig/tvVolume',
         '/api/devconfig/tmp',
+        '/api/devconfig/apc',
         '/api/devconfig/ser',
         '/api/devconfig/cfg',
         '/api/devconfig/tma',
@@ -35,8 +36,9 @@ exports.invokeRolesPolicies = function () {
       permissions: '*'
     }, {
       resources: [
-        '/api/devconfig/apc/:apcId',
+        '/api/devconfig/tvVolume/:tvVolumeId',
         '/api/devconfig/tmp/:tmpId',
+        '/api/devconfig/apc/:apcId',
         '/api/devconfig/ser/:serId',
         '/api/devconfig/cfg/:cfgId',
         '/api/devconfig/tma/:tmaId',
@@ -57,8 +59,9 @@ exports.invokeRolesPolicies = function () {
     roles: ['user'],
     allows: [{
       resources: [
-        '/api/devconfig/apc',
+        '/api/devconfig/tvVolume',
         '/api/devconfig/tmp',
+        '/api/devconfig/apc',
         '/api/devconfig/ser',
         '/api/devconfig/cfg',
         '/api/devconfig/tma',
@@ -76,8 +79,9 @@ exports.invokeRolesPolicies = function () {
       permissions: ['get']
     }, {
       resources: [
-        '/api/devconfig/apc/:apcId',
+        '/api/devconfig/tvVolume/:tvVolumeId',
         '/api/devconfig/tmp/:tmpId',
+        '/api/devconfig/apc/:apcId',
         '/api/devconfig/ser/:serId',
         '/api/devconfig/cfg/:cfgId',
         '/api/devconfig/tma/:tmaId',

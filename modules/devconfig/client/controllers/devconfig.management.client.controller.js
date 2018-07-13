@@ -25,7 +25,7 @@
 
     var vm = this;
 
-    vm.configType = 'APC';
+    vm.configType = 'TV_VOL';
     vm.txtSearchName = '';
 
     vm.configTypeChange = configTypeChange;
@@ -181,14 +181,18 @@
 
         // init some default value
         switch (vm.configType) {
-          case 'APC': {
-            vm.modal.mainDNS = [114, 114, 114, 114];
-            vm.modal.backupDNS = [114, 114, 114, 114];
+          case 'TV_VOL': {
+            vm.modal.volume = '40';
             break;
           }
           case 'TMP': {
             vm.modal.temperature = '25';
             vm.modal.switch = 0;
+            break;
+          }
+          case 'APC': {
+            vm.modal.mainDNS = [114, 114, 114, 114];
+            vm.modal.backupDNS = [114, 114, 114, 114];
             break;
           }
           case 'SER': {

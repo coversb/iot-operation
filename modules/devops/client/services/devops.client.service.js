@@ -13,9 +13,13 @@
     var settings = {
       // backbone base url
       backboneURL: ENV_VARS.backboneUrl,
+      // tv app API
+      tvVolListAPI: '/transformer/venueaction/get_volume_list',
+      tvVolUpdateAPI: '/transformer/venueaction/set_volume_list',
+      // temperature control API
+      tmpConAPI: '/dstTemperature',
       // command API
       apcConAPI: '/gui/sendAccessPointCommand',
-      tmpConAPI: '/dstTemperature',
       serConAPI: '/gui/sendServerConfigCommand',
       cfgConAPI: '/gui/sendGlobalServerConfigCommand',
       tmaConAPI: '/gui/sendTimeAdjustConfigCommand',

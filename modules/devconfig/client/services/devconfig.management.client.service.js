@@ -10,8 +10,9 @@
   function DevconfigManagementService($resource, $log) {
     var DevconfigManagement = {
       apiMap: new Map([
-        ['APC', '/api/devconfig/apc'],
+        ['TV_VOL', '/api/devconfig/tvVolume'], // tv volume
         ['TMP', '/api/devconfig/tmp'], // target temperature setting
+        ['APC', '/api/devconfig/apc'],
         ['SER', '/api/devconfig/ser'],
         ['CFG', '/api/devconfig/cfg'],
         ['TMA', '/api/devconfig/tma'],
@@ -28,8 +29,9 @@
       ]),
 
       cmdManagerMap: new Map([
-        ['APC', $resource('/api/devconfig/apc/:apcId', { apcId: '@_id' }, { update: { method: 'PUT' } })],
+        ['TV_VOL', $resource('/api/devconfig/tvVolume/:tvVolume', { tvVolume: '@_id' }, { update: { method: 'PUT' } })],
         ['TMP', $resource('/api/devconfig/tmp/:tmpId', { tmpId: '@_id' }, { update: { method: 'PUT' } })],
+        ['APC', $resource('/api/devconfig/apc/:apcId', { apcId: '@_id' }, { update: { method: 'PUT' } })],
         ['SER', $resource('/api/devconfig/ser/:serId', { serId: '@_id' }, { update: { method: 'PUT' } })],
         ['CFG', $resource('/api/devconfig/cfg/:cfgId', { cfgId: '@_id' }, { update: { method: 'PUT' } })],
         ['TMA', $resource('/api/devconfig/tma/:tmaId', { tmaId: '@_id' }, { update: { method: 'PUT' } })],
