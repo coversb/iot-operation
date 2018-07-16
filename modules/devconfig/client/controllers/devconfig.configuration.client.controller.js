@@ -116,7 +116,7 @@
             }
           }
           var param = {
-            name: searchData,
+            fvenueName: searchData,
             offset: pageNumber,  // 页码
             limit: params.limit  // 页面大小
           };
