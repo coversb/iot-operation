@@ -390,8 +390,8 @@
 
       res = assembleMessageType(res, '0109');
       res += convertDecStrToHexStr(param.mode, 2);
-      res += convertDecStrToHexStr(parseInt(param.pwronEventMask.trim(), 16).toString(10), 2);
-      res += convertDecStrToHexStr(parseInt(param.pwroffEventMask.trim(), 16).toString(10), 2);
+      res += convertDecStrToHexStr(parseInt(param.pwrOnEventMask.trim(), 16).toString(10), 2);
+      res += convertDecStrToHexStr(parseInt(param.pwrOffEventMask.trim(), 16).toString(10), 2);
       res += convertDecStrToHexStr(param.duration, 2);
       res += this.assembleValidTime(param.beginHour, param.beginMinute, param.endHour, param.endMinute);
 
@@ -404,8 +404,8 @@
       cmdObj.messageSubType = 0x09;
       cmdObj.guiAirConditionerWorkingConfigCommandRequest = {
         'mode': parseInt(param.mode, 10),
-        'powerOnEventMask': parseInt(param.pwronEventMask, 16),
-        'powerOffEventMask': parseInt(param.pwroffEventMask, 16),
+        'powerOnEventMask': parseInt(param.pwrOnEventMask, 16),
+        'powerOffEventMask': parseInt(param.pwrOffEventMask, 16),
         'duration': parseInt(param.duration, 10),
         'validTime': parseInt(this.assembleValidTime(param.beginHour, param.beginMinute, param.endHour, param.endMinute), 16)
       };

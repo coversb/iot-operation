@@ -361,6 +361,16 @@
         alert('无可用配置，请先添加');
       } else {
         vm.modalData = devConfigMap.get(vm.configType).data[0];
+
+        switch (vm.configType) {
+          case 'ACW': {
+            acwEventMaskCheck();
+            break;
+          }
+          default:
+            break;
+        }
+        $scope.$apply();
         $('#' + vm.configType + 'Modal').modal('show');
       }
     }
@@ -369,6 +379,15 @@
       vm.modalData = devConfigMap.get(vm.configType).data.find(function (v) {
         return v._id === vm.modalSelectedConfig._id;
       });
+
+      switch (vm.configType) {
+        case 'ACW': {
+          acwEventMaskCheck();
+          break;
+        }
+        default:
+          break;
+      }
     }
 
     // 批量配置下发
@@ -448,5 +467,27 @@
       return (Date.parse(new Date()) / 1000 + offset).toString(10);
     }
 
+    function acwEventMaskCheck() {
+      var pwrOnEventMask = assemblePadZero(parseInt(vm.modalData.pwrOnEventMask, 16).toString(2), 8);
+      var pwrOffEventMask = assemblePadZero(parseInt(vm.modalData.pwrOffEventMask, 16).toString(2), 8);
+
+      vm.modalData.pwrOnEventMask0 = convertFromBit(pwrOnEventMask.charAt(pwrOnEventMask.length - 1));
+      vm.modalData.pwrOnEventMask1 = convertFromBit(pwrOnEventMask.charAt(pwrOnEventMask.length - 2));
+      vm.modalData.pwrOffEventMask0 = convertFromBit(pwrOffEventMask.charAt(pwrOffEventMask.length - 1));
+      vm.modalData.pwrOffEventMask1 = convertFromBit(pwrOffEventMask.charAt(pwrOffEventMask.length - 2));
+
+      function convertFromBit(data) {
+        if (data === '0') {
+          return false;
+        } else {
+          return true;
+        }
+      }
+    }
+
+    function assemblePadZero(str, n) {
+      var temp = '00000000000000000000000000000000' + str;
+      return temp.substr(temp.length - n);
+    }
   }
 }());

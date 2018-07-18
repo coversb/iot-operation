@@ -13,6 +13,7 @@ var devconfigPolicy = require('../policies/devconfig.server.policy'),
   DOG = require('../controllers/devconfig.server.dog.controller'),
   ACO = require('../controllers/devconfig.server.aco.controller'),
   OMC = require('../controllers/devconfig.server.omc.controller'),
+  ACW = require('../controllers/devconfig.server.acw.controller'),
   DOA = require('../controllers/devconfig.server.doa.controller'),
   SMA = require('../controllers/devconfig.server.sma.controller'),
   OUO = require('../controllers/devconfig.server.ouo.controller'),
@@ -128,6 +129,18 @@ module.exports = function (app) {
     .put(OMC.OmcCommand.update)
     .delete(OMC.OmcCommand.delete);
   app.param('omcId', OMC.OmcCommand.commandByID);
+
+  /**
+   * ACW routers
+   */
+  app.route('/api/devconfig/acw').all(devconfigPolicy.isAllowed)
+    .get(ACW.AcwCommand.list)
+    .post(ACW.AcwCommand.create);
+  app.route('/api/devconfig/acw/:acwId').all(devconfigPolicy.isAllowed)
+    .get(ACW.AcwCommand.read)
+    .put(ACW.AcwCommand.update)
+    .delete(ACW.AcwCommand.delete);
+  app.param('acwId', ACW.AcwCommand.commandByID);
 
   /**
    * DOA routers

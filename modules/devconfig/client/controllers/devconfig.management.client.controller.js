@@ -35,6 +35,7 @@
     vm.outModalPinChange = outModalPinChange;
     vm.outModalPinMaskChange = outModalPinMaskChange;
     vm.muoModalActChange = muoModalActChange;
+    vm.acwEventMaskUpdate = acwEventMaskUpdate;
 
     init();
     configTypeChange();
@@ -173,6 +174,15 @@
     function configModalShow(param) {
       if (param !== undefined) {
         vm.modal = param;
+
+        switch (vm.configType) {
+          case 'ACW': {
+            acwEventMaskCheck();
+            break;
+          }
+          default:
+            break;
+        }
       } else {
         vm.modal = {
           _id: undefined,
@@ -223,6 +233,20 @@
             vm.modal.duration = '60';
             break;
           }
+          case 'ACW': {
+            vm.modal.mode = '1';
+            vm.modal.pwrOnEventMask0 = true;
+            vm.modal.pwrOnEventMask1 = false;
+            vm.modal.pwrOnEventMask = '1';
+            vm.modal.pwrOffEventMask0 = true;
+            vm.modal.pwrOffEventMask1 = false;
+            vm.modal.pwrOffEventMask = '1';
+            vm.modal.beginHour = '0';
+            vm.modal.beginMinute = '0';
+            vm.modal.endHour = '0';
+            vm.modal.endMinute = '0';
+            break;
+          }
           case 'OUO': {
             vm.modal.orderNum = '1';
             vm.modal.type = '0';
@@ -251,7 +275,7 @@
       if (selectedItem.length === 0) {
         alert('请选择需要删除的配置');
       } else {
-        if ($window.confirm('确定删除选中的[' + selectedItem.length + ']个版本?')) {
+        if ($window.confirm('确定删除选中的[' + selectedItem.length + ']个配置?')) {
           for (var idx = 0; idx < selectedItem.length; idx++) {
             configDeleteSingle(selectedItem[idx]._id);
           }
@@ -383,6 +407,48 @@
         default:
           break;
       }
+    }
+
+    function acwEventMaskUpdate() {
+      var pwrOnEventMask = '000000'
+        + convertToBit(vm.modal.pwrOnEventMask1)
+        + convertToBit(vm.modal.pwrOnEventMask0);
+      var pwrOffEventMask = '000000'
+        + convertToBit(vm.modal.pwrOffEventMask1)
+        + convertToBit(vm.modal.pwrOffEventMask0);
+      vm.modal.pwrOnEventMask = parseInt(pwrOnEventMask, 2).toString(16);
+      vm.modal.pwrOffEventMask = parseInt(pwrOffEventMask, 2).toString(16);
+
+      function convertToBit(data) {
+        if (data === true) {
+          return '1';
+        } else {
+          return '0';
+        }
+      }
+    }
+
+    function acwEventMaskCheck() {
+      var pwrOnEventMask = assemblePadZero(parseInt(vm.modal.pwrOnEventMask, 16).toString(2), 8);
+      var pwrOffEventMask = assemblePadZero(parseInt(vm.modal.pwrOffEventMask, 16).toString(2), 8);
+
+      vm.modal.pwrOnEventMask0 = convertFromBit(pwrOnEventMask.charAt(pwrOnEventMask.length - 1));
+      vm.modal.pwrOnEventMask1 = convertFromBit(pwrOnEventMask.charAt(pwrOnEventMask.length - 2));
+      vm.modal.pwrOffEventMask0 = convertFromBit(pwrOffEventMask.charAt(pwrOffEventMask.length - 1));
+      vm.modal.pwrOffEventMask1 = convertFromBit(pwrOffEventMask.charAt(pwrOffEventMask.length - 2));
+
+      function convertFromBit(data) {
+        if (data === '0') {
+          return false;
+        } else {
+          return true;
+        }
+      }
+    }
+
+    function assemblePadZero(str, n) {
+      var temp = '00000000000000000000000000000000' + str;
+      return temp.substr(temp.length - n);
     }
 
   }

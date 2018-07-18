@@ -118,8 +118,8 @@
     /* acw modal init */
     vm.acwModal = {
       mode: '0',
-      pwronEventMask: '',
-      pwroffEventMask: '',
+      pwrOnEventMask: '',
+      pwrOffEventMask: '',
       duration: '',
       beginHour: '',
       beginMinute: '',
