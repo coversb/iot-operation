@@ -25,21 +25,18 @@
     });
 
     menuService.addSubMenuItem('topbar', 'devops', {
+      title: '空调任务',
+      state: 'devops.aircon-action',
+      roles: ['admin', '运维/客服/工程', '开发/测试'],
+      position: 0
+    });
+
+    menuService.addSubMenuItem('topbar', 'devops', {
       title: '功能测试工具',
       state: 'devops.functiontest',
       roles: ['admin', '运维/客服/工程', '开发/测试'],
       position: 1
     });
-
-    /* Disable this feature */
-    /*
-    menuService.addSubMenuItem('topbar', 'devops', {
-      title: '任务管理',
-      state: 'devops.tasks',
-      roles: ['admin', '运维/客服/工程', '开发/测试'],
-      position: 3
-    });
-    */
 
     menuService.addSubMenuItem('topbar', 'devops', {
       title: '协议命令',

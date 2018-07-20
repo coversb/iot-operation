@@ -1,0 +1,280 @@
+<!-- The chat view -->
+<section class="container">
+  <div class="page-header">
+    <h1>空调任务</h1>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="panel-body">
+        <div class="panel panel-default">
+          <div class="panel-heading">查询条件</div>
+          <div class="panel-body">
+            <form id="formSearch" class="form-horizontal" ng-submit="vm.searchCleaner()">
+              <div class="form-group" style="margin-top:15px">
+                <label class="control-label col-sm-1" for="searchProvince">省份</label>
+                <div class="col-sm-3">
+                  <select class="select form-control" id="searchProvince"
+                          ng-model="vm.txtSearchCleanerProvince"
+                          ng-change="vm.searchProvinceChange()">
+                    <option value="">全部省份</option>
+                    <option ng-repeat="item in vm.availableProvince" value="{{item.provinceId}}">{{item.provinceName}}</option>
+                  </select>
+                </div>
+                <label class="control-label col-sm-1" for="searchCity">城市</label>
+                <div class="col-sm-3">
+                  <select class="select form-control" id="searchCity"
+                          ng-model="vm.txtSearchCleanerCity">
+                    <option value="">全部城市</option>
+                    <option ng-repeat="item in vm.availableSearchCity" value="{{item.cityId}}">{{item.cityName}}</option>
+                  </select>
+                </div>
+                <label class="control-label col-sm-1" for="searchBoxName">盒子</label>
+                <div class="col-sm-3">
+                  <input type="text" class="form-control" id="searchBoxName" ng-model="vm.txtSearchCleanerBoxName">
+                </div>
+                <label class="control-label col-sm-1" for="searchName">姓名</label>
+                <div class="col-sm-3">
+                  <input type="text" class="form-control" id="searchName" ng-model="vm.txtSearchCleanerName">
+                </div>
+                <label class="control-label col-sm-1" for="searchPhone">电话</label>
+                <div class="col-sm-3">
+                  <input type="text" class="form-control" id="searchPhone" ng-model="vm.txtSearchCleanerPhone">
+                </div>
+                <div class="searchSubmit col-sm-4 pull-right">
+                  <button type="submit" class="btn btn-primary pull-right">查询</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div id="toolbar" class="btn-group">
+          <button id="btnAddCleaner" type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+          </button>
+          <button id="btnDelCleaner" type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+          </button>
+        </div>
+        <div class="tableMargin">
+          <table class="table table-hover table-striped" id="cleanersTable"></table>
+          <ul class="pagination"></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cleaner Info Modal -->
+    <div class="modal fade" id="cleanerInfoModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.cleanerInfoUpdate()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h4 class="modal-title" id="cleanerInfoModalTitle">
+              新增保洁人员
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label for="cleanerInfoModalName">姓名</label>
+                <input class="form-control" id="cleanerInfoModalName" name="cleanerInfoModalName" type="text"
+                       required="required"
+                       ng-model="vm.modal.name"/>
+              </div>
+              <div>
+                <label for="cleanerInfoModalPhone">电话</label>
+                <input class="form-control" id="cleanerInfoModalPhone" name="cleanerInfoModal"
+                       required="required"
+                       ng-model="vm.modal.phone"/>
+              </div>
+              <div>
+                <label for="cleanerInfoModalProvince">省份</label>
+                <select class="select form-control" id="cleanerInfoModalProvince" name="cleanerInfoModalProvince"
+                        required="required"
+                        ng-model="vm.modal.province"
+                        ng-change="vm.modalProvinceChange()">
+                  <option value="">---请选择---</option>
+                  <option ng-repeat="item in vm.availableProvince" value="{{item.provinceId}}">{{item.provinceName}}</option>
+                </select>
+              </div>
+              <div>
+                <label for="cleanerInfoModalCity">城市</label>
+                <select class="select form-control" id="cleanerInfoModalCity" name="cleanerInfoModalCity"
+                        required="required"
+                        ng-model="vm.modal.city">
+                  <option value="">---请选择---</option>
+                  <option ng-repeat="item in vm.availableModalCity" value="{{item.cityId}}">{{item.cityName}}</option>
+                </select>
+              </div>
+              <div>
+                <div>
+                  <label>合约期限</label>
+                </div>
+                <label for="cleanerInfoModalStartDatetime">开始日期</label>
+                <div class="form-inline" id="cleanerInfoModalStartDatetime">
+                  <select class="select form-control" id="cleanerInfoModalStartDatetimeYear"
+                          name="cleanerInfoModalStartDatetimeYear"
+                          ng-model="vm.modal.startYear"
+                          ng-options="idx for idx in vm.modalYears">
+                  </select>
+                  -
+                  <select class="select form-control" id="cleanerInfoModalStartDatetimeMonth"
+                          name="cleanerInfoModalStartDatetimeYear"
+                          ng-model="vm.modal.startMonth"
+                          ng-options="idx for idx in vm.modalMonths">
+                  </select>
+                  -
+                  <select class="select form-control" id="cleanerInfoModalStartDatetimeDay"
+                          name="cleanerInfoModalStartDatetimeYear"
+                          ng-model="vm.modal.startDay"
+                          ng-options="idx for idx in vm.modalDays">
+                  </select>
+                </div>
+                <label for="cleanerInfoModalStartDatetime">结束日期</label>
+                <div class="form-inline" id="cleanerInfoModalStopDatetime">
+                  <select class="select form-control" id="cleanerInfoModalStopDatetimeYear"
+                          name="cleanerInfoModalStopDatetimeYear"
+                          ng-model="vm.modal.stopYear"
+                          ng-options="idx for idx in vm.modalYears">
+                  </select>
+                  -
+                  <select class="select form-control" id="cleanerInfoModalStopDatetimeMonth"
+                          name="cleanerInfoModalStopDatetimeMonth"
+                          ng-model="vm.modal.stopMonth"
+                          ng-options="idx for idx in vm.modalMonths">
+                  </select>
+                  -
+                  <select class="select form-control" id="cleanerInfoModalStopDatetimeDay"
+                          name="cleanerInfoModalStopDatetimeDay"
+                          ng-model="vm.modal.stopDay"
+                          ng-options="idx for idx in vm.modalDays">
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">
+              保存
+            </button>
+            <button type="submit" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">
+              取消
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+
+    <!-- Clean Info Modal -->
+    <div class="modal fade" id="cleanrBindModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.cleanBindUpdate()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h4 class="modal-title" id="cleanrBindModalTitle">
+              盒子名称(城市)
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label for="cleanrBindModalCleaner">盒子</label>
+                <select class="select form-control" id="cleanrBindModalCleaner"
+                        name="cleanrBindModalCleaner"
+                        ng-model="vm.modal.cleanupBox">
+                  <option value="">---请选择---</option>
+                  <option ng-repeat="item in vm.availableBoxes" value="{{item.venueId}}">{{item.venueName}}</option>
+                </select>
+              </div>
+              <div>
+                <label>出勤日</label>
+                <div>
+                  <input type="checkbox" id="cleanrBindModalWorkEveryday" name="cleanrBindModalWorkEveryday"
+                         ng-model="vm.workDay[7]"
+                         ng-checked="vm.workDay[7]"
+                         ng-click="vm.workDayUpdateSelection('everyday')">每天
+                </div>
+                <div class="form-inline">
+                  <input type="checkbox" id="cleanrBindModalWorkMon" name="cleanrBindModalWorkMon"
+                         ng-model="vm.workDay[0]"
+                         ng-checked="vm.workDay[0]"
+                         ng-click="vm.workDayUpdateSelection('mon')">周一
+                  <input type="checkbox" id="cleanrBindModalWorkTue" name="cleanrBindModalWorkTue"
+                         ng-model="vm.workDay[1]"
+                         ng-checked="vm.workDay[1]"
+                         ng-click="vm.workDayUpdateSelection('tue')">周二
+                  <input type="checkbox" id="cleanrBindModalWorkWed" name="cleanrBindModalWorkWed"
+                         ng-model="vm.workDay[2]"
+                         ng-checked="vm.workDay[2]"
+                         ng-click="vm.workDayUpdateSelection('wed')">周三
+                  <input type="checkbox" id="cleanrBindModalWorkThu" name="cleanrBindModalWorkThu"
+                         ng-model="vm.workDay[3]"
+                         ng-checked="vm.workDay[3]"
+                         ng-click="vm.workDayUpdateSelection('thu')">周四
+                  <input type="checkbox" id="cleanrBindModalWorkFri" name="cleanrBindModalWorkFri"
+                         ng-model="vm.workDay[4]"
+                         ng-checked="vm.workDay[4]"
+                         ng-click="vm.workDayUpdateSelection('fri')">周五
+                  <input type="checkbox" id="cleanrBindModalWorkSat" name="cleanrBindModalWorkSat"
+                         ng-model="vm.workDay[5]"
+                         ng-checked="vm.workDay[5]"
+                         ng-click="vm.workDayUpdateSelection('sat')">周六
+                  <input type="checkbox" id="cleanrBindModalWorkSun" name="cleanrBindModalWorkSun"
+                         ng-model="vm.workDay[6]"
+                         ng-checked="vm.workDay[6]"
+                         ng-click="vm.workDayUpdateSelection('sun')">周日
+                </div>
+              </div>
+              <div>
+                <div>
+                  <label>保洁时段</label>
+                </div>
+                <label for="cleanrBindModalStartTime">开始时间</label>
+                <div class="form-inline" id="cleanrBindModalStartTime">
+                  <select class="select form-control" id="cleanerBindModalStartTimeHour"
+                          name="cleanerBindModalStartTimeHour"
+                          ng-model="vm.modal.startHour"
+                          ng-options="idx for idx in vm.modalHours">
+                  </select>
+                  :
+                  <select class="select form-control" id="cleanrBindModalStartTimeMinute"
+                          name="cleanrBindModalStartTimeMinute"
+                          ng-model="vm.modal.startMinute"
+                          ng-options="idx for idx in vm.modalMinutes">
+                  </select>
+                </div>
+                <label for="cleanrBindModalStopTime">结束时间</label>
+                <div class="form-inline" id="cleanrBindModalStopTime">
+                  <select class="select form-control" id="cleanrBindModalStopTimeHour"
+                          name="cleanrBindModalStopTimeHour"
+                          ng-model="vm.modal.stopHour"
+                          ng-options="idx for idx in vm.modalHours">
+                  </select>
+                  :
+                  <select class="select form-control" id="cleanrBindModalStopTimeMinute"
+                          name="cleanrBindModalStopTimeMinute"
+                          ng-model="vm.modal.stopMinute"
+                          ng-options="idx for idx in vm.modalMinutes">
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">
+              保存
+            </button>
+            <button type="submit" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">
+              取消
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+
+  </div>
+</section>
