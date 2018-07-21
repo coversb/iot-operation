@@ -356,7 +356,7 @@
         pagination: true, // 是否显示分页
         pageList: [10, 20], // 可供选择的每页的行数（*）
         singleSelect: false,
-        pageSize: 10, // 每页的记录行数
+        pageSize: 1024, // 每页的记录行数
         pageNumber: 1,  // 初始化加载第一页，默认第一页,并记录
         sidePagination: 'server', // 服务端请求
         cache: false,
