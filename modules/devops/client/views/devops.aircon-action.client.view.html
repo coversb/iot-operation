@@ -10,12 +10,12 @@
         <div class="panel panel-default">
           <div class="panel-heading">查询条件</div>
           <div class="panel-body">
-            <form id="formSearch" class="form-horizontal" ng-submit="vm.searchCleaner()">
+            <form id="formSearch" class="form-horizontal" ng-submit="vm.searchAirconAction()">
               <div class="form-group" style="margin-top:15px">
                 <label class="control-label col-sm-1" for="searchProvince">省份</label>
                 <div class="col-sm-3">
                   <select class="select form-control" id="searchProvince"
-                          ng-model="vm.txtSearchCleanerProvince"
+                          ng-model="vm.txtSearchProvince"
                           ng-change="vm.searchProvinceChange()">
                     <option value="">全部省份</option>
                     <option ng-repeat="item in vm.availableProvince" value="{{item.provinceId}}">{{item.provinceName}}</option>
@@ -24,22 +24,26 @@
                 <label class="control-label col-sm-1" for="searchCity">城市</label>
                 <div class="col-sm-3">
                   <select class="select form-control" id="searchCity"
-                          ng-model="vm.txtSearchCleanerCity">
+                          ng-model="vm.txtSearchCity">
                     <option value="">全部城市</option>
                     <option ng-repeat="item in vm.availableSearchCity" value="{{item.cityId}}">{{item.cityName}}</option>
                   </select>
                 </div>
+                <label class="control-label col-sm-1" for="searchType">类型</label>
+                <div class="col-sm-3">
+                  <select class="select form-control" id="searchType"
+                          ng-model="vm.txtSearchVenueType">
+                    <option value="">全部健身舱</option>
+                    <option ng-repeat="item in vm.availableBoxTypes" value="{{item.typeId}}">{{item.typeName}}</option>
+                  </select>
+                </div>
                 <label class="control-label col-sm-1" for="searchBoxName">盒子</label>
                 <div class="col-sm-3">
-                  <input type="text" class="form-control" id="searchBoxName" ng-model="vm.txtSearchCleanerBoxName">
+                  <input type="text" class="form-control" id="searchBoxName" ng-model="vm.txtSearchVenueName">
                 </div>
-                <label class="control-label col-sm-1" for="searchName">姓名</label>
+                <label class="control-label col-sm-1" for="searchName">任务</label>
                 <div class="col-sm-3">
-                  <input type="text" class="form-control" id="searchName" ng-model="vm.txtSearchCleanerName">
-                </div>
-                <label class="control-label col-sm-1" for="searchPhone">电话</label>
-                <div class="col-sm-3">
-                  <input type="text" class="form-control" id="searchPhone" ng-model="vm.txtSearchCleanerPhone">
+                  <input type="text" class="form-control" id="searchName" ng-model="vm.txtSearchActionName">
                 </div>
                 <div class="searchSubmit col-sm-4 pull-right">
                   <button type="submit" class="btn btn-primary pull-right">查询</button>
@@ -49,109 +53,204 @@
           </div>
         </div>
         <div id="toolbar" class="btn-group">
-          <button id="btnAddCleaner" type="button" class="btn btn-default">
+          <button id="btnAddAction" type="button" class="btn btn-default">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
           </button>
-          <button id="btnDelCleaner" type="button" class="btn btn-default">
+          <button id="btnDelAction" type="button" class="btn btn-default">
             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
           </button>
         </div>
         <div class="tableMargin">
-          <table class="table table-hover table-striped" id="cleanersTable"></table>
+          <table class="table table-hover table-striped" id="airconActionsTable"></table>
           <ul class="pagination"></ul>
         </div>
       </div>
     </div>
 
-    <!-- Cleaner Info Modal -->
-    <div class="modal fade" id="cleanerInfoModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Action Modal -->
+    <div class="modal fade" id="actionModal" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog">
-        <form class="modal-content" ng-submit="vm.cleanerInfoUpdate()">
+        <form class="modal-content" ng-submit="vm.actionUpdate()">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
               &times;
             </button>
-            <h4 class="modal-title" id="cleanerInfoModalTitle">
-              新增保洁人员
+            <h4 class="modal-title" id="actionModalTitle">
+              新增任务
             </h4>
           </div>
           <div class="modal-body">
             <div>
               <div>
-                <label for="cleanerInfoModalName">姓名</label>
-                <input class="form-control" id="cleanerInfoModalName" name="cleanerInfoModalName" type="text"
+                <label for="actionModalName">名称</label>
+                <input class="form-control" id="actionModalName" name="actionModalName" type="text"
                        required="required"
-                       ng-model="vm.modal.name"/>
+                       ng-model="vm.modal.actionName"/>
               </div>
               <div>
-                <label for="cleanerInfoModalPhone">电话</label>
-                <input class="form-control" id="cleanerInfoModalPhone" name="cleanerInfoModal"
-                       required="required"
-                       ng-model="vm.modal.phone"/>
-              </div>
-              <div>
-                <label for="cleanerInfoModalProvince">省份</label>
-                <select class="select form-control" id="cleanerInfoModalProvince" name="cleanerInfoModalProvince"
-                        required="required"
-                        ng-model="vm.modal.province"
+                <label for="actionModalProvince">省份</label>
+                <select class="select form-control" id="actionModalProvince" name="actionModalProvince"
+                        ng-model="vm.modal.provinceId"
                         ng-change="vm.modalProvinceChange()">
-                  <option value="">---请选择---</option>
+                  <option value="">全部</option>
                   <option ng-repeat="item in vm.availableProvince" value="{{item.provinceId}}">{{item.provinceName}}</option>
                 </select>
               </div>
               <div>
-                <label for="cleanerInfoModalCity">城市</label>
-                <select class="select form-control" id="cleanerInfoModalCity" name="cleanerInfoModalCity"
-                        required="required"
-                        ng-model="vm.modal.city">
-                  <option value="">---请选择---</option>
+                <label for="actionModalCity">城市</label>
+                <select class="select form-control" id="actionModalCity" name="actionModalCity"
+                        ng-model="vm.modal.cityId">
+                  <option value="">全部城市</option>
                   <option ng-repeat="item in vm.availableModalCity" value="{{item.cityId}}">{{item.cityName}}</option>
                 </select>
               </div>
               <div>
+                <label for="actionModalVenueType">盒子类型</label>
+                <select class="select form-control" id="actionModalVenueType" name="actionModalVenueType"
+                        ng-model="vm.modal.venueType">
+                  <option value="">全部类型</option>
+                  <option ng-repeat="item in vm.availableBoxTypes" value="{{item.typeId}}">{{item.typeName}}</option>
+                </select>
+              </div>
+              <div>
+                <label>执行盒子</label>
                 <div>
-                  <label>合约期限</label>
+                  <input type="radio" ng-model="vm.modal.actionVenueCondition" value="all">所有
+                  <input type="radio" ng-model="vm.modal.actionVenueCondition" value="selected">指定
                 </div>
-                <label for="cleanerInfoModalStartDatetime">开始日期</label>
-                <div class="form-inline" id="cleanerInfoModalStartDatetime">
-                  <select class="select form-control" id="cleanerInfoModalStartDatetimeYear"
-                          name="cleanerInfoModalStartDatetimeYear"
-                          ng-model="vm.modal.startYear"
-                          ng-options="idx for idx in vm.modalYears">
+                <div ng-switch="vm.modal.actionVenueCondition">
+                  <div ng-switch-when="selected">
+                    <select class="select form-control" id="actionModalSelectBox"
+                            name="actionModalSelectBox"
+                            ng-model="vm.modalSelectedBox">
+                      <option value="">---请选择---</option>
+                      <option ng-repeat="item in vm.availableBoxes" value="{{item.venueId}}">{{item.venueName}}</option>
+                    </select>
+                    <div>
+                      <button type="button" class="btn btn-info btn-sm" id="actionModalAddBtn" ng-click="vm.modalAddVenue()">
+                        <span class="glyphicon glyphicon-plus"></span> 添加指定场馆
+                      </button>
+                      <label>&nbsp&nbsp&nbsp已选择{{ vm.modalSelectedBoxes.length }}个盒子</label>
+                    </div>
+                    <label ng-repeat="item in vm.modalSelectedBoxes track by $index">
+                      <b>
+                        <span class="glyphicon glyphicon-remove" ng-click="vm.modalDelVenue($index)"></span>
+                        {{ item.name }}
+                        &nbsp&nbsp&nbsp
+                      </b>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label for="actionModalActionDate">执行日期</label>
+                <div>
+                  <input type="radio" ng-model="vm.modal.actionDateCondition" value="everyDay">每天
+                  <input type="radio" ng-model="vm.modal.actionDateCondition" value="setDay">指定日期
+                </div>
+                <div ng-switch="vm.modal.actionDateCondition">
+                  <div ng-switch-when="setDay">
+                    <div class="form-inline" id="actionModalActionDate">
+                      <select class="select form-control" id="actionModalActionYear"
+                              name="actionModalActionYear"
+                              ng-model="vm.modal.actionYear"
+                              ng-options="idx for idx in vm.modalYears">
+                      </select>
+                      -
+                      <select class="select form-control" id="actionModalActionMonth"
+                              name="actionModalActionMonth"
+                              ng-model="vm.modal.actionMonth"
+                              ng-options="idx for idx in vm.modalMonths">
+                      </select>
+                      -
+                      <select class="select form-control" id="actionModalActionDay"
+                              name="actionModalActionDay"
+                              ng-model="vm.modal.actionDay"
+                              ng-options="idx for idx in vm.modalDays">
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label for="actionModalActionTime">执行时刻</label>
+                <div class="form-inline" id="actionModalActionTime">
+                  <select class="select form-control" id="actionModalActionHour"
+                          name="actionModalActionHour"
+                          ng-model="vm.modal.actionHour"
+                          ng-options="idx for idx in vm.modalHours">
                   </select>
                   -
-                  <select class="select form-control" id="cleanerInfoModalStartDatetimeMonth"
-                          name="cleanerInfoModalStartDatetimeYear"
-                          ng-model="vm.modal.startMonth"
-                          ng-options="idx for idx in vm.modalMonths">
+                  <select class="select form-control" id="actionModalActionMinute"
+                          name="actionModalActionMinute"
+                          ng-model="vm.modal.actionMinute"
+                          ng-options="idx for idx in vm.modalMinutes">
                   </select>
                   -
-                  <select class="select form-control" id="cleanerInfoModalStartDatetimeDay"
-                          name="cleanerInfoModalStartDatetimeYear"
-                          ng-model="vm.modal.startDay"
-                          ng-options="idx for idx in vm.modalDays">
+                  <select class="select form-control" id="actionModalActionSecond"
+                          name="actionModalActionSecond"
+                          ng-model="vm.modal.actionSecond"
+                          ng-options="idx for idx in vm.modalMinutes">
                   </select>
                 </div>
-                <label for="cleanerInfoModalStartDatetime">结束日期</label>
-                <div class="form-inline" id="cleanerInfoModalStopDatetime">
-                  <select class="select form-control" id="cleanerInfoModalStopDatetimeYear"
-                          name="cleanerInfoModalStopDatetimeYear"
-                          ng-model="vm.modal.stopYear"
-                          ng-options="idx for idx in vm.modalYears">
-                  </select>
-                  -
-                  <select class="select form-control" id="cleanerInfoModalStopDatetimeMonth"
-                          name="cleanerInfoModalStopDatetimeMonth"
-                          ng-model="vm.modal.stopMonth"
-                          ng-options="idx for idx in vm.modalMonths">
-                  </select>
-                  -
-                  <select class="select form-control" id="cleanerInfoModalStopDatetimeDay"
-                          name="cleanerInfoModalStopDatetimeDay"
-                          ng-model="vm.modal.stopDay"
-                          ng-options="idx for idx in vm.modalDays">
+              </div>
+              <div>
+                <div>
+                  <label for="actionModalPowerMode">空调开关</label>
+                  <select class="select form-control" id="actionModalPowerMode" name="actionModalPowerMode"
+                          ng-model="vm.modal.powerMode">
+                    <option value="0">空调常关</option>
+                    <option value="1">空调常开</option>
                   </select>
                 </div>
+                <div>
+                  <label for="actionModalWorkMode">模式</label>
+                  <select class="select form-control" id="actionModalWorkMode" name="actionModalWorkMode"
+                          ng-model="vm.modal.workMode">
+                    <option value="0">制冷</option>
+                    <option value="1">制热</option>
+                    <option value="2">送风</option>
+                    <option value="3">抽湿</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="actionModalWindPower">风力</label>
+                  <select class="select form-control" id="actionModalWindPower" name="actionModalWindPower"
+                          ng-model="vm.modal.windPower">
+                    <option value="0">高</option>
+                    <option value="1">中</option>
+                    <option value="2">低</option>
+                    <option value="3">自动</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="actionModalTemperature">温度</label>
+                  <select class="select form-control" id="actionModalTemperature" name="actionModalTemperature"
+                          ng-model="vm.modal.temperature">
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="24">24</option>
+                    <option value="25">25</option>
+                    <option value="26">26</option>
+                    <option value="27">27</option>
+                    <option value="28">28</option>
+                    <option value="29">29</option>
+                    <option value="30">30</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label for="actionModalIsValid" style="color:red">任务开关</label>
+                <select class="select form-control" id="actionModalIsValid" name="actionModalIsValid"
+                        ng-model="vm.modal.isValid">
+                  <option value="0">关</option>
+                  <option value="1">开</option>
+                </select>
               </div>
             </div>
           </div>

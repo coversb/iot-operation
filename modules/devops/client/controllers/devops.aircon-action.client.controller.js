@@ -5,15 +5,11 @@
     .module('devops.aircon-action')
     .controller('DevopsAirconActionController', DevopsAirconActionController);
 
-  DevopsAirconActionController.$inject = ['$scope', '$state', '$window', '$http', 'Authentication', 'Notification', 'TransactionService'];
+  DevopsAirconActionController.$inject = ['$scope', '$state', '$window', '$http', 'Authentication', 'Notification', 'OperationCenterSetting', 'OperationCenter'];
 
-  function DevopsAirconActionController($scope, $state, $window, $http, Authentication, Notification, TransactionService) {
+  function DevopsAirconActionController($scope, $state, $window, $http, Authentication, Notification, OperationCenterSetting, OperationCenter) {
 
     var doSearch = false;
-    var cleanerInfoModalOpen = false;
-    var cleanrBindModalOpen = false;
-    var cleanerListNeedRefresh = false;
-    var cleanupDetailNeedRefresh = false;
 
     var vm = this;
     vm.modalYears = [];
@@ -21,35 +17,27 @@
     vm.modalDays = [];
     vm.modalHours = [];
     vm.modalMinutes = [];
+    vm.modalSelectedBox = '';
+    vm.modalSelectedBoxes = [];
     vm.availableBoxes = [];
     vm.availableProvince = [];
     vm.availableSearchCity = [];
     vm.availableModalCity = [];
+    vm.availableBoxTypes = [];
 
-    vm.workDay = [
-      false,  // 0 Monday
-      false,  // 1 Tuesday
-      false,  // 2 Wednesday
-      false,  // 3 Thursday
-      false,  // 4 Friday
-      false,  // 5 Saturday
-      false,  // 6 Sunday
-      false   // 7 Everyday
-    ];
+    vm.txtSearchProvince = '';
+    vm.txtSearchCity = '';
+    vm.txtSearchVenueType = '';
+    vm.txtSearchVenueName = '';
+    vm.txtSearchActionName = '';
 
-    vm.txtSearchCleanerName = '';
-    vm.txtSearchCleanerPhone = '';
-    vm.txtSearchCleanerProvince = '';
-    vm.txtSearchCleanerCity = '';
-    vm.txtSearchCleanerBoxName = '';
-
-    vm.workDayUpdateSelection = workDayUpdateSelection;
     vm.searchProvinceChange = searchProvinceChange;
     vm.modalProvinceChange = modalProvinceChange;
+    vm.modalAddVenue = modalAddVenue;
+    vm.modalDelVenue = modalDelVenue;
 
-    vm.searchCleaner = searchCleaner;
-    vm.cleanerInfoUpdate = cleanerInfoUpdate;
-    vm.cleanBindUpdate = cleanBindUpdate;
+    vm.searchAirconAction = searchAirconAction;
+    vm.actionUpdate = actionUpdate;
 
     init();
 
@@ -63,10 +51,20 @@
       requestAvailableBoxes();
       requestAvailableCity();
       createModalElements();
-      setTimeout(loadCleanersList, 200);
+      setTimeout(loadAirconActionsList, 200);
     }
 
     function createModalElements() {
+      // generate box type select options
+      vm.availableBoxTypes[0] = {
+        typeId: 1,
+        typeName: '自主健身舱'
+      };
+      vm.availableBoxTypes[1] = {
+        typeId: 2,
+        typeName: '智能健身舱'
+      };
+
       // generate year select options
       var idx = 0;
       var yearMin = 2018;
@@ -108,39 +106,6 @@
       }
     }
 
-    function workDayUpdateSelection(day) {
-      switch (day) {
-        case 'everyday': {
-          if (vm.workDay[7] === true) {
-            vm.workDay[0] = true;
-            vm.workDay[1] = true;
-            vm.workDay[2] = true;
-            vm.workDay[3] = true;
-            vm.workDay[4] = true;
-            vm.workDay[5] = true;
-            vm.workDay[6] = true;
-          } else {
-            vm.workDay[0] = false;
-            vm.workDay[1] = false;
-            vm.workDay[2] = false;
-            vm.workDay[3] = false;
-            vm.workDay[4] = false;
-            vm.workDay[5] = false;
-            vm.workDay[6] = false;
-          }
-          break;
-        }
-        default: {
-          if ((vm.workDay[0] && vm.workDay[1] && vm.workDay[2] && vm.workDay[3] && vm.workDay[4] && vm.workDay[5] && vm.workDay[6]) === true) {
-            vm.workDay[7] = true;
-          } else {
-            vm.workDay[7] = false;
-          }
-          break;
-        }
-      }
-    }
-
     function updateAvailableBoxes(data, status) {
       if (status !== 200 || data.code !== 200) {
         Notification.error({ message: data.msg, title: '<i class="glyphicon glyphicon-remove"></i> 加载盒子失败! ' });
@@ -160,7 +125,7 @@
         start: 1,
         limit: 1024
       };
-      TransactionService.httpSendRequest(TransactionService.settings.availableBoxAPI, data, updateAvailableBoxes);
+      OperationCenter.httpSendRequest(OperationCenterSetting.apiURL + OperationCenterSetting.availableBoxAPI, data, updateAvailableBoxes);
     }
 
     function updateAvailableCity(data, status) {
@@ -188,17 +153,17 @@
 
     function requestAvailableCity() {
       var data = {};
-      TransactionService.httpSendRequest(TransactionService.settings.availableCityAPI, data, updateAvailableCity);
+      OperationCenter.httpSendRequest(OperationCenterSetting.apiURL + OperationCenterSetting.availableCityAPI, data, updateAvailableCity);
     }
 
     function searchProvinceChange() {
-      if (vm.txtSearchCleanerProvince === '') {
-        vm.txtSearchCleanerCity = '';
+      if (vm.txtSearchProvince === '') {
+        vm.txtSearchCity = '';
         vm.availableSearchCity = [];
       } else {
         for (var idx in vm.availableProvince) {
-          if (vm.availableProvince[idx].provinceId === parseInt(vm.txtSearchCleanerProvince, 10)) {
-            vm.txtSearchCleanerCity = '';
+          if (vm.availableProvince[idx].provinceId === parseInt(vm.txtSearchProvince, 10)) {
+            vm.txtSearchCity = '';
             vm.availableSearchCity = vm.availableProvince[idx].cities;
             break;
           }
@@ -207,13 +172,13 @@
     }
 
     function modalProvinceChange() {
-      if (vm.modal.province === '') {
-        vm.modal.city = '';
+      if (vm.modal.provinceId === '') {
+        vm.modal.cityId = '';
         vm.availableModalCity = [];
       } else {
         for (var idx in vm.availableProvince) {
-          if (vm.availableProvince[idx].provinceId === parseInt(vm.modal.province, 10)) {
-            vm.modal.city = '';
+          if (vm.availableProvince[idx].provinceId === parseInt(vm.modal.provinceId, 10)) {
+            vm.modal.cityId = '';
             vm.availableModalCity = vm.availableProvince[idx].cities;
             break;
           }
@@ -221,137 +186,61 @@
       }
     }
 
-    // add new cleaner button
-    $('#btnAddCleaner').click(function () {
-      cleanerInfoModalShow();
+    function modalAddVenue() {
+      var selectedVenueName = convertVenueIdToName(vm.modalSelectedBox);
+      if (selectedVenueName !== '') {
+        var selectedVenue = {
+          id: parseInt(vm.modalSelectedBox, 10),
+          name: selectedVenueName
+        };
+        if (modalAddVenueValidity(selectedVenue.id)) {
+          vm.modalSelectedBoxes.push(selectedVenue);
+        }
+      } else {
+        alert('请选择正确的场馆');
+      }
+    }
+
+    function modalAddVenueValidity(id) {
+      for (var idx = 0; idx < vm.modalSelectedBoxes.length; idx++) {
+        if (vm.modalSelectedBoxes[idx].id === id) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    function modalDelVenue(idx) {
+      vm.modalSelectedBoxes.splice(idx, 1);
+    }
+
+    // add new action button
+    $('#btnAddAction').click(function () {
+      actionModalShow();
     });
 
-    // delete cleaner button
-    $('#btnDelCleaner').click(function () {
-      var selectedItem = $('#cleanersTable').bootstrapTable('getSelections');
+    // delete action button
+    $('#btnDelAction').click(function () {
+      var selectedItem = $('#airconActionsTable').bootstrapTable('getSelections');
       if (selectedItem.length === 0) {
         alert('请选择需要删除信息');
       } else {
-        if ($window.confirm('确定删除选中的[' + selectedItem.length + ']个保洁人员信息?')) {
+        if ($window.confirm('确定删除选中的[' + selectedItem.length + ']个空调任务?')) {
           var ids = [];
           for (var idx = 0; idx < selectedItem.length; idx++) {
             ids.push(selectedItem[idx].id);
           }
-          cleanerInfoDel(ids);
+          actionDel(ids);
         }
       }
     });
 
-    $('#cleanerInfoModal').on('show.bs.modal', function () {
-      cleanerInfoModalOpen = true;
-    });
-    $('#cleanerInfoModal').on('hide.bs.modal', function () {
-      cleanerInfoModalOpen = false;
-    });
-
-    $('#cleanrBindModal').on('show.bs.modal', function () {
-      cleanrBindModalOpen = true;
-    });
-    $('#cleanrBindModal').on('hide.bs.modal', function () {
-      cleanrBindModalOpen = false;
-    });
-
-    function cleanerInfoModalShow(data) {
-      if (data === undefined) {
-        // added new
-        $('#cleanerInfoModalTitle').text('新增保洁人员信息');
-        vm.modal = {
-          name: '',
-          phone: '',
-          province: '',
-          city: '',
-          startYear: '2018',
-          startMonth: '1',
-          startDay: '1',
-          stopYear: '2018',
-          stopMonth: '1',
-          stopDay: '1'
-        };
-      } else {
-        // modify
-        $('#cleanerInfoModalTitle').text('修改保洁人员信息');
-        var startDate = new Date(data.contractStartTime);
-        var stopDate = new Date(data.contractEndTime);
-        vm.modal = {
-          id: data.id,
-          name: data.truename,
-          phone: data.phone,
-          province: '',
-          city: '',
-          startYear: startDate.getFullYear().toString(),
-          startMonth: (startDate.getMonth() + 1).toString(),
-          startDay: startDate.getDate().toString(),
-          stopYear: stopDate.getFullYear().toString(),
-          stopMonth: (stopDate.getMonth() + 1).toString(),
-          stopDay: stopDate.getDate().toString()
-        };
-        // update vm.availableModalCity first and then set vm.modal.city value
-        vm.modal.province = data.province.toString();
-        modalProvinceChange();
-        vm.modal.city = data.city.toString();
-      }
-
-      $scope.$apply();
-      $('#cleanerInfoModal').modal('show');
-    }
-
-    function cleanerBindModalShow(parentData, data) {
-      vm.workDay = [
-        false,  // 0 Monday
-        false,  // 1 Tuesday
-        false,  // 2 Wednesday
-        false,  // 3 Thursday
-        false,  // 4 Friday
-        false,  // 5 Saturday
-        false,  // 6 Sunday
-        false   // 7 Everyday
-      ];
-
-      if (parentData === null) {
-        // added new
-        $('#cleanrBindModalTitle').text(data.truename + '(' + convertCityCodeToName(data.city) + ')');
-        $('#cleanrBindModalCleaner').removeAttr('readOnly');
-        $('#cleanrBindModalCleaner').removeAttr('disabled');
-        vm.modal = {
-          startHour: '06',
-          startMinute: '00',
-          stopHour: '07',
-          stopMinute: '00',
-          userCode: data.userCode
-        };
-      } else {
-        // modify
-        $('#cleanrBindModalTitle').text(parentData.truename + '(' + convertCityCodeToName(parentData.city) + ')');
-        $('#cleanrBindModalCleaner').attr('readOnly', 'readOnly');
-        $('#cleanrBindModalCleaner').attr('disabled', 'disabled');
-        vm.modal = {
-          cleanupBox: data.venueId.toString(),
-          startHour: data.workStartTime.split(':')[0],
-          startMinute: data.workStartTime.split(':')[1],
-          stopHour: data.workEndTime.split(':')[0],
-          stopMinute: data.workEndTime.split(':')[1],
-          userCode: data.userCode
-        };
-        var workDayArray = data.workDay.split(',');
-        for (var idx = 0; idx < workDayArray.length; idx++) {
-          vm.workDay[parseInt(workDayArray[idx], 10) - 1] = true;
-        }
-      }
-      $scope.$apply();
-      $('#cleanrBindModal').modal('show');
-    }
-
-    function loadCleanersList() {
-      $('#cleanersTable').bootstrapTable({
+    function loadAirconActionsList() {
+      $('#airconActionsTable').bootstrapTable({
         method: 'post',
         dataType: 'json',
         contentType: 'application/x-www-form-urlencoded',
-        url: TransactionService.settings.serverURL + TransactionService.settings.cleanerListAPI,
+        url: OperationCenterSetting.apiURL + OperationCenterSetting.airconActionListAPI,
         striped: true,
         pagination: true, // 是否显示分页
         pageList: [10, 20], // 可供选择的每页的行数（*）
@@ -364,23 +253,18 @@
         showRefresh: true,
         showColumns: true,
         toolbar: '#toolbar',
-        detailView: true,
         queryParams: function (params) {  // 配置参数
           var pageNumber = 1;
           /* search parameters */
-          var userName = '';
-          var phone = '';
-          var province = null;
-          var city = null;
-          var district = null;
-          var boxName = '';
+          var actionName = '';
+          var cityId = null;
+          var venueName = '';
+          var venueType = null;
           if (doSearch) {
-            userName = vm.txtSearchCleanerName;
-            phone = vm.txtSearchCleanerPhone;
-            province = (vm.txtSearchCleanerProvince === '') ? null : parseInt(vm.txtSearchCleanerProvince, 10);
-            city = (vm.txtSearchCleanerCity === '') ? null : parseInt(vm.txtSearchCleanerCity, 10);
-            district = null;
-            boxName = vm.txtSearchCleanerBoxName;
+            actionName = vm.txtSearchActionName;
+            cityId = (vm.txtSearchCity === '') ? null : parseInt(vm.txtSearchCity, 10);
+            venueName = vm.txtSearchVenueName;
+            venueType = (vm.txtSearchVenueType === '') ? null : parseInt(vm.txtSearchVenueType, 10);
             doSearch = false;
           } else {
             if (params.offset !== 0 && params.limit !== 0) {
@@ -388,13 +272,10 @@
             }
           }
           return {
-            username: userName,
-            phone: phone,
-            province: province,
-            city: city,
-            district: district,
-            address: '',
-            venueName: boxName,
+            actionName: actionName,
+            cityId: cityId,
+            venueName: venueName,
+            venueType: venueType,
             limit: params.limit, // 页面大小
             start: pageNumber  // 页码
           };
@@ -403,7 +284,7 @@
           var total = 0;
           var rows = [];
           if (res.code !== 200) {
-            alert('加载保洁人员信息失败！' + res.msg + ' code:' + res.code);
+            alert('加载空调任务信息失败！' + res.msg + ' code:' + res.code);
           } else {
             total = res.total;
             rows = res.data;
@@ -419,19 +300,13 @@
             checkbox: true
           },
           {
-            field: 'truename',
-            title: '姓名',
+            field: 'actionName',
+            title: '名称',
             valign: 'middle',
             align: 'center'
           },
           {
-            field: 'phone',
-            title: '电话',
-            valign: 'middle',
-            align: 'center'
-          },
-          {
-            field: 'city',
+            field: 'cityId',
             title: '城市',
             valign: 'middle',
             align: 'center',
@@ -440,37 +315,146 @@
             }
           },
           {
-            field: 'bindVenue',
-            title: '负责场馆',
+            field: 'venueType',
+            title: '场馆类型',
             valign: 'middle',
             align: 'center',
             formatter: function (value, row) {
-              var bindVenues = '';
-              for (var idx = 0; idx < value.length; idx++) {
-                if (bindVenues !== '') {
-                  bindVenues += '<br>';
+              var venueType = '全部';
+              switch (value) {
+                case 1: {
+                  venueType = '自主健身舱';
+                  break;
                 }
-                bindVenues += value[idx].venueName;
+                case 2: {
+                  venueType = '智能健身舱';
+                  break;
+                }
+                default: break;
               }
-              return bindVenues;
+              return venueType;
             }
           },
           {
-            field: 'contractStartTime',
-            title: '合同开始日期',
+            field: 'venueName',
+            title: '场馆',
             valign: 'middle',
             align: 'center',
             formatter: function (value, row) {
-              return value.substring(0, 10);
+              if (value === null) {
+                return '全部';
+              } else {
+                return value;
+              }
             }
           },
           {
-            field: 'contractEndTime',
-            title: '合同结束日期',
+            field: 'powerMode',
+            title: '供电·模式·风量·温度',
             valign: 'middle',
             align: 'center',
             formatter: function (value, row) {
-              return value.substring(0, 10);
+              var pwrMode = '-';
+              var workMode = '-';
+              var windMode = '-';
+              var temperature = '-';
+              // power mode
+              switch (row.powerMode) {
+                case 0: {
+                  pwrMode = '关';
+                  break;
+                }
+                case 1: {
+                  pwrMode = '开';
+                  break;
+                }
+                default: break;
+              }
+              // work mode
+              switch (row.workMode) {
+                case 0: {
+                  workMode = '制冷';
+                  break;
+                }
+                case 1: {
+                  workMode = '制热';
+                  break;
+                }
+                case 2: {
+                  workMode = '送风';
+                  break;
+                }
+                case 3: {
+                  workMode = '抽湿';
+                  break;
+                }
+                default: break;
+              }
+              // wind level
+              switch (row.windPower) {
+                case 0: {
+                  windMode = '高';
+                  break;
+                }
+                case 1: {
+                  windMode = '中';
+                  break;
+                }
+                case 2: {
+                  windMode = '低';
+                  break;
+                }
+                case 3: {
+                  windMode = '自动';
+                  break;
+                }
+                default: break;
+              }
+
+              if (row.temperature !== 0) {
+                temperature = row.temperature;
+              }
+              return '<span>' + pwrMode + '|' + workMode + '|' + windMode + '|' + temperature + '</span>';
+            }
+          },
+          {
+            field: 'actionDate',
+            title: '执行日期',
+            valign: 'middle',
+            align: 'center',
+            formatter: function (value, row) {
+              if (value === '') {
+                return '每天';
+              } else {
+                return value;
+              }
+            }
+          },
+          {
+            field: 'actionTime',
+            title: '执行时刻',
+            valign: 'middle',
+            align: 'center'
+          },
+          {
+            field: 'isValid',
+            title: '状态',
+            valign: 'middle',
+            align: 'center',
+            formatter: function (value, row) {
+              var validState = '<span style="color:red"> 未知 </span>';
+              switch (value) {
+                case 0: {
+                  validState = '<span style="color:red"> 停止 </span>';
+                  break;
+                }
+                case 1: {
+                  validState = '<span style="color:green"> 运行中 </span>';
+                  break;
+                }
+                default: break;
+              }
+              return validState;
             }
           },
           {
@@ -486,234 +470,18 @@
             formatter: function (value, row) {
               return [
                 '<a href="#" mce_href="#" id="cleanerSingleEdit">编辑</a> ' +
-                '<a href="#" mce_href="#" id="cleanerSingleDel">删除</a> ' +
-                '<a href="#" mce_href="#" id="cleanerBindNewBox">添加盒子</a>'
+                '<a href="#" mce_href="#" id="cleanerSingleDel">删除</a> '
               ];
             },
             events: window.operateEvents = {
               'click #cleanerSingleEdit': function (e, value, row) {
-                cleanerInfoModalShow(row);
+                actionModalShow(row);
               },
               'click #cleanerSingleDel': function (e, value, row) {
-                if ($window.confirm('确定删除【' + row.truename + '】？')) {
+                if ($window.confirm('确定删除【' + row.actionName + '】？')) {
                   var ids = [];
                   ids.push(row.id);
-                  cleanerInfoDel(ids);
-                }
-              },
-              'click #cleanerBindNewBox': function (e, value, row) {
-                cleanerBindModalShow(null, row);
-              }
-
-            }
-          }
-        ],
-        onExpandRow: function (index, row, $detail) {
-          loadCleanupDetails(index, row, $detail);
-        }
-      });
-    }
-
-    function loadCleanupDetails(index, parentRow, $detail) {
-      var table = $detail.html('<table class="table table-hover table-striped" id="cleanupDetails"></table>').find('table');
-      $(table).bootstrapTable({
-        method: 'post',
-        dataType: 'json',
-        contentType: 'application/x-www-form-urlencoded',
-        url: TransactionService.settings.serverURL + TransactionService.settings.cleanupListAPI,
-        striped: true,
-        singleSelect: false,
-        sidePagination: 'server', // 服务端请求
-        cache: false,
-        detailView: true,
-        queryParams: function (params) {  // 配置参数
-          return {
-            userCode: parentRow.userCode
-          };
-        },
-        responseHandler: function (res) {
-          var total = 0;
-          var rows = [];
-          if (res.code !== 200) {
-            alert('加载保洁信息失败！' + res.msg + ' code:' + res.code);
-          } else {
-            total = res.total;
-            rows = res.data;
-          }
-          return {
-            'total': total,
-            'rows': rows
-          };
-        },
-        // table headers
-        columns: [
-          {
-            field: 'venueName',
-            title: '盒子',
-            valign: 'middle',
-            align: 'center'
-          },
-          {
-            field: 'workDay',
-            title: '保洁日',
-            valign: 'middle',
-            align: 'center',
-            formatter: function (value, row) {
-              var workDayArray = value.split(',');
-              var workday = '';
-              if (isWorkEveryday(workDayArray) === true) {
-                workday = '每天';
-              } else if (isWorkWeekend(workDayArray) === true) {
-                workday = '周末';
-              } else {
-                for (var idx = 0; idx < workDayArray.length; ++idx) {
-                  workday += (' ' + convertWorkDay(parseInt(workDayArray[idx], 10)));
-                }
-              }
-              return workday;
-            }
-          },
-          {
-            field: 'workStartTime',
-            title: '时段',
-            valign: 'middle',
-            align: 'center',
-            formatter: function (value, row) {
-              return row.workStartTime + ' --- ' + row.workEndTime;
-            }
-          },
-          {
-            title: '操作',
-            field: 'id',
-            align: 'center',
-            formatter: function (value, row) {
-              return [
-                '<!--a href="#" mce_href="#" id="cleanupBindInfoEdit">编辑</a--> '
-                + '<a href="#" mce_href="#" id="cleanupBindDel">删除</a> '
-                // + '<a href="#" mce_href="#" id="cleanerSendAllSMS" disabled="disabled">一键补发</a> '
-              ];
-            },
-            events: window.operateEvents = {
-              'click #cleanupBindInfoEdit': function (e, value, row) {
-                cleanerBindModalShow(parentRow, row);
-              },
-              'click #cleanupBindDel': function (e, value, row) {
-                var queryText = '确定删除【' + row.username + '】对【' + row.venueName + '】的保洁？';
-                if ($window.confirm(queryText)) {
-                  var cleanupBind = {
-                    userCode: row.userCode,
-                    venueId: row.venueId,
-                    weeks: row.workDay
-                  };
-                  cleanupBindDel(cleanupBind);
-                }
-              }
-            }
-          }
-        ],
-        onExpandRow: function (index, row, $detail) {
-          loadCleanupRecords(index, row, $detail);
-        }
-      });
-    }
-
-    function loadCleanupRecords(index, parentRow, $detail) {
-      var table = $detail.html('<table></table>').find('table');
-      $(table).bootstrapTable({
-        method: 'post',
-        dataType: 'json',
-        contentType: 'application/x-www-form-urlencoded',
-        url: TransactionService.settings.serverURL + TransactionService.settings.cleanupRecordAPI,
-        pagination: true, // 是否显示分页
-        pageList: [10, 20], // 可供选择的每页的行数（*）
-        pageSize: 10, // 每页的记录行数
-        pageNumber: 1,  // 初始化加载第一页，默认第一页,并记录
-        striped: true,
-        singleSelect: false,
-        sidePagination: 'server', // 服务端请求
-        cache: false,
-        queryParams: function (params) {  // 配置参数
-          // 配置参数
-          var pageNumber = 1;
-          /* search parameters */
-          if (params.offset !== 0 && params.limit !== 0) {
-            pageNumber = (params.offset / params.limit) + 1;
-          }
-          return {
-            /*
-            username: parentRow.username,
-            province: null,
-            city: null,
-            district: null,
-            address: '',
-            venueName: parentRow.venueName,
-            */
-            userCode: parentRow.userCode,
-            venueId: parentRow.venueId,
-            limit: params.limit, // 页面大小
-            start: pageNumber  // 页码
-          };
-        },
-        responseHandler: function (res) {
-          var total = 0;
-          var rows = [];
-          if (res.code !== 200) {
-            alert('加载保洁信息失败！' + res.msg + ' code:' + res.code);
-          } else {
-            total = res.total;
-            rows = res.data;
-          }
-          return {
-            'total': total,
-            'rows': rows
-          };
-        },
-        // table headers
-        columns: [
-          {
-            field: '',
-            title: '保洁日期',
-            valign: 'middle',
-            align: 'center',
-            formatter: function (value, row) {
-              return row.startTime.substring(0, 10);
-            }
-          },
-          {
-            field: '',
-            title: '保洁时段',
-            valign: 'middle',
-            align: 'center',
-            formatter: function (value, row) {
-              return row.startTime.substring(11, 19) + ' --- ' + row.endTime.substring(11, 19);
-            }
-          },
-          {
-            field: 'code',
-            title: '开锁码',
-            valign: 'middle',
-            align: 'center'
-          },
-          {
-            title: '操作',
-            field: 'id',
-            align: 'center',
-            formatter: function (value, row) {
-              return [
-                '<a href="#" mce_href="#" id="cleanerSendSMS">补发短信</a> '
-              ];
-            },
-            events: window.operateEvents = {
-              'click #cleanerSendSMS': function (e, value, row) {
-
-                var queryText = '确定向【' + row.username + '】'
-                  + '补发【' + row.venueName + '】 '
-                  + row.startTime.substring(0, 10)
-                  + '【' + row.startTime.substring(11, 19)
-                  + '---' + row.endTime.substring(11, 19) + '】'
-                  + '时段开锁码?';
-                if ($window.confirm(queryText)) {
-                  cleanupSendSMS(row);
+                  actionDel(ids);
                 }
               }
             }
@@ -723,93 +491,181 @@
     }
 
     /* toolbar */
-    function searchCleaner() {
+    function searchAirconAction() {
       doSearch = true;
-      $('#cleanersTable').bootstrapTable('refresh', {});
+      $('#airconActionsTable').bootstrapTable('refresh', {});
     }
 
-    function cleanerInfoUpdate() {
+    function actionModalShow(data) {
+      // clear temp data
+      vm.modalSelectedBox = '';
+      vm.modalSelectedBoxes = [];
+      if (data === undefined) {
+        // added new
+        $('#actionModalTitle').text('新增空调任务');
+        vm.modal = {
+          actionName: '',
+          provinceId: '',
+          cityId: '',
+          venueType: '',
+          actionVenueCondition: 'all',
+          venueIds: '',
+          // action date-time
+          actionDateCondition: 'everyDay',
+          actionYear: '2018',
+          actionMonth: '1',
+          actionDay: '1',
+          actionHour: '06',
+          actionMinute: '00',
+          actionSecond: '00',
+          // mode
+          powerMode: '1',
+          workMode: '2',
+          windPower: '3',
+          temperature: '20',
+          isValid: '0'
+        };
+      } else {
+        // modify
+        $('#actionModalTitle').text('修改空调任务');
+        vm.modal = {
+          id: data.id,
+          actionName: data.actionName,
+          provinceId: '',
+          cityId: '',
+          venueType: '',
+          actionVenueCondition: 'all',
+          venueIds: data.venueIds,
+          // action date-time
+          actionDateCondition: 'everyDay',
+          actionYear: '2018',
+          actionMonth: '1',
+          actionDay: '1',
+          actionHour: data.actionTime.split(':')[0],
+          actionMinute: data.actionTime.split(':')[1],
+          actionSecond: data.actionTime.split(':')[2],
+          // mode
+          powerMode: data.powerMode.toString(10),
+          workMode: data.workMode.toString(10),
+          windPower: data.windPower.toString(10),
+          temperature: data.temperature.toString(10),
+          isValid: data.isValid.toString(10)
+        };
+        // update actionDate
+        if (data.actionDate !== '') {
+          var actionDate = new Date(data.actionDate);
+          vm.modal.actionDateCondition = 'setDay';
+          vm.modal.actionYear = actionDate.getFullYear().toString(10);
+          vm.modal.actionMonth = (actionDate.getMonth() + 1).toString(10);
+          vm.modal.actionDay = actionDate.getDate().toString(10);
+        }
+        // update province and city
+        if (data.cityId !== null) {
+          vm.modal.provinceId = findProvinceByCityId(data.cityId);
+          modalProvinceChange();
+          vm.modal.cityId = data.cityId.toString(10);
+        }
+        // update venue type
+        if (data.venueType !== null) {
+          vm.modal.venueType = data.venueType.toString(10);
+        }
+        // update selected venue
+        if (data.venueId !== null) {
+          vm.modal.actionVenueCondition = 'selected';
+          vm.modalSelectedBox = data.venueId.toString(10);
+
+          var selectedVenueName = convertVenueIdToName(vm.modalSelectedBox);
+          if (selectedVenueName !== '') {
+            var selectedVenue = {
+              id: parseInt(vm.modalSelectedBox, 10),
+              name: selectedVenueName
+            };
+            if (modalAddVenueValidity(selectedVenue.id)) {
+              vm.modalSelectedBoxes.push(selectedVenue);
+            }
+          }
+        }
+      }
+
+      $scope.$apply();
+      $('#actionModal').modal('show');
+    }
+
+    function actionUpdate() {
+      var actionDate = '';
+      var venueIds = '';
+      if (vm.modal.actionDateCondition === 'setDay') {
+        actionDate = vm.modal.actionYear + '-' + vm.modal.actionMonth + '-' + vm.modal.actionDay;
+      }
+      if (vm.modal.actionVenueCondition === 'selected') {
+        venueIds = convertModalSelectedBoxedToString();
+      }
+      var cityId = null;
+      if (vm.modal.cityId !== '') {
+        cityId = parseInt(vm.modal.cityId, 10);
+      }
+      var venueType = null;
+      if (vm.modal.venueType !== '') {
+        venueType = parseInt(vm.modal.venueType, 10);
+      }
       var data = {
-        truename: vm.modal.name,
-        username: vm.modal.name,
-        phone: vm.modal.phone,
-        contractStartTime: vm.modal.startYear + '-' + vm.modal.startMonth + '-' + vm.modal.startDay,
-        contractEndTime: vm.modal.stopYear + '-' + vm.modal.stopMonth + '-' + vm.modal.stopDay,
-        province: vm.modal.province,
-        city: vm.modal.city,
-        /* not implement now
-        sex
-        avatarUrl
-        randNum
-        idcard
-        district
-        address
-        */
+        actionName: vm.modal.actionName,
+        // city
+        cityId: cityId,
+        // venue
+        venueType: venueType,
+        venueIds: venueIds,
+        // action date time
+        actionDate: actionDate,
+        actionTime: vm.modal.actionHour + ':' + vm.modal.actionMinute + ':' + vm.modal.actionSecond,
+        // air-conditioner mode
+        powerMode: parseInt(vm.modal.powerMode, 10),
+        workMode: parseInt(vm.modal.workMode, 10),
+        windPower: parseInt(vm.modal.windPower, 10),
+        temperature: parseInt(vm.modal.temperature, 10),
+        isValid: parseInt(vm.modal.isValid, 10),
         operator: Authentication.user
       };
 
       if (vm.modal.id !== undefined) {
         data.id = vm.modal.id;
       }
-      cleanerListNeedRefresh = true;
-      TransactionService.httpSendRequest(TransactionService.settings.cleanerUpdateAPI, data, showSendRes);
+      OperationCenter.httpSendRequest(OperationCenterSetting.apiURL + OperationCenterSetting.airconActionUpdateAPI, data, showSendRes);
     }
 
-    function cleanerInfoDel(ids) {
+    function convertModalSelectedBoxedToString() {
       var selectedIds = '';
-      for (var idx = 0; idx < ids.length; idx++) {
-        if (selectedIds !== '') {
-          selectedIds += ',';
+      if (vm.modalSelectedBoxes.length !== 0) {
+        for (var idx = 0; idx < vm.modalSelectedBoxes.length; idx++) {
+          if (selectedIds !== '') {
+            selectedIds += ',';
+          }
+          selectedIds += vm.modalSelectedBoxes[idx].id.toString();
         }
-        selectedIds += ids[idx].toString();
+      }
+
+      return selectedIds;
+    }
+
+    function actionDel(ids) {
+      var singleId = null;
+      var selectedIds = '';
+      if (ids.length > 1) {
+        for (var idx = 0; idx < ids.length; idx++) {
+          if (selectedIds !== '') {
+            selectedIds += ',';
+          }
+          selectedIds += ids[idx].toString();
+        }
+      } else {
+        singleId = ids[0];
       }
       var data = {
+        id: singleId,
         ids: selectedIds,
         operator: Authentication.user
       };
-      cleanerListNeedRefresh = true;
-      TransactionService.httpSendRequest(TransactionService.settings.cleanerDeleteAPI, data, showSendRes);
-    }
-
-    function cleanBindUpdate() {
-      console.log(vm.modal);
-      console.log(vm.workDay);
-      var workDay = '';
-      for (var idx = 0; idx < 7; idx++) {
-        if (vm.workDay[idx] === true) {
-          if (workDay !== '') {
-            workDay += ',';
-          }
-          workDay += (idx + 1).toString();
-        }
-      }
-      var data = {
-        venueId: vm.modal.cleanupBox,
-        weeks: workDay,
-        workStartTime: vm.modal.startHour + ':' + vm.modal.startMinute + ':00',
-        workEndTime: vm.modal.stopHour + ':' + vm.modal.stopMinute + ':00',
-        user: Authentication.user
-      };
-      if (vm.modal.userCode !== undefined) {
-        data.userCode = vm.modal.userCode;
-      }
-      cleanupDetailNeedRefresh = true;
-      TransactionService.httpSendRequest(TransactionService.settings.cleanupUpdateAPI, data, showSendRes);
-    }
-
-    function cleanupBindDel(bind) {
-      var data = {
-        userCode: bind.userCode,
-        venueId: bind.venueId,
-        weeks: bind.weeks,
-        operator: Authentication.user
-      };
-      cleanupDetailNeedRefresh = true;
-      TransactionService.httpSendRequest(TransactionService.settings.cleanupDeleteAPI, data, showSendRes);
-    }
-
-    function cleanupSendSMS(data) {
-      console.log(data);
+      OperationCenter.httpSendRequest(OperationCenterSetting.apiURL + OperationCenterSetting.airconActionDeleteAPI, data, showSendRes);
     }
 
     function showSendRes(data, status) {
@@ -818,70 +674,8 @@
       } else {
         Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> 操作成功!' });
 
-        if (cleanerInfoModalOpen === true) {
-          $('#cleanerInfoModal').modal('hide');
-        } else if (cleanrBindModalOpen === true) {
-          $('#cleanrBindModal').modal('hide');
-
-        }
-
-        if (cleanerListNeedRefresh === true) {
-          cleanerListNeedRefresh = false;
-          $('#cleanersTable').bootstrapTable('refresh', {});
-        } else if (cleanupDetailNeedRefresh === true) {
-          cleanupDetailNeedRefresh = false;
-          $('#cleanupDetails').bootstrapTable('refresh', {});
-        }
-      }
-    }
-
-    function isInArray(array, element) {
-      if (array.indexOf(element) === -1) {
-        return false;
-      }
-      return true;
-    }
-
-    function isWorkEveryday(data) {
-      if (data.length !== 7) {
-        return false;
-      }
-      for (var idx = 0; idx < data.length; idx++) {
-        if (isInArray(data, (idx + 1).toString()) === false) {
-          return false;
-        }
-      }
-      return true;
-    }
-
-    function isWorkWeekend(data) {
-      if (data.length !== 2) {
-        return false;
-      }
-      if (isInArray(data, '6') === true && isInArray(data, '7') === true) {
-        return true;
-      }
-      return false;
-    }
-
-    function convertWorkDay(data) {
-      switch (data) {
-        case 1:
-          return '周一';
-        case 2:
-          return '周二';
-        case 3:
-          return '周三';
-        case 4:
-          return '周四';
-        case 5:
-          return '周五';
-        case 6:
-          return '周六';
-        case 7:
-          return '周日';
-        default:
-          return data.toString();
+        $('#actionModal').modal('hide');
+        $('#airconActionsTable').bootstrapTable('refresh', {});
       }
     }
 
@@ -893,7 +687,32 @@
           }
         }
       }
+
+      if (code == null) {
+        return '全部';
+      }
+
       return code;
+    }
+
+    function convertVenueIdToName(id) {
+      for (var idx = 0; idx < vm.availableBoxes.length; idx++) {
+        if (parseInt(id, 10) === vm.availableBoxes[idx].venueId) {
+          return vm.availableBoxes[idx].venueName;
+        }
+      }
+
+      return '';
+    }
+
+    function findProvinceByCityId(cityId) {
+      for (var provinceIdx = 0; provinceIdx < vm.availableProvince.length; ++provinceIdx) {
+        for (var cityIdx = 0; cityIdx < vm.availableProvince[provinceIdx].cities.length; ++cityIdx) {
+          if (parseInt(cityId, 10) === vm.availableProvince[provinceIdx].cities[cityIdx].cityId) {
+            return vm.availableProvince[provinceIdx].provinceId.toString(10);
+          }
+        }
+      }
     }
   }
 }());

@@ -24,7 +24,7 @@
         }
       })
       .state('devops.aircon-action', {
-        url: '/tools',
+        url: '/aircon-action',
         templateUrl: '/modules/devops/client/views/devops.aircon-action.client.view.html',
         controller: 'DevopsAirconActionController',
         controllerAs: 'vm',
