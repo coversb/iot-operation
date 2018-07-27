@@ -32,6 +32,26 @@
     vm.sendOutCommand = sendOutCommand;
     vm.sendMuoCommand = sendMuoCommand;
     vm.sendMuoVolumeCommand = sendMuoVolumeCommand;
+    vm.sendOuoCommand = sendOuoCommand;
+
+    var now = new Date();
+    vm.order = {
+      type: '0',
+      orderID: '1',
+      startYear: now.getFullYear().toString(),
+      startMonth: (now.getMonth() + 1).toString(),
+      startDay: now.getDate().toString(),
+      startHour: now.getHours().toString(),
+      startMinute: '00',
+      startSecond: '00',
+      expireYear: now.getFullYear().toString(),
+      expireMonth: (now.getMonth() + 1).toString(),
+      expireDay: now.getDate().toString(),
+      expireHour: now.getHours().toString(),
+      expireMinute: '59',
+      expireSecond: '00',
+      password: '1234'
+    };
 
     init();
 
@@ -84,6 +104,24 @@
         mediaFname: '0'
       };
       DevopsProt.sendCommand('MUO', param, showSendRes);
+    }
+
+    function sendOuoCommand() {
+      var startTimestamp = new Date(vm.order.startYear, vm.order.startMonth - 1, vm.order.startDay,
+        vm.order.startHour, vm.order.startMinute, vm.order.startSecond);
+      var expireTimestamp = new Date(vm.order.expireYear, vm.order.expireMonth - 1, vm.order.expireDay,
+        vm.order.expireHour, vm.order.expireMinute, vm.order.expireSecond);
+      var param = {
+        uid: vm.devUID,
+        type: vm.order.type,
+        orderID: vm.order.orderID,
+        orderStart: (startTimestamp.getTime() / 1000).toString(10),
+        orderExpire: (expireTimestamp.getTime() / 1000).toString(10),
+        orderPassword: vm.order.password,
+        orderPersonNumber: '1',
+        orderPasswordValidConut: '1'
+      };
+      DevopsProt.sendCommand('OUO', param, showSendRes);
     }
   }
 }());
