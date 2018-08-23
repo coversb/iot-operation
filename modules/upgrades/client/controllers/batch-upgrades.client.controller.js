@@ -17,6 +17,7 @@
     vm.uniqueIds = [];
     vm.availableVersions = upgradesVersions.data;
     vm.version = upgradesVersions.data[0] || {};
+    vm.selectedVersion = vm.version;
     vm.search = search;
     vm.batchUpdate = batchUpdate;
 
@@ -29,20 +30,16 @@
       }
       // switch bootstrap-table'locales to zh-CN
       $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['zh-CN']);
-      $('#versionUpdateDialog').on('shown.bs.modal', function (e) {
-        console.log("event" + e);
-        console.dir(e);
-        $('#fotaBinName').focus();
-      });
       loadBoxList();
 
       $('#btnAddVersion').click(function () {
         vm.uniqueIds = $('#boxTable').bootstrapTable('getAllSelections').map(function (row) {
           return row.base.uniqueId;
         });
-        console.log('getSelections: ' + JSON.stringify(vm.uniqueIds));
+        vm.version = upgradesVersions.data[0] || {};
+        vm.selectedVersion = vm.version;
+        $scope.$apply();
         $('#versionUpdateDialog').modal('show');
-
       });
     }
 
@@ -87,7 +84,7 @@
             pageSize: params.limit  // 页面大小
           };
 
-          if(deviceType){
+          if (deviceType) {
             param.deviceType = deviceType;
           }
 
@@ -96,7 +93,6 @@
           return param;
         },
         responseHandler: function (res) {
-          // console.log(res)
           if (res.code === 1) {
             alert('请求设备信息失败！');
           } else if (res.code === 0) {
@@ -105,10 +101,6 @@
               'rows': res.data
             };
           }
-        },
-        onClickRow: function (row, $element) {
-          // boxDetail(row.base.uniqueId);
-          console.log("uniqueId" + row.base.uniqueId);
         },
         // table headers
         columns: [
@@ -202,7 +194,7 @@
     function batchUpdate() {
       vm.uniqueIds.forEach(sendCmd);
       $('#versionUpdateDialog').modal('hide');
-      Notification.success({message: '<i class="glyphicon glyphicon-ok"></i> 版本命令下发成功!'});
+      Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> 版本命令下发成功!' });
     }
 
     function sendCmd(item, index) {
@@ -221,18 +213,15 @@
         'otaServerUrlLength': vm.version.url.trim().length,
         'otaServerUrl': vm.version.url.trim(),
         'otaServerPort': 21,
-        'otaServerUsernameLength': "fota".length,
-        'otaServerUserName': "fota".trim(),
-        'otaServerPasswordLength': "fota".length,
-        'otaServerPassword': "fota".trim(),
+        'otaServerUsernameLength': 'fota'.length,
+        'otaServerUserName': 'fota'.trim(),
+        'otaServerPasswordLength': 'fota'.length,
+        'otaServerPassword': 'fota'.trim(),
         'otaServerMD5': vm.version.md5,
         'otaServerKey': 0,
         'otaDownloadAddress': 0,
         'otaAppBootupAddress': 0
       };
-      console.log("cmdObj=" + cmdObj);
-      console.dir(cmdObj);
-      //
       sendCommandToBackend(cmdObj, DevopsSettings.fotaAPI);
     }
 
@@ -244,57 +233,26 @@
       };
       $http.post(DevopsSettings.backboneURL + apiURL, data, config)
         .success(function (data, status, header, config) {
-          console.log('success');
         })
         .error(function (data, status, header, config) {
-          console.log('error');
         });
     }
 
     function boxUpgrade(uid) {
-
-      // getBoxUpgrade(uid);
       vm.uniqueIds = [];
       vm.uniqueIds.push(uid);
 
-      console.log("event uniqueIds=" + vm.uniqueIds + "uid = " + uid);
-
-      vm.selectedVersion = vm.version = upgradesVersions.data[0] || {};
+      vm.version = upgradesVersions.data[0] || {};
+      vm.selectedVersion = vm.version;
+      $scope.$apply();
       $('#versionUpdateDialog').modal('show');
     }
 
     $scope.updateVersion = function (selectedVersion) {
-
       vm.version = vm.selectedVersion = vm.availableVersions.find(function (v) {
         return v._id === selectedVersion._id;
       });
     };
-
-    function getBoxUpgrade(uid) {
-      var config = {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      };
-      var data = {
-        'uniqueId': uid,
-        'pageNum': 1,
-        'pageSize': 10
-      };
-      $http.post(DevopsSettings.backboneURL + DevopsSettings.boxListAPI, data, config)
-        .success(function (data) {
-          // console.log(data);
-          vm.selectedBox = [];
-          vm.selectedBox = data.data[0];
-
-          datetimeFormat();
-          stateColorFormat();// 详情页颜色
-          detailTableFormat();
-        })
-        .error(function (e, status) {
-          console.log('Error:' + e + ',' + status);
-        });
-    }
   }
 
 

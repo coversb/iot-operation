@@ -60,13 +60,14 @@
                 <label for="versionSelect">选择模板:</label>
                 <select name="versionSelect" id="versionSelect"
                         ng-options="option.name for option in vm.availableVersions track by option._id"
-                        ng-model="selectedVersion"
-                        ng-value="vm.selectedVersion"
-                        ng-change="updateVersion(selectedVersion)"></select>
+                        ng-model="vm.selectedVersion"
+                        ng-change="updateVersion(vm.selectedVersion)">
+                </select>
               </div>
               <div>
                 <label for="fotaBinName">版本名称</label>
                 <input class="form-control" id="fotaBinName" name="fotaBinName" type="text"
+                       readonly="readonly"
                        required="required"
                        ng-model="vm.version.name"/>
                 <!-- button class="btn btn-primary btn-file" ngf-select="" ng-model="vm.fotaBin" accept="*">上传固件</button-->
@@ -74,6 +75,7 @@
               <div>
                 <label for="fotaBinURL">固件URL</label>
                 <input class="form-control" id="fotaBinURL" name="fotaBinURL" type="text"
+                       readonly="readonly"
                        required="required"
                        ng-model="vm.version.url"/>
                 <!-- button class="btn btn-primary btn-file" ngf-select="" ng-model="vm.fotaBin" accept="*">上传固件</button-->
@@ -81,12 +83,15 @@
               <div>
                 <label for="fotaBinMD5">MD5</label>
                 <input class="form-control" id="fotaBinMD5" name="fotaBinMD5" type="text"
+                       readonly="readonly"
                        required="required"
                        ng-model="vm.version.md5"/>
               </div>
               <div>
                 <label for="fotaBinDevType">硬件类型</label>
                 <select class="select form-control" id="fotaBinDevType" name="fotaBinDevType"
+                        readonly="readonly"
+                        disabled="disabled"
                         required="required"
                         ng-model="vm.version.devType">
                   <option value="STM32F103">STM32F103</option>
@@ -96,6 +101,7 @@
               <div>
                 <label for="fotaBinVerNo">固件版本号</label>
                 <input class="form-control" id="fotaBinVerNo" name="fotaBinVerNo" type="text"
+                       readonly="readonly"
                        required="required"
                        ng-model="vm.version.verNo"/>
               </div>
