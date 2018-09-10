@@ -25,7 +25,12 @@
     var devMediaFileMap = new Map([
       ['welcome', 0],
       ['orderOver', 1],
-      ['smokeAlarm', 2]
+      ['smokeAlarm', 2],
+      ['bgm', 3],
+      ['badPeople', 4],
+      ['takeUnpaid', 5],
+      ['forbiddenPeople', 6],
+      ['unpaid', 7]
     ]);
     var vm = this;
 
