@@ -25,7 +25,7 @@
 
     var vm = this;
 
-    vm.configType = 'TV_VOL';
+    vm.configType = 'TMP';
     vm.txtSearchName = '';
 
     vm.configTypeChange = configTypeChange;
@@ -197,6 +197,7 @@
           }
           case 'TMP': {
             vm.modal.temperature = '25';
+            vm.modal.humidity = '70';
             vm.modal.switch = 0;
             break;
           }

@@ -12,7 +12,7 @@
                 ng-change="vm.configTypeChange()"
                 ng-model="vm.configType">
           <option value="TV_VOL">电视音量</option>
-          <option value="TMP">配置目标温度</option>
+          <option value="TMP">智能温控</option>
           <option value="APC">入网配置</option>
           <option value="SER">服务器连接配置</option>
           <option value="CFG">全局配置</option>
@@ -114,7 +114,7 @@
             </button>
             <div>
               <h4 class="modal-title" id="tmpModalTitle">
-                配置目标温度
+                智能温控
               </h4>
               <select class="select form-control" id="tmpModalConfig" name="tmpModalConfig"
                       ng-model="vm.modalSelectedConfig"
@@ -144,7 +144,13 @@
                        ng-model="vm.modalData.temperature"/>
               </div>
               <div>
-                <label for="tmpModalSwitch">目标温度开关</label>
+                <label for="tmpModalHumidity">目标湿度</label>
+                <input class="form-control" id="tmpModalHumidity" name="tmpModalHumidity" type="text"
+                       readonly="readonly"
+                       ng-model="vm.modalData.humidity"/>
+              </div>
+              <div>
+                <label for="tmpModalSwitch">开关</label>
                 <input class="form-control" id="tmpModalSwitch" name="tmpModalSwitch" type="text"
                        readonly="readonly"
                        ng-model="vm.modalData.switch"/>

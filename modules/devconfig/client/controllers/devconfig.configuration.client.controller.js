@@ -30,8 +30,8 @@
 
     vm.searchData = '';
     vm.selectedUID = [];
-    vm.configType = 'TV_VOL';
-    vm.lastConfigType = 'TV_VOL';
+    vm.configType = 'TMP';
+    vm.lastConfigType = 'TMP';
 
     vm.configTypeChange = configTypeChange;
     vm.searchByName = searchByName;

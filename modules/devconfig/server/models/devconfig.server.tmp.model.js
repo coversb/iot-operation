@@ -34,6 +34,12 @@ var TmpCommandSchema = new Schema({
     trim: true,
     required: '空调目标温度不能为空'
   },
+  humidity: {
+    type: String,
+    default: '',
+    trim: true,
+    required: '空调目标湿度不能为空'
+  },
   switch: {
     type: Number,
     default: 0,
