@@ -54,3 +54,63 @@ a {
 		overflow-y: auto;
 	}
 }
+
+.signal-bars {
+	display: inline-block;
+	height: 16px;
+	list-style: none;
+	overflow: hidden;
+	padding: 0px;
+	margin: 0px;
+}
+
+.signal-bars .bar {
+	display: inline-block;
+	width: 4px;
+	float: left;
+	height: 100%;
+	margin-right: 2px;
+}
+
+.signal-bars .bar.first-bar {
+	padding-top: 12px;
+}
+
+.signal-bars .bar.second-bar {
+	padding-top: 8px;
+}
+
+.signal-bars .bar.third-bar {
+	padding-top: 4px;
+}
+
+.signal-bars .bar.fourth-bar {
+	padding-top: 0px;
+}
+
+.signal-bars li div {
+	height: 100%;
+}
+
+.bars-4 div {
+	background-color: #16a085;
+	border: thin solid darken(#16a085, 7%);
+}
+
+.bars-3 div {
+	background-color: #f1c40f;
+	border: thin solid darken(#f1c40f, 7%);
+}
+
+.bars-1 div,
+.bars-2 div {
+	background-color: #e74c3c;
+	border: thin solid darken(#e74c3c, 20%);
+}
+
+.bars-3 .bar.fourth-bar div,
+.bars-1 .bar:not(.first-bar) div,
+.bars-2 .bar:not(.first-bar):not(.second-bar) div {
+	background-color: #e0e0e0;
+	border: thin solid #f3f3f3;
+}

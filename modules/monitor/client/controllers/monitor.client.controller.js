@@ -112,15 +112,12 @@
         columns: [
           {
             field: 'base.uniqueId',
-            title: '设备ID',
+            title: 'ID(场馆·主板)',
             valign: 'middle',
-            align: 'center'
-          },
-          {
-            field: 'base.venueId',
-            title: '盒子ID',
-            valign: 'middle',
-            align: 'center'
+            align: 'center',
+            formatter: function (value, row) {
+              return '<span style="color:#cd6a00">' + row.base.venueId + '</span>' + '|' + value;
+            }
           },
           {
             field: 'base.name',
@@ -138,7 +135,8 @@
               if (value === '0') {
                 pwrStatDis = '<span style="color:red">' + '无市电' + '</span>';
               }
-              return pwrStatDis;
+
+              return badNetStatusCheck(row, pwrStatDis);
             }
           },
           {
@@ -147,11 +145,19 @@
             valign: 'middle',
             align: 'center',
             formatter: function (value, row) {
+              var signalGraph = '<br>';
               var netStatDis = '<span style="color:green">' + value + '</span>';
               if (value === '断网') {
                 netStatDis = '<span style="color:red">' + value + '</span>';
               }
-              return netStatDis;
+
+              if (row.detail.networkSignalStrength === 255) {
+                signalGraph += '有线' + getSignalGraph(255);
+              } else {
+                var signal = -113 + (row.detail.networkSignalStrength * 2);
+                signalGraph += '2G' + getSignalGraph(signal);
+              }
+              return netStatDis + signalGraph;
             }
           },
           {
@@ -164,7 +170,7 @@
               if (value === '有烟雾') {
                 smokeStatDis = '<span style="color:red">' + value + '</span>';
               }
-              return smokeStatDis;
+              return badNetStatusCheck(row, smokeStatDis);
             }
           },
           {
@@ -173,9 +179,10 @@
             valign: 'middle',
             align: 'center',
             formatter: function (value, row) {
-              return sprintf('<span style="color:%s">%s</span>'
+              var doorStatusDis = sprintf('<span style="color:%s">%s</span>'
                 , value ? 'red' : 'green'
                 , $filter('doorStatus')(value));
+              return badNetStatusCheck(row, doorStatusDis);
             }
           },
           {
@@ -184,8 +191,8 @@
             valign: 'middle',
             align: 'center',
             formatter: function (value, row) {
-
-              return sprintf('<span style="color:%s">%s</span>', value ? 'green' : 'red', $filter('deviceDoorStatus')(value));
+              var deviceDoorStatusDis = sprintf('<span style="color:%s">%s</span>', value ? 'green' : 'red', $filter('deviceDoorStatus')(value));
+              return badNetStatusCheck(row, deviceDoorStatusDis);
             }
           },
           {
@@ -231,25 +238,28 @@
               if (tempStat === 0) {
                 tempStat = '-';
               }
-              return '<span>' + workStat + ' | ' + windStat + ' | '
-                + tempStat + '</span>';
+              return '<span>' + workStat + ' | ' + windStat + ' | ' + tempStat + '℃</span>';
             }
           },
           {
             field: 'detail.dstTemperature',
-            title: '目标温度·开关',
+            title: '智能温控(温度·湿度·开关)',
             valign: 'middle',
             align: 'center',
             formatter: function (value, row) {
-              var tmpSwitch = '关';
+              var tmpSwitch = '<span style="color:red">' + '关' + '</span>';
               if (row.detail.dstSwitch === 1) {
-                tmpSwitch = '开';
+                tmpSwitch = '<span style="color:green">' + '开' + '</span>';
               }
               var dstTempDis = '-';
               if (row.detail.dstTemperature !== undefined) {
-                dstTempDis = row.detail.dstTemperature;
+                dstTempDis = row.detail.dstTemperature + '℃';
               }
-              return '<span>' + dstTempDis + ' | ' + tmpSwitch + '</span>';
+              var dstHumDis = '-';
+              if (row.detail.dstHumidity !== undefined) {
+                dstTempDis = row.detail.dstHumidity;
+              }
+              return '<span>' + dstTempDis + ' | ' + dstHumDis + ' | ' + tmpSwitch + '</span>';
             }
           },
           {
@@ -259,16 +269,19 @@
             align: 'center',
             formatter: function (value, row) {
               var tempDis = '-';
-              if (row.detail.temperature !== 0) // default value need optimize
-              {
-                tempDis = row.detail.temperature;
+              if (row.detail.temperature !== 0) {// default value need optimize
+                tempDis = row.detail.temperature + '℃';
               }
               var humiDis = '-';
-              if (row.detail.humidity !== 0) // default value need optimize
-              {
-                humiDis = row.detail.humidity;
+              if (row.detail.humidity !== 0) {// default value need optimize
+                humiDis = row.detail.humidity + '%';
               }
-              return '<span>' + tempDis + ' | ' + humiDis + '</span>';
+              var realTHDis = '<span style="color:green">' + tempDis + ' | ' + humiDis + '</span>';
+              var curTimestamp = (Date.parse(new Date()) / 1000);
+              if ((realTHDis.indexOf('-') < 0) && (curTimestamp - row.detail.temperatureUpdateDate > 600)) {
+                realTHDis = '<span style="color:red">' + tempDis + ' | ' + humiDis + '</span>';
+              }
+              return realTHDis;
             }
           },
           {
@@ -285,7 +298,9 @@
               }
               return latestCommDis;
             }
-          },
+          }
+          /*
+          ,
           {
             title: '更多',
             valign: 'middle',
@@ -298,9 +313,20 @@
                 boxDetail(row.base.uniqueId);
               }
             }
-          }
+          }*/
         ]
       });
+    }
+
+    function badNetStatusCheck(row, data) {
+      if (row.detail.networkStatus === '断网') {
+        if (data.indexOf('green') > 0) {
+          return data.replace(/green/, 'blue');
+        } else {
+          return data.replace(/red/, 'blue');
+        }
+      }
+      return data;
     }
 
     function boxDetail(uid) {
@@ -390,9 +416,37 @@
     function detailTableFormat() {
       vm.selectedBoxDis = [];
 
+      detailSignalStateFormat();
       detailAirconditionerStateFormat();
       detailInputStateFormat();
       detailOutputStateFormat();
+    }
+
+    function getSignalGraph(dbm) {
+      var graph = '';
+      if (dbm >= -57) {// csq 28
+        graph = '<ul class="signal-bars bars-4"><li class="first-bar bar"><div></div></li><li class="second-bar bar"><div></div></li><li class="third-bar bar"><div></div></li><li class="fourth-bar bar"><div></div></li></ul>';
+      } else if (dbm >= -73) {// csq 20
+        graph = '<ul class="signal-bars bars-3"><li class="first-bar bar"><div></div></li><li class="second-bar bar"><div></div></li><li class="third-bar bar"><div></div></li><li class="fourth-bar bar"><div></div></li></ul>';
+      } else if (dbm >= -87) {// csq 13
+        graph = '<ul class="signal-bars bars-2"><li class="first-bar bar"><div></div></li><li class="second-bar bar"><div></div></li><li class="third-bar bar"><div></div></li><li class="fourth-bar bar"><div></div></li></ul>';
+      } else {// csq < 13
+        graph = '<ul class="signal-bars bars-1"><li class="first-bar bar"><div></div></li><li class="second-bar bar"><div></div></li><li class="third-bar bar"><div></div></li><li class="fourth-bar bar"><div></div></li></ul>';
+      }
+
+      return graph;
+    }
+
+    function detailSignalStateFormat() {
+      vm.selectedBoxDis.signalGraph = '网络信号强度:&nbsp&nbsp';
+      if (vm.selectedBox.detail.networkSignalStrength === 255) {
+        vm.selectedBoxDis.signalGraph += getSignalGraph(255);
+        vm.selectedBoxDis.signal = '有线网络';
+      } else {
+        var signal = -113 + (vm.selectedBox.detail.networkSignalStrength * 2);
+        vm.selectedBoxDis.signalGraph += getSignalGraph(signal);
+        vm.selectedBoxDis.signal = signal + 'dBm (' + vm.selectedBox.detail.networkSignalStrength + ')';
+      }
     }
 
     function detailAirconditionerStateFormat() {
@@ -594,7 +648,7 @@
     }
 
     function setElementColor(element, setColor) {
-      $(element).css({color: setColor});
+      $(element).css({ color: setColor });
     }
 
   }

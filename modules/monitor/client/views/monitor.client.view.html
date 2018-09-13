@@ -65,10 +65,12 @@
                 <li>网络状态: <span id="net" ng-bind="vm.selectedBox.detail.networkStatus"></span></li>
                 <li>最近一次重新联网: <span ng-bind="vm.selectedBox.detail.reconnectUpdateDate | unixTime"></span></li>
                 <li>最近一次断网: <span ng-bind="vm.selectedBox.detail.disconnectUpdateDate | unixTime"></span></li>
-                <li>网络信号强度: <span ng-bind="vm.selectedBox.detail.networkSignalStrength"></span></li>
-                <li>网络信号质量: <span ng-bind="vm.selectedBox.detail.networkSignalQuality"></span></li>
+                <li ng-bind-html="vm.selectedBoxDis.signalGraph"></li>
+                <li>网络信号值: <span>{{vm.selectedBoxDis.signal}}</span></li>
+                <!--li>网络信号质量: <span ng!--nd="vm.selectedBox.detail.networkSignalQuality"></span></li-->
                 <li>网络信号值更新: <span ng-bind="vm.selectedBox.detail.networkSignalUpdateDate | unixTime"></span></li>
               </ul>
+
 
               <ul class="col-lg-6 col-xs-12">
                 <li>通电状态: <span id="power" ng-bind="vm.selectedBox.detail.powerStatus"></span></li>
@@ -76,6 +78,7 @@
                 <li>最近一次市电报警结束:<span ng-bind="vm.selectedBox.detail.powerAlarmEndDate | unixTime"></span></li>
                 <li>最近一次嵌入式系统启动: <span ng-bind="vm.selectedBox.detail.bootDate | unixTime"></span></li>
                 <li>最近一次嵌入式系统启动原因: <span ng-bind="vm.selectedBox.detail.bootReason"></span></li>
+                <li><span></span></li>
                 <li><span></span></li>
               </ul>
               <ul class="col-lg-6 col-xs-12">
@@ -92,35 +95,39 @@
                 <li>空调状态更新: <span ng-bind="vm.selectedBox.detail.airConditionControlUpdateDate | unixTime"></span></li>
                 <li>空调开关状态: <span id="air" ng-bind="vm.selectedBoxDis.pwrStat"></span></li>
                 <li>空调模式: <span ng-bind="vm.selectedBoxDis.workStat"></span></li>
-                <li>空调温度: <span ng-bind="vm.selectedBox.detail.airConditionTemperature"></span></li>
+                <li>空调温度: <span>{{vm.selectedBox.detail.airConditionTemperature}}℃</span></li>
                 <li>风量模式: <span ng-bind="vm.selectedBoxDis.windStat"></span></li>
-                <li>最近一次空调状态切换: <span ng-bind="vm.selectedBox.detail.airConditionEventUpdateDate | unixTime"></span></li>
+                <li>最近一次空调状态切换: <span ng-bind="vm.selectedBox.detail.airConditionEventUpdateDate | unixTime"></span>
+                </li>
               </ul>
               <ul class="col-lg-6 col-xs-12">
-                <li>目标温度: <span ng-bind="vm.selectedBox.detail.dstTemperature"></span></li>
-                <li>室内温度: <span ng-bind="vm.selectedBox.detail.temperature"></span></li>
+                <li>目标温度: <span>{{vm.selectedBox.detail.dstTemperature}}℃</span></li>
+                <li>目标湿度: <span>{{vm.selectedBox.detail.dstumidity}}%</span></li>
+                <li>室内温/湿度:
+                  <span>{{vm.selectedBox.detail.temperature}}℃ / {{vm.selectedBox.detail.humidity}}%</span>
+                </li>
                 <li>室内温度更新: <span ng-bind="vm.selectedBox.detail.temperatureUpdateDate | unixTime"></span></li>
-                <li>室内湿度: <span ng-bind="vm.selectedBox.detail.humidity"></span></li>
                 <li>室内湿度更新: <span ng-bind="vm.selectedBox.detail.humidityUpdateDate | unixTime"></span></li>
                 <li>PM2.5值: <span ng-bind="vm.selectedBox.detail.pm25"></span></li>
                 <li>室内PM2.5更新: <span ng-bind="vm.selectedBox.detail.pm25UpdateDate | unixTime"></span></li>
               </ul>
               <ul class="col-lg-6 col-xs-12">
-                <li>设备箱状态: <span id="deviceDoor" ng-bind="vm.selectedBox.detail.deviceDoorStatus | deviceDoorStatus"></span>
+                <li>设备箱状态: <span id="deviceDoor"
+                                 ng-bind="vm.selectedBox.detail.deviceDoorStatus | deviceDoorStatus"></span>
                 </li>
                 <li>设备箱状态更新时间: <span ng-bind="vm.selectedBox.detail.deviceDoorStatusUpdateDate | unixTime"></span></li>
                 <li>最近一次开门事件触发: <span ng-bind="vm.selectedBox.detail.doorOpenMode"></span></li>
                 <li>最近一次用户输入密码: <span ng-bind="vm.selectedBox.detail.doorPassword"></span></li>
                 <li>最近一次用户输入事件: <span ng-bind="vm.selectedBox.detail.doorPasswordUpdateDate | unixTime"></span></li>
               </ul>
-              <ul class="col-lg-6 col-xs-12">
+              <!--ul class="col-lg-6 col-xs-12">
                 <li>总人数: <span ng-bind="vm.selectedBox.detail.personTotal"></span></li>
                 <li>进出人数: <span ng-bind="vm.selectedBox.detail.personNumber"></span></li>
                 <li>检测类型: <span ng-bind="vm.selectedBox.detail.personType"></span></li>
                 <li>检测方法: <span ng-bind="vm.selectedBox.detail.personMethod"></span></li>
                 <li>检测位置: <span ng-bind="vm.selectedBox.detail.personPosition"></span></li>
                 <li>最后一次时间: <span ng-bind="vm.selectedBox.detail.personUpdateDate | unixTime"></span></li>
-              </ul>
+              </ul-->
             </div>
             <div class="table-responsive" class="col-lg-6 col-xs-12">
               <H4>盒内设施</H4>

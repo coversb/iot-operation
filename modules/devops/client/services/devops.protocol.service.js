@@ -71,6 +71,7 @@
       var cmdObj = {};
       cmdObj.uniqueId = param.uid;
       cmdObj.temperature = parseInt(param.temperature.trim(), 10);
+      cmdObj.humidity = parseInt(param.humidity.trim(), 10);
       cmdObj.dstSwitch = param.switch;
       httpSendRequest(api, cmdObj, cb);
     }
