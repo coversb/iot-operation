@@ -257,7 +257,7 @@
               }
               var dstHumDis = '-';
               if (row.detail.dstHumidity !== undefined) {
-                dstHumDis = row.detail.dstHumidity;
+                dstHumDis = row.detail.dstHumidity + '%';
               }
               return '<span>' + dstTempDis + ' | ' + dstHumDis + ' | ' + tmpSwitch + '</span>';
             }
