@@ -19,7 +19,9 @@
       ['indoorTv', 11],
       ['freshAir', 12],
       ['vendingMachine', 13],
-      ['emeLight', 14]
+      ['emeLight', 14],
+      ['advMachine1', 15],
+      ['advMachine2', 16]
     ]);
 
     var devMediaFileMap = new Map([
