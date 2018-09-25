@@ -424,6 +424,44 @@
   };
   /* ACW command end */
 
+  /* OWC command begin*/
+  var OWC = {
+    assemble: function (param) {
+      var res = '';
+
+      res = assembleMessageType(res, '010A');
+      res += convertDecStrToHexStr(param.pinNum, 2);
+      res += convertDecStrToHexStr(param.mode, 2);
+      res += this.assembleValidTime(param.beginHour, param.beginMinute, param.endHour, param.endMinute);
+
+      return res;
+    },
+    send: function (httpSendRequest, api, param, cb) {
+      alert('OWC NOT IMPLEMENT');
+      return;
+      var cmdObj = {};
+      cmdObj.uniqueId = param.uid;
+      cmdObj.messageType = 0x01;
+      cmdObj.messageSubType = 0x0A;
+      cmdObj.guiOutputWorkingConfigCommandRequest = {
+        'outputPinNumber': parseInt(param.pinNum, 10),
+        'mode': parseInt(param.mode, 16),
+        'validTime': parseInt(this.assembleValidTime(param.beginHour, param.beginMinute, param.endHour, param.endMinute), 16)
+      };
+      httpSendRequest(api, cmdObj, cb);
+    },
+    assembleValidTime: function (beginHour, bgeinMinute, endHour, endMinute) {
+      var validTime = '00000000000'
+        + assemblePadZero(Number(endMinute).toString(2), 6)
+        + assemblePadZero(Number(endHour).toString(2), 5)
+        + assemblePadZero(Number(bgeinMinute).toString(2), 6)
+        + assemblePadZero(Number(beginHour).toString(2), 5);
+
+      return assemblePadZero(parseInt(validTime, 2).toString(16), 8);
+    }
+  };
+  /* OWC command end*/
+
   /* DOA command begin */
   var DOA = {
     assemble: function (param) {
@@ -696,6 +734,10 @@
         content = ACW.assemble(param);
         break;
       }
+      case 'OWC': {
+        content = OWC.assemble(param);
+        break;
+      }
       case 'DOA': {
         content = DOA.assemble(param);
         break;
@@ -808,6 +850,10 @@
       }
       case 'ACW': {
         res = ACW.send(this.httpSendRequest, this.settings.acwConAPI, param, cb);
+        break;
+      }
+      case 'OWC': {
+        res = OWC.send(this.httpSendRequest, '', param, cb);
         break;
       }
       case 'DOA': {

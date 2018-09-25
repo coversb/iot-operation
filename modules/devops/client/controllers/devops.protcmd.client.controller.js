@@ -131,6 +131,20 @@
     vm.acwGenData = acwGenData;
     vm.acwSendCmd = acwSendCmd;
 
+    /* owc modal init */
+    vm.owcModal = {
+      pinNum: '0',
+      mode: '0',
+      beginHour: '',
+      beginMinute: '',
+      endHour: '',
+      endMinute: '',
+      uid: '0000000000600000',
+      genData: ''
+    };
+    vm.owcGenData = owcGenData;
+    vm.owcSendCmd = owcSendCmd;
+
     /* doa modal init */
     vm.doaModal = {
       mode: '1',
@@ -334,6 +348,15 @@
 
     function acwSendCmd() {
       DevopsProt.sendCommand('ACW', vm.acwModal, showSendRes);
+    }
+
+    /* output working configuration */
+    function owcGenData() {
+      vm.owcModal.genData = DevopsProt.getCommand('OWC', vm.owcModal);
+    }
+
+    function owcSendCmd() {
+      DevopsProt.sendCommand('OWC', vm.owcModal, showSendRes);
     }
 
     /* door alarm */

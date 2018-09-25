@@ -22,6 +22,7 @@
         <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#secModal">安全配置</button>
         <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#omcModal">输出模式配置</button>
         <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#acwModal">空调运行配置</button>
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#owcModal">输出运行配置</button>
         <hr>
       </div>
       <div>
@@ -764,6 +765,85 @@
 
           <div class="modal-footer">
             <button type="button" class="btn btn-info" ng-click="vm.acwGenData()">
+              生成
+            </button>
+            <button type="button submit" class="btn btn-primary">
+              发送
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
+    </div>
+
+    <!-- OWC Modal -->
+    <div class="modal fade" id="owcModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.owcSendCmd()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <h4 class="modal-title">
+              输出运行配置(Output Working Configuration) [0x01 0x0A]
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label for="owcPinNumber">Output Pin Number</label>
+                <input class="form-control" id="owcPinNumber" name="owcPinNumber" type="text"
+                       required="required"
+                       ng-model="vm.owcModal.pinNum"/>
+              </div>
+              <div>
+                <label for="owcMode">Mode</label>
+                <input class="form-control" id="owcMode" name="owcMode" type="text"
+                       required="required"
+                       ng-model="vm.owcModal.mode"/>
+              </div>
+              <div>
+                <label>Valid Time</label>
+                <br>
+                <label for="owcModalValidTimeBeginHour">起始时刻小时</label>
+                <input class="form-control" id="owcModalValidTimeBeginHour" name="owcModalValidTimeBeginHour"
+                       type="text"
+                       required="required"
+                       placeholder="请输入起始时刻小时(0 - 23)"
+                       ng-model="vm.owcModal.beginHour"/>
+                <label for="owcModalValidTimeBeginMinute">起始时刻分钟</label>
+                <input class="form-control" id="owcModalValidTimeBeginMinute" name="owcModalValidTimeBeginMinute"
+                       type="text"
+                       required="required"
+                       placeholder="请输入起始时刻分钟(0 - 59)"
+                       ng-model="vm.owcModal.beginMinute"/>
+                <label for="owcModalValidTimeEndHour">结束时刻小时</label>
+                <input class="form-control" id="owcModalValidTimeEndHour" name="owcModalValidTimeEndHour" type="text"
+                       required="required"
+                       placeholder="请输入结束时刻小时(0 - 23)"
+                       ng-model="vm.owcModal.endHour"/>
+                <label for="owcModalValidTimeEndMinute">结束时刻分钟</label>
+                <input class="form-control" id="owcModalValidTimeEndMinute" name="owcModalValidTimeEndMinute"
+                       type="text"
+                       required="required"
+                       placeholder="请输入结束时刻分钟(0 - 59)"
+                       ng-model="vm.owcModal.endMinute"/>
+              </div>
+              <div>
+                <label for="owcModalUID">UID</label>
+                <input class="form-control" id="owcModalUID" name="owcModalUID" type="text"
+                       required="required"
+                       ng-model="vm.owcModal.uid"/>
+              </div>
+              <div>
+                <label for="owcModalGenData">Generated data</label>
+                <textarea class="form-control" rows="3" id="owcModalGenData" name="owcModalGenData"
+                          ng-model="vm.owcModal.genData"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-info" ng-click="vm.owcGenData()">
               生成
             </button>
             <button type="button submit" class="btn btn-primary">
