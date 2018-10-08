@@ -20,8 +20,8 @@
       ['freshAir', 12],
       ['vendingMachine', 13],
       ['emeLight', 14],
-      ['advMachine1', 15],
-      ['advMachine2', 16]
+      ['advMachine1', 17],
+      ['advMachine2', 18]
     ]);
 
     var devMediaFileMap = new Map([
