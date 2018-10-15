@@ -27,6 +27,7 @@
       acoConAPI: '/gui/sendAirconConfigCommand',
       omcConAPI: '/gui/sendOutputModeConfigCommand',
       acwConAPI: '/gui/sendAirConditionerWorkingConfigCommand',
+      owcConAPI: '/gui/sendOutputWorkingConfigCommand',
       doaConAPI: '/gui/sendDoorAlarmCommand',
       smaConAPI: '/gui/sendSmokeAlarmCommand',
       ouoConAPI: '/gui/sendOrderUpdateCommand',

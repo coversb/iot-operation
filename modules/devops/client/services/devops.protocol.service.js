@@ -437,15 +437,10 @@
       return res;
     },
     send: function (httpSendRequest, api, param, cb) {
-      alert('OWC NOT IMPLEMENT');
-      return;
-      var cmdObj = {};
-      cmdObj.uniqueId = param.uid;
-      cmdObj.messageType = 0x01;
-      cmdObj.messageSubType = 0x0A;
-      cmdObj.guiOutputWorkingConfigCommandRequest = {
+      var cmdObj = {
+        'uniqueId': param.uid,
         'outputPinNumber': parseInt(param.pinNum, 10),
-        'mode': parseInt(param.mode, 16),
+        'mode': parseInt(param.mode, 10),
         'validTime': parseInt(this.assembleValidTime(param.beginHour, param.beginMinute, param.endHour, param.endMinute), 16)
       };
       httpSendRequest(api, cmdObj, cb);
@@ -853,7 +848,7 @@
         break;
       }
       case 'OWC': {
-        res = OWC.send(this.httpSendRequest, '', param, cb);
+        res = OWC.send(this.httpSendRequest, this.settings.owcConAPI, param, cb);
         break;
       }
       case 'DOA': {
