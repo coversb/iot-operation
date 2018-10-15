@@ -20,6 +20,7 @@
       ['freshAir', 12],
       ['vendingMachine', 13],
       ['emeLight', 14],
+      ['outdoorLEDSwitch', 16],
       ['advMachine1', 17],
       ['advMachine2', 18]
     ]);
