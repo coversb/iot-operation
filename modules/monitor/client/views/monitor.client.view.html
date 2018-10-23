@@ -68,9 +68,8 @@
                 <li ng-bind-html="vm.selectedBoxDis.signalGraph"></li>
                 <li>网络信号值: <span>{{vm.selectedBoxDis.signal}}</span></li>
                 <!--li>网络信号质量: <span ng!--nd="vm.selectedBox.detail.networkSignalQuality"></span></li-->
-                <li>网络信号值更新: <span ng-bind="vm.selectedBox.detail.networkSignalUpdateDate | unixTime"></span></li>
+                <li>网络信号值更新: <span ng-bind="vm.selectedBox.detail.input16StatusUpdateDate | unixTime"></span></li>
               </ul>
-
 
               <ul class="col-lg-6 col-xs-12">
                 <li>通电状态: <span id="power" ng-bind="vm.selectedBox.detail.powerStatus"></span></li>
@@ -85,9 +84,11 @@
                 <li>烟雾状态: <span id="smoke" ng-bind="vm.selectedBox.detail.smokeStatus"></span></li>
                 <li>最近一次烟雾报警开始: <span ng-bind="vm.selectedBox.detail.smokeAlarmStartDate | unixTime"></span></li>
                 <li>最近一次烟雾报警结束: <span ng-bind="vm.selectedBox.detail.smokeAlarmTimeEndDate | unixTime"></span></li>
+                <li><span></span></li>
               </ul>
               <ul class="col-lg-6 col-xs-12">
                 <li>门禁状态: <span id="door" ng-bind="vm.selectedBox.detail.doorStatus | doorStatus"></span></li>
+                <li>门禁状态更新: <span ng-bind="vm.selectedBox.detail.doorStatusUpdateDate | unixTime"></span></li>
                 <li>最近门禁报警开始: <span ng-bind="vm.selectedBox.detail.doorAlarmStartDate | unixTime"></span></li>
                 <li>最近门禁报警结束: <span ng-bind="vm.selectedBox.detail.doorAlarmTimeEndDate | unixTime"></span></li>
               </ul>
@@ -160,7 +161,7 @@
                 </table>
               </div>
               <li>输出状态: <span ng-bind="vm.selectedBox.detail.outputState"></span></li>
-              <li>输出更新时间: <span ng-bind="vm.selectedBox.detail.outputStatus32UpdateDate | unixTime"></span></li>
+              <li>输出更新时间: <span ng-bind="vm.selectedBox.detail.input16StatusUpdateDate | unixTime"></span></li>
               <table class="table table-hover table-bordered">
                 <thead>
                 <tr>
