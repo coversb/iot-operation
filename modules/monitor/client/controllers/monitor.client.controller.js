@@ -628,6 +628,30 @@
         vm.selectedBoxDis.emergencyLight = '关';
       }
       setOutputStateDisplay(vm.selectedBoxDis.emergencyLight, '#detailTableEmergencyLight');
+
+      // outdoor light box
+      if (checkMaskBit(outputMask, 15)) {
+        vm.selectedBoxDis.outdoorLightBox = '开';
+      } else {
+        vm.selectedBoxDis.outdoorLightBox = '关';
+      }
+      setOutputStateDisplay(vm.selectedBoxDis.outdoorLightBox, '#detailTableOutdoorLightBox');
+
+      // adv machine 1
+      if (checkMaskBit(outputMask, 16)) {
+        vm.selectedBoxDis.advMachine1 = '开';
+      } else {
+        vm.selectedBoxDis.advMachine1 = '关';
+      }
+      setOutputStateDisplay(vm.selectedBoxDis.advMachine1, '#detailTableAdvMachine1');
+
+      // adv machine 2
+      if (checkMaskBit(outputMask, 17)) {
+        vm.selectedBoxDis.advMachine2 = '开';
+      } else {
+        vm.selectedBoxDis.advMachine2 = '关';
+      }
+      setOutputStateDisplay(vm.selectedBoxDis.advMachine2, '#detailTableAdvMachine2');
     }
 
     function setOutputStateDisplay(value, element) {
