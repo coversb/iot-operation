@@ -22,6 +22,7 @@
       settings: DevopsSettings,
       getCommand: getCommand,
       sendCommand: sendCommand,
+      requestOperationPassword: requestOperationPassword,
       httpSendRequest: function (api, data, resCallback) {
         var config = {
           headers: {
@@ -47,6 +48,11 @@
     };
 
     return prot;
+  }
+
+  function requestOperationPassword(param, cb) {
+    this.httpSendRequest(this.settings.operationPasswordAPI, param, cb);
+    this.operationLogger.trace('operationPassword', param);
   }
 
   /* TV_VOL command begin */

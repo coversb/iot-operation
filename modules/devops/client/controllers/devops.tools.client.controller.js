@@ -24,6 +24,7 @@
     vm.availableBoxMap = new Map();
     vm.sendDevAirConCommand = sendDevAirConCommand;
     vm.sendDevRTOCommand = sendDevRTOCommand;
+    vm.requestOperationPassword = requestOperationPassword;
 
     init();
     updateAvailableUID();
@@ -80,7 +81,7 @@
         boxName = '未知场馆';
       }
       boxName += '(' + vm.devUID + ')';
-      return $window.confirm('确定向"' + boxName + '"发送？\n' + text);
+      return $window.confirm('确定对"' + boxName + '"执行？\n' + text);
     }
 
     function sendDevAirConCommand() {
@@ -126,5 +127,29 @@
       DevopsProt.sendCommand('RTO', param, showSendRes);
     }
 
+    function operationPassRes(data, status) {
+      if (status === 200 && data.status === true) {
+        alert(data.password);
+      } else {
+        Notification.error({ message: JSON.stringify(data), title: '<i class="glyphicon glyphicon-remove"></i> 获取失败!' });
+      }
+    }
+
+    function requestOperationPassword() {
+      if (sendCommandConfirm('获取超级密码') === false) {
+        return;
+      }
+
+      var now = new Date();
+      var curTimestamp = new Date(now.getFullYear().toString(), now.getMonth().toString(),
+        now.getDate().toString(), now.getHours().toString(), '00', '00');
+
+      var param = {
+        uniqueId: vm.devUID,
+        index: 1,
+        startTime: (curTimestamp.getTime() / 1000)
+      };
+      DevopsProt.requestOperationPassword(param, operationPassRes);
+    }
   }
 }());

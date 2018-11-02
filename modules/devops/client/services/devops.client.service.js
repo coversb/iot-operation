@@ -36,7 +36,9 @@
       rtoConAPI: '/gui/sendRTOCommand',
       fotaAPI: '/gui/sendOTACommand',
       // device info API
-      boxListAPI: '/venueStatus'
+      boxListAPI: '/venueStatus',
+      // operation password API
+      operationPasswordAPI: '/order/password/operation'
     };
 
     return settings;
