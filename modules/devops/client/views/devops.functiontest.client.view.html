@@ -198,31 +198,33 @@
             </div>
             <label>开始时间</label><br/>
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="年" ng-model="vm.order.startYear">
-              <div class="input-group-addon">-</div>
-              <input type="text" class="form-control" placeholder="月" ng-model="vm.order.startMonth">
-              <div class="input-group-addon">-</div>
-              <input type="text" class="form-control" placeholder="日" ng-model="vm.order.startDay">
-              <div class="input-group-addon">&nbsp</div>
-              <input type="text" class="form-control" placeholder="时" ng-model="vm.order.startHour">
-              <div class="input-group-addon">：</div>
-              <input type="text" class="form-control" placeholder="分" ng-model="vm.order.startMinute">
-              <div class="input-group-addon">：</div>
-              <input type="text" class="form-control" placeholder="秒" ng-model="vm.order.startSecond">
+              <input type="text" size="4"class="form-control" placeholder="年" ng-model="vm.order.startYear">
+              <div class="input-group-addon"></div>
+              <input type="text" size="2" class="form-control" placeholder="月" ng-model="vm.order.startMonth">
+              <div class="input-group-addon"></div>
+              <input type="text" size="2" class="form-control" placeholder="日" ng-model="vm.order.startDay">
+            </div>
+            <div class="input-group">
+              <input type="text" size="4" class="form-control" placeholder="时" ng-model="vm.order.startHour">
+              <div class="input-group-addon"></div>
+              <input type="text" size="2" class="form-control" placeholder="分" ng-model="vm.order.startMinute">
+              <div class="input-group-addon"></div>
+              <input type="text" size="2" class="form-control" placeholder="秒" ng-model="vm.order.startSecond">
             </div>
             <label>结束时间</label><br/>
+            <div class="input-group col-xs-12">
+              <input type="text" size="4" class="form-control" placeholder="年" ng-model="vm.order.expireYear">
+              <div class="input-group-addon"></div>
+              <input type="text" size="2" class="form-control" placeholder="月" ng-model="vm.order.expireMonth">
+              <div class="input-group-addon"></div>
+              <input type="text" size="2" class="form-control" placeholder="日" ng-model="vm.order.expireDay">
+            </div>
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="年" ng-model="vm.order.expireYear">
-              <div class="input-group-addon">-</div>
-              <input type="text" class="form-control" placeholder="月" ng-model="vm.order.expireMonth">
-              <div class="input-group-addon">-</div>
-              <input type="text" class="form-control" placeholder="日" ng-model="vm.order.expireDay">
-              <div class="input-group-addon">&nbsp</div>
-              <input type="text" class="form-control" placeholder="时" ng-model="vm.order.expireHour">
-              <div class="input-group-addon">：</div>
-              <input type="text" class="form-control" placeholder="分" ng-model="vm.order.expireMinute">
-              <div class="input-group-addon">：</div>
-              <input type="text" class="form-control" placeholder="秒" ng-model="vm.order.expireSecond">
+              <input type="text" size="4" class="form-control" placeholder="时" ng-model="vm.order.expireHour">
+              <div class="input-group-addon"></div>
+              <input type="text" size="2" class="form-control" placeholder="分" ng-model="vm.order.expireMinute">
+              <div class="input-group-addon"></div>
+              <input type="text" size="2" class="form-control" placeholder="秒" ng-model="vm.order.expireSecond">
             </div>
             <div class="input-group">
               <div class="input-group-addon">密码</div>
