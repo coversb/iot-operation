@@ -12,11 +12,13 @@
     var vm = this;
 
     var actMap = new Map([
+      ['rebootBoard', 2],
       ['door', 4],
       ['deviceBox', 7]
     ]);
 
     var ctrlMap = new Map([
+      ['reserved', 0],
       ['close', 0],
       ['open', 1]
     ]);
@@ -114,6 +116,8 @@
         } else if (ctrl === 'close') {
           confText = '关设备箱';
         }
+      } else if (act == 'rebootBoard') {
+        confText = '重启主控';
       }
 
       if (sendCommandConfirm(confText) === false) {
