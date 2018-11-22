@@ -63,12 +63,18 @@
 
     function updateBoxTable() {
       if (vm.configType !== vm.lastConfigType) {
-        if (vm.configType === 'TV_VOL' || vm.lastConfigType === 'TV_VOL') {
+        if (vm.configType === 'TV_VOL'
+            || vm.lastConfigType === 'TV_VOL'
+            || vm.configType === 'TV_CONFIG'
+            || vm.lastConfigType === 'TV_CONFIG') {
           $("#boxTable").bootstrapTable('destroy');
         }
       }
+
       if (vm.configType === 'TV_VOL') {
         loadTvVolumeList();
+      } else if (vm.configType === 'TV_CONFIG') {
+        loadTvConfigList();
       } else {
         loadBoxList();
       }
@@ -86,6 +92,106 @@
       } else {
         avaliableConfigsUpdate();
       }
+    }
+
+    function loadTvConfigList() {
+      $('#boxTable').bootstrapTable({
+        method: 'post',
+        dataType: 'json',
+        contentType: 'application/x-www-form-urlencoded',
+        url: DevopsSettings.backboneURL + DevopsSettings.tvCfgListAPI,
+        striped: true,
+        pagination: true, // 是否显示分页
+        pageList: [10, 20], // 可供选择的每页的行数（*）
+        singleSelect: false,
+        pageSize: 10, // 每页的记录行数
+        pageNumber: 1,  // 初始化加载第一页，默认第一页,并记录
+        sidePagination: 'server', // 服务端请求
+        cache: false,
+        showToggle: true,
+        showRefresh: true,
+        showColumns: true,
+        toolbar: '#toolbar',
+        queryParams: function (params) {  // 配置参数
+          var pageNumber = 1;
+          if (doSearch) {
+            doSearch = false;
+          } else {
+            if (params.offset !== 0 && params.limit !== 0) {
+              pageNumber = (params.offset / params.limit) + 1;
+            }
+          }
+          var param = {
+            name: searchData,
+            start: pageNumber,  // 页码
+            limit: params.limit  // 页面大小
+          };
+          searchData = '';
+          vm.searchData = '';
+          return param;
+        },
+        responseHandler: function (res) {
+          // console.log(res);
+          if (res.code === 200) {
+            return {
+              'total': res.total,
+              'rows': res.data
+            };
+          } else {
+            alert('请求场馆列表失败！' + res.code);
+          }
+        },
+        onClickRow: function (row, $element) {
+        },
+        // table headers
+        columns: [
+          {
+            checkbox: true
+          },
+          {
+            field: 'venueId',
+            title: '场馆ID',
+            valign: 'middle',
+            align: 'center'
+          },
+          {
+            field: 'name',
+            title: '场馆',
+            valign: 'middle',
+            align: 'center'
+          },
+          {
+            field: 'tvRestartSwitch',
+            title: '电视机自重启',
+            valign: 'middle',
+            align: 'center',
+            formatter: function (value, row) {
+              var statDis = '<span style="color:red">' + '关闭' + '</span>';
+              if (value === '开启') {
+                statDis = '<span style="color:green">' + '开启' + '</span>';
+              }
+              return statDis;
+            }
+          },
+          {
+            title: '操作',
+            field: '_id',
+            align: 'center',
+            formatter: function (value, row) {
+              return [
+                '<a href="#" mce_href="#" id="configSingle">配置下发</a>'
+              ];
+            },
+            events: window.operateEvents = {
+              'click #configSingle': function (e, value, row) {
+                vm.selectedUID = [];
+                vm.selectedUID[0] = row.venueId;
+                configModalShow();
+              }
+            }
+          }
+        ]
+      });
     }
 
     function loadTvVolumeList() {
@@ -399,6 +505,12 @@
           });
           break;
         }
+        case 'TV_CONFIG': {
+          vm.selectedUID = $('#boxTable').bootstrapTable('getAllSelections').map(function (row) {
+            return row.venueId;
+          });
+          break;
+        }
         default: {
           vm.selectedUID = $('#boxTable').bootstrapTable('getAllSelections').map(function (row) {
             return row.base.uniqueId;
@@ -423,6 +535,19 @@
               $('#boxTable').bootstrapTable('refresh', {});
             } else {
               Notification.error({ message: '<i class="glyphicon glyphicon-remove"></i>' + data.message });
+            }
+          } else {
+            Notification.error({ message: data, title: '<i class="glyphicon glyphicon-remove"></i> 发送失败!' });
+          }
+          break;
+        }
+        case 'TV_CONFIG': {
+          if (status === 200) {
+            if (data.code === 200) {
+              Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> 发送成功!' });
+              $('#boxTable').bootstrapTable('refresh', {});
+            } else {
+              Notification.error({ message: '<i class="glyphicon glyphicon-remove"></i>' + data.msg });
             }
           } else {
             Notification.error({ message: data, title: '<i class="glyphicon glyphicon-remove"></i> 发送失败!' });

@@ -13,6 +13,9 @@
     var settings = {
       // backbone base url
       backboneURL: ENV_VARS.backboneUrl,
+      // tv config API
+      tvCfgListAPI: '/gui/listTvRestartSwitch',
+      tvCfgUpdateAPI: '/gui/sendTvRestartSwitch',
       // tv app API
       tvVolListAPI: '/transformer/venueaction/get_volume_list',
       tvVolUpdateAPI: '/transformer/venueaction/set_volume_list',

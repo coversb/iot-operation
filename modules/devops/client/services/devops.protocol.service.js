@@ -24,11 +24,22 @@
       sendCommand: sendCommand,
       requestOperationPassword: requestOperationPassword,
       httpSendRequest: function (api, data, resCallback) {
-        var config = {
+        var configJson = {
           headers: {
             'Content-Type': 'application/json'
           }
         };
+        var configXForm = {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        };
+
+        var config = configJson;
+        if (api === DevopsSettings.tvCfgUpdateAPI) {
+          config = configXForm;
+          data = $.param(data);
+        }
 
         $http.post(DevopsSettings.backboneURL + api, data, config)
           .success(function (data, status) {
@@ -55,6 +66,19 @@
     this.operationLogger.trace('operationPassword', param);
   }
 
+  /* TV_CONFIG command begin */
+  var TV_CONFIG = {
+    send: function (httpSendRequest, api, param, cb) {
+      var tvConfigUpdate = {
+        venueId: param.uid,
+        status: parseInt(param.rebootSwitch.trim(), 10)
+      };
+
+      httpSendRequest(api, tvConfigUpdate, cb);
+    }
+  };
+  /* TV_CONFIG command end */
+
   /* TV_VOL command begin */
   var TV_VOL = {
     send: function (httpSendRequest, api, param, cb) {
@@ -69,7 +93,7 @@
       httpSendRequest(api, tvVolumeUpdate, cb);
     }
   };
-  /* TMP command end */
+  /* TV_VOL command end */
 
   /* TMP command begin */
   var TMP = {
@@ -809,6 +833,10 @@
     var res = false;
 
     switch (cmdType) {
+      case 'TV_CONFIG': {
+        res = TV_CONFIG.send(this.httpSendRequest, this.settings.tvCfgUpdateAPI, param, cb);
+        break;
+      }
       case 'TV_VOL': {
         res = TV_VOL.send(this.httpSendRequest, this.settings.tvVolUpdateAPI, param, cb);
         break;

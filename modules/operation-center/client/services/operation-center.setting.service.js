@@ -20,6 +20,9 @@
       airconActionListAPI: '/backend/venue_air_conditioner_work_time/list_venue_air_conditioner_work_time',
       airconActionUpdateAPI: '/backend/venue_air_conditioner_work_time/add_or_update_venue_air_conditioner_work_time',
       airconActionDeleteAPI: '/backend/venue_air_conditioner_work_time/remove_venue_air_conditioner_work_time',
+      // tv config API
+      tvCfgListAPI: '/gui/listTvRestartSwitch',
+      tvCfgUpdateAPI: '/gui/sendTvRestartSwitch',
       // tv app API
       tvVolListAPI: '/transformer/venueaction/get_volume_list',
       tvVolUpdateAPI: '/transformer/venueaction/set_volume_list',

@@ -191,6 +191,10 @@
 
         // init some default value
         switch (vm.configType) {
+          case 'TV_CONFIG': {
+            vm.modal.rebootSwitch = '0';
+            break;
+          }
           case 'TV_VOL': {
             vm.modal.volume = '40';
             break;

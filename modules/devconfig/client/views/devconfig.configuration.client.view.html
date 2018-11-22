@@ -11,6 +11,7 @@
         <select class="select form-control" id="configType" name="configType"
                 ng-change="vm.configTypeChange()"
                 ng-model="vm.configType">
+          <option value="TV_CONFIG">电视配置</option>
           <option value="TV_VOL">电视音量</option>
           <option value="TMP">智能温控</option>
           <option value="APC">入网配置</option>
@@ -50,6 +51,58 @@
           <ul class="pagination"></ul>
         </div>
       </div>
+    </div>
+
+    <!-- TV_CONFIG Modal -->
+    <div class="modal fade" id="TV_CONFIGModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <form class="modal-content" ng-submit="vm.configSend()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+              &times;
+            </button>
+            <div>
+              <h4 class="modal-title" id="tvCfgModalTitle">
+                电视配置
+              </h4>
+              <select class="select form-control" id="tvCfgModalConfig" name="tvCfgModalConfig"
+                      ng-model="vm.modalSelectedConfig"
+                      ng-options="option.name for option in vm.avaliableConfigs track by option._id"
+                      ng-change="vm.modalConfigChange()">
+              </select>
+            </div>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div>
+                <label for="tvCfgModalName">配置名称</label>
+                <input class="form-control" id="tvCfgModalName" name="tvCfgModalName" type="text"
+                       readonly="readonly"
+                       ng-model="vm.modalData.name"/>
+              </div>
+              <div>
+                <label for="tvCfgModalNotes">备注</label>
+                <textarea class="form-control" rows="3" id="tvCfgModalNotes" name="tvCfgModalNotes"
+                          readonly="readonly"
+                          ng-model="vm.modalData.notes"></textarea>
+              </div>
+              <div>
+                <label for="tvCfgModalRebootSwitch">重启开关</label>
+                <input class="form-control" id="tvCfgModalRebootSwitch" name="tvCfgModalRebootSwitch" type="text"
+                       ng-model="vm.modalData.rebootSwitch"/>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">
+              下发
+            </button>
+            <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">
+              取消
+            </button>
+          </div>
+        </form><!-- /.modal-content -->
+      </div><!-- /.modal -->
     </div>
 
     <!-- TV_VOL Modal -->

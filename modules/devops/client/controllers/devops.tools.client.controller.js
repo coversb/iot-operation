@@ -116,7 +116,7 @@
         } else if (ctrl === 'close') {
           confText = '关设备箱';
         }
-      } else if (act == 'rebootBoard') {
+      } else if (act === 'rebootBoard') {
         confText = '重启主控';
       }
 

@@ -10,6 +10,7 @@
   function DevconfigManagementService($resource, $log) {
     var DevconfigManagement = {
       apiMap: new Map([
+        ['TV_CONFIG', '/api/devconfig/tvConfig'], // tv config
         ['TV_VOL', '/api/devconfig/tvVolume'], // tv volume
         ['TMP', '/api/devconfig/tmp'], // target temperature setting
         ['APC', '/api/devconfig/apc'],
@@ -30,6 +31,7 @@
       ]),
 
       cmdManagerMap: new Map([
+        ['TV_CONFIG', $resource('/api/devconfig/tvConfig/:tvConfig', { tvConfig: '@_id' }, { update: { method: 'PUT' } })],
         ['TV_VOL', $resource('/api/devconfig/tvVolume/:tvVolume', { tvVolume: '@_id' }, { update: { method: 'PUT' } })],
         ['TMP', $resource('/api/devconfig/tmp/:tmpId', { tmpId: '@_id' }, { update: { method: 'PUT' } })],
         ['APC', $resource('/api/devconfig/apc/:apcId', { apcId: '@_id' }, { update: { method: 'PUT' } })],
