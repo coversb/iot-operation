@@ -26,6 +26,7 @@
     ]);
 
     var devMediaFileMap = new Map([
+      ['stopAll', 0],
       ['welcome', 0],
       ['orderOver', 1],
       ['smokeAlarm', 2],
@@ -93,10 +94,16 @@
     }
 
     function sendMuoCommand(mediaName) {
+      var type = '1';
+
+      if (mediaName === 'stopAll') {
+        type = '0';
+      }
+
       var param = {
         uid: vm.devUID,
         act: '1',
-        type: '1',
+        type: type,
         vol: '0',
         mediaFname: devMediaFileMap.get(mediaName).toString(10)
       };

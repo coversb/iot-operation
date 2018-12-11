@@ -173,6 +173,13 @@
                 尾随
               </button>
             </div>
+            <div>
+              <div class="btn-group" id="soundTest3">
+                <button type="button" class="btn btn-success btn-lg" ng-click="vm.sendMuoCommand('stopAll')">
+                  停止播放
+                </button>
+              </div>
+            </div>
           </div>
           <div class="col-xs-6 col-sm-6 col-md-6">
             <h3><label class="label label-primary label-lg" for="soundModify">背景音量:</label></h3>
@@ -198,7 +205,7 @@
             </div>
             <label>开始时间</label><br/>
             <div class="input-group">
-              <input type="text" size="4"class="form-control" placeholder="年" ng-model="vm.order.startYear">
+              <input type="text" size="4" class="form-control" placeholder="年" ng-model="vm.order.startYear">
               <div class="input-group-addon"></div>
               <input type="text" size="2" class="form-control" placeholder="月" ng-model="vm.order.startMonth">
               <div class="input-group-addon"></div>
