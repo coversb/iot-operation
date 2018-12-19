@@ -94,19 +94,20 @@
     }
 
     function sendMuoCommand(mediaName) {
-      var type = '1';
+      var act = '1';
 
       if (mediaName === 'stopAll') {
-        type = '0';
+        act = '0';
       }
 
       var param = {
         uid: vm.devUID,
-        act: '1',
-        type: type,
+        act: act,
+        type: '1',
         vol: '0',
         mediaFname: devMediaFileMap.get(mediaName).toString(10)
       };
+
       DevopsProt.sendCommand('MUO', param, showSendRes);
     }
 
